@@ -4,8 +4,8 @@ const app = express();
 
 app.use(express.static(__dirname + '/static'));
 
-app.get('/', (req, res) => {
-	res.sendFile(__dirname + '/static/index.html');
+app.get('*', (req, res) => {
+	res.sendFile(__dirname + '/index.html');
 });
 
 const PORT = 3000;

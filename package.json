@@ -2,11 +2,11 @@
   "name": "middle.messenger.praktikum.yandex",
   "version": "1.0.0",
   "description": "### Откройте pull request в ветку main из ветки, где вы разрабатывали проект, и добавьте ссылку на этот pr в README.md в ветке main. Название pull request может быть любое.",
-  "main": "index.js",
+  "main": "index.html",
   "scripts": {
     "start": "node server.js",
-    "dev": "./node_modules/.bin/parcel index.html",
-    "build": "./node_modules/.bin/parcel build index.html"
+    "dev": "./node_modules/.bin/parcel -p 3000 static/index.html",
+    "build": "./node_modules/.bin/parcel build static/index.html"
   },
   "repository": {
     "type": "git",
@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/Sh-Ivan/middle.messenger.praktikum.yandex#readme",
   "devDependencies": {
+    "@parcel/transformer-sass": "^2.0.0-beta.2",
     "parcel": "^2.0.0-beta.2"
   },
   "dependencies": {
