@@ -8,4 +8,4 @@ const context = {
 	isLogin: true,
 };
 
-export default content = loginTmpl.compile(context);
+export default loginTmpl.compile(context);

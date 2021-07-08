@@ -5,12 +5,15 @@
   "main": "index.html",
   "scripts": {
     "start": "node server.js",
-    "dev": "./node_modules/.bin/parcel -p 3000 static/index.html",
+    "dev": "./node_modules/.bin/parcel -p 3000 static/index.html --no-cache",
     "build": "./node_modules/.bin/parcel build static/index.html"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Sh-Ivan/middle.messenger.praktikum.yandex.git"
+  },
+  "engines": {
+    "node": ">=14.0.0"
   },
   "keywords": [],
   "author": "",
@@ -20,8 +23,8 @@
   },
   "homepage": "https://github.com/Sh-Ivan/middle.messenger.praktikum.yandex#readme",
   "devDependencies": {
-    "@parcel/transformer-sass": "^2.0.0-beta.2",
-    "parcel": "^2.0.0-beta.2"
+    "parcel-bundler": "^1.12.5",
+    "sass": "^1.35.2"
   },
   "dependencies": {
     "express": "^4.17.1"

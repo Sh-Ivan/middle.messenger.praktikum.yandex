@@ -1,17 +1,22 @@
 import login from './pages/login/login';
 import signup from './pages/signup/signup';
 import page404 from './pages/404/404';
+import page500 from './pages/500/500';
 import chat from './pages/chat/chat';
 import userProfile from './pages/userProfile/userProfile';
 
 const pathname = window.location.pathname;
 
+console.log(login);
+
 const router = {
-	'/': login,
+	'/': chat,
 	'/login': login,
 	'/signup': signup,
 	'/chat': chat,
 	'/user': userProfile,
+	'/page404': page404,
+	'/page500': page500,
 };
 
 const pageContent = router[pathname] ?? page404;

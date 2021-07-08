@@ -7,4 +7,4 @@ const context = {
 	name: 'John Doe',
 };
 
-export default content = signupTmpl.compile(context);
+export default signupTmpl.compile(context);

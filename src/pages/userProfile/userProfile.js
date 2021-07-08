@@ -8,4 +8,4 @@ const context = {
 	isLogin: true,
 };
 
-export default content = userProfileTmpl.compile(context);
+export default userProfileTmpl.compile(context);

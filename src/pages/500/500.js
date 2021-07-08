@@ -1,6 +1,6 @@
 import Templator from '../../../utils/templator';
-import loginTemplate from './login.tmpl';
-import './login.scss';
+import loginTemplate from './500.tmpl';
+import './500.scss';
 
 const loginTmpl = new Templator(loginTemplate);
 const context = {
