@@ -1,6 +1,6 @@
 # Messenger – приложение-чат для обмена сообщениями
 
-PR: https://github.com/Sh-Ivan/middle.messenger.praktikum.yandex/pull/1
+PR: https://github.com/Sh-Ivan/middle.messenger.praktikum.yandex/pull/3
 
 ## Адрес сайта
 
