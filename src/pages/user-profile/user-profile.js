@@ -1,11 +1,11 @@
 import Templator from '../../../utils/templator';
-import userProfileTemplate from './userProfile.tmpl';
-import './userProfile.scss';
+import userProfileTemplate from './user-profile.tmpl';
 
 const userProfileTmpl = new Templator(userProfileTemplate);
 const context = {
-	name: 'Ivan',
-	isLogin: true,
+	name: 'Андрей',
+	email: 'pochta@yandex.ru',
+	login: 'ivan',
 };
 
 export default userProfileTmpl.compile(context);

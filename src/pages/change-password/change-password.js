@@ -1,5 +1,5 @@
 import Templator from '../../../utils/templator';
-import loginTemplate from './chat.tmpl';
+import loginTemplate from './change-password.tmpl';
 
 const loginTmpl = new Templator(loginTemplate);
 const context = {};

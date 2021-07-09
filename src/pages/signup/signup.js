@@ -1,10 +1,7 @@
 import Templator from '../../../utils/templator';
 import signupTemplate from './signup.tmpl';
-import './signup.scss';
 
 const signupTmpl = new Templator(signupTemplate);
-const context = {
-	name: 'John Doe',
-};
+const context = {};
 
 export default signupTmpl.compile(context);
