@@ -1,5 +1,7 @@
 # Messenger – приложение-чат для обмена сообщениями
 
+PR: https://github.com/Sh-Ivan/middle.messenger.praktikum.yandex/pull/1
+
 ## Адрес сайта
 
 https://messenger-sharafutdinov.netlify.app/

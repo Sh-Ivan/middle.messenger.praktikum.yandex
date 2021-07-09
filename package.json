@@ -4,9 +4,10 @@
   "description": "### Откройте pull request в ветку main из ветки, где вы разрабатывали проект, и добавьте ссылку на этот pr в README.md в ветке main. Название pull request может быть любое.",
   "main": "index.html",
   "scripts": {
-    "start": "node server.js",
-    "dev": "./node_modules/.bin/parcel -p 3000 static/index.html --no-cache",
-    "build": "./node_modules/.bin/parcel build static/index.html"
+    "start": "parcel build static/index.html",
+    "dev": "parcel -p 3000 static/index.html",
+    "build": "parcel build static/index.html",
+    "server": "node server.js"
   },
   "repository": {
     "type": "git",
