@@ -1,35 +1,36 @@
-# [Messenger](https://imkopyova-messenger.herokuapp.com/)
+# Messenger – приложение-чат для обмена сообщениями
 
-Messenger – приложение для обмена сообщениями
-https://imkopyova-messenger.herokuapp.com/
+## Адрес сайта
 
-### Функционал
+https://messenger-sharafutdinov.netlify.app/
 
--   авторизация
--   изменение данных пользователя
--   создание чатов
+## Установка
 
-## Запуск
+```bash
+npm install
+```
+
+## Запуск проекта
+
+Сборка и запуск проекта на localhost://3000:
+
+```bash
+npm start
+```
 
 В режиме разработки:
 
 ```bash
-npm run start
+npm run dev
 ```
 
-Тесты:
+Сборка стабильной версии:
 
 ```bash
-npm run test
+npm run build
 ```
 
-## Документация
+## Ссылки
 
--   [Макеты Figma](https://www.figma.com/file/q213QsV72crD3wOaWSZQMo/Praktikum-Chat?node-id=0%3A1)
--   [Описание API](https://ya-praktikum.tech/api/v2/swagger/#/)
-
-## Использованы инструменты
-
--   Для сборки [Webpack](https://webpack.js.org/)
--   Для тестов [Mocha](https://mochajs.org/) и [Chai](https://www.chaijs.com/)
--   Шаблонизатор [Handlebars](https://handlebarsjs.com/)
+-   [Макеты Figma](https://www.figma.com/file/oswzyNtaNEE3b2kOYA6zHu/Chat-messenger?node-id=0%3A1)
+-   [Pull request](https://github.com/Sh-Ivan/middle.messenger.praktikum.yandex)
