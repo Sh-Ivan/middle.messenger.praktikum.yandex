@@ -10,8 +10,6 @@ import editUserProfile from './pages/edit-user-profile/edit-user-profile';
 
 const pathname = window.location.pathname;
 
-console.log(login);
-
 const router = {
 	'/': chat,
 	'/login': login,

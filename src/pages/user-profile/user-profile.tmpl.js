@@ -33,8 +33,6 @@ export default `
         <input type="tel" id="phone" name="phone" placeholder="Телефон" class="user-profile-form__input"">
       </div>
 
-
-
       <div class="user-profile__links">
         <a href="/edit-user-profile" class="user-profile__link">Изменить данные</a>
         <a href="/change-password" class="user-profile__link">Измениить пароль</a>

@@ -1,4 +1,4 @@
-const per = `
+export default `
   <main class="auth-panel auth-panel_signup">
     <h1 class="auth-panel__header">Регистрация</h1>
     <form class="auth-form">
@@ -21,5 +21,3 @@ const per = `
     <a href="/login" class="auth-panel__link">Войти</a>
   </main>
 `;
-
-export default per;
