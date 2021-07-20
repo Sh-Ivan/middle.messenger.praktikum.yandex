@@ -1,7 +1,17 @@
 import Templator from '../../../utils/templator';
-import loginTemplate from './change-password.tmpl';
+import changePasswordTemplate from './change-password.tmpl';
+import Block from '../../components/block/block';
 
-const loginTmpl = new Templator(loginTemplate);
-const context = {};
+const changePasswordTmpl = new Templator(changePasswordTemplate);
 
-export default loginTmpl.compile(context);
+class ChangePassword extends Block {
+  constructor(props) {
+    super('div', props);
+  }
+
+  render() {
+    return changePasswordTmpl.compile(this.props);
+  }
+}
+
+export default ChangePassword;

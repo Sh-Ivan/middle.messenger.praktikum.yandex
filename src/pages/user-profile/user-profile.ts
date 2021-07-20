@@ -1,11 +1,17 @@
 import Templator from '../../../utils/templator';
 import userProfileTemplate from './user-profile.tmpl';
+import Block from '../../components/block/block';
 
 const userProfileTmpl = new Templator(userProfileTemplate);
-const context = {
-	name: 'Андрей',
-	email: 'pochta@yandex.ru',
-	login: 'ivan',
-};
 
-export default userProfileTmpl.compile(context);
+class UserProfile extends Block {
+  constructor(props) {
+    super('div', props);
+  }
+
+  render() {
+    return userProfileTmpl.compile(this.props);
+  }
+}
+
+export default UserProfile;

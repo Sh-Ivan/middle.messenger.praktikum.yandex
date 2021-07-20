@@ -1,11 +1,26 @@
 import Templator from '../../../utils/templator';
-import userProfileTemplate from './edit-user-profile.tmpl';
+import editUserProfileTemplate from './edit-user-profile.tmpl';
+import Block from '../../components/block/block';
 
-const userProfileTmpl = new Templator(userProfileTemplate);
-const context = {
-	name: 'Андрей',
-	email: 'pochta@yandex.ru',
-	login: 'ivan',
-};
+const editUserProfileTmpl = new Templator(editUserProfileTemplate);
 
-export default userProfileTmpl.compile(context);
+class EditUserProfile extends Block {
+  constructor(props) {
+    super('div', props);
+    this.context = {
+      email: '',
+      login: '',
+      firstName: '',
+      secondName: '',
+      displayName: '',
+      phone: '',
+    };
+  }
+
+  render() {
+    console.log(this.con);
+    return editUserProfileTmpl.compile(this.context);
+  }
+}
+
+export default EditUserProfile;

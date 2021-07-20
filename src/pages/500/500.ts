@@ -1,7 +1,17 @@
 import Templator from '../../../utils/templator';
-import loginTemplate from './500.tmpl';
+import page500Template from './500.tmpl';
+import Block from '../../components/block/block';
 
-const loginTmpl = new Templator(loginTemplate);
-const context = {};
+const page500Tmpl = new Templator(page500Template);
 
-export default loginTmpl.compile(context);
+class Page500 extends Block {
+  constructor(props) {
+    super('div', props);
+  }
+
+  render() {
+    return page500Tmpl.compile(this.props);
+  }
+}
+
+export default Page500;

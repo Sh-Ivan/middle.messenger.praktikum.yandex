@@ -1,7 +1,17 @@
 import Templator from '../../../utils/templator';
-import loginTemplate from './chat.tmpl';
+import chatTemplate from './chat.tmpl';
+import Block from '../../components/block/block';
 
-const loginTmpl = new Templator(loginTemplate);
-const context = {};
+const chatTmpl = new Templator(chatTemplate);
 
-export default loginTmpl.compile(context);
+class Chat extends Block {
+  constructor(props) {
+    super('div', props);
+  }
+
+  render() {
+    return chatTmpl.compile(this.props);
+  }
+}
+
+export default Chat;
