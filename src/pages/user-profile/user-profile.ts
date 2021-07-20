@@ -10,7 +10,16 @@ class UserProfile extends Block {
   }
 
   render() {
-    return userProfileTmpl.compile(this.props);
+    const context = {
+      email: '',
+      login: '',
+      firstName: '',
+      secondName: '',
+      displayName: '',
+      phone: '',
+    };
+
+    return userProfileTmpl.compile(context);
   }
 }
 

@@ -10,6 +10,7 @@ import EditUserProfile from '../pages/edit-user-profile/edit-user-profile';
 
 const { pathname } = window.location;
 const defaultPage = new Chat();
+const editProfile = new EditUserProfile();
 
 const router = {
   '/': defaultPage,
@@ -20,7 +21,7 @@ const router = {
   '/page404': new Page404(),
   '/page500': new Page500(),
   '/change-password': new ChangePassword(),
-  '/edit-user-profile': new EditUserProfile(),
+  '/edit-user-profile': editProfile,
 };
 
 const App = router[pathname] ? router[pathname] : router['/page404'];

@@ -7,7 +7,10 @@ const editUserProfileTmpl = new Templator(editUserProfileTemplate);
 class EditUserProfile extends Block {
   constructor(props) {
     super('div', props);
-    this.context = {
+  }
+
+  render() {
+    const context = {
       email: '',
       login: '',
       firstName: '',
@@ -15,12 +18,12 @@ class EditUserProfile extends Block {
       displayName: '',
       phone: '',
     };
-  }
 
-  render() {
-    console.log(this.con);
-    return editUserProfileTmpl.compile(this.context);
+    return editUserProfileTmpl.compile(context);
   }
 }
+
+// const User = new EditUserProfile();
+// User.render();
 
 export default EditUserProfile;

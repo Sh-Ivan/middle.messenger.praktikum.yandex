@@ -18,19 +18,19 @@ export default `
       </div>
       <div class="user-profile__row">
         <label for="first_name" class="user-profile-form__label">Имя</label>
-        <input type="text" id="first_name" name="first_name" placeholder="Имя" class="user-profile-form__input" value={{name}}>
+        <input type="text" id="first_name" name="first_name" placeholder="Имя" class="user-profile-form__input" value={{firstName}}>
       </div>
       <div class="user-profile__row">
         <label for="second_name" class="user-profile-form__label">Фамилия</label>
-        <input type="text" id="second_name" name="second_name" placeholder="Фамилия" class="user-profile-form__input"">
+        <input type="text" id="second_name" name="second_name" placeholder="Фамилия" class="user-profile-form__input" value={{secondName}}>
       </div>
       <div class="user-profile__row">
         <label for="display_name" class="user-profile-form__label">Имя в чате</label>
-        <input type="text" id="display_name" name="display_name" placeholder="Имя в чате" class="user-profile-form__input"">
+        <input type="text" id="display_name" name="display_name" placeholder="Имя в чате" class="user-profile-form__input" value={{displayName}}>
       </div>
       <div class="user-profile__row">
         <label for="phone" class="user-profile-form__label">Телефон</label>
-        <input type="tel" id="phone" name="phone" placeholder="Телефон" class="user-profile-form__input"">
+        <input type="tel" id="phone" name="phone" placeholder="Телефон" class="user-profile-form__input" value={{phone}}>
       </div>
 
       <div class="user-profile__links">

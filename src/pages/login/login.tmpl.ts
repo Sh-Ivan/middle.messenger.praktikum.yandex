@@ -1,7 +1,7 @@
 export default `
   <main class="auth-panel auth-panel_login">
     <h1 class="auth-panel__header">Вход</h1>
-    <form class="auth-form">
+    <form class="auth-form" onsubmit={{handleSubmit}}>
       <label for="login" class="auth-form__label">Логин</label>
       <input type="text" id="login" name="login" placeholder="Логин" class="auth-form__input">
       <label for="password" class="auth-form__label">Пароль</label>
