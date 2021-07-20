@@ -92,6 +92,19 @@ class Block {
     // Нужно не в строку компилировать (или делать это правильно),
     // либо сразу в DOM-элементы возвращать из compile DOM-ноду
     this._element.innerHTML = block;
+    this._element = this._element.firstElementChild;
+    for (let el of this._element.querySelectorAll('*')) {
+      for (let attr of el.attributes) {
+        if (attr.name.search(/on:/) !== -1) {
+          const eventName = attr.name.trim().slice(3);
+          const eventHandler = attr.value.slice(2,-2);
+          el.addEventListener(eventName, this[eventHandler]);
+        }
+        
+      }
+    }
+
+
   }
 
   // Может переопределять пользователь, необязательно трогать

@@ -21,8 +21,8 @@ export default class Templator {
     Object.entries(ctx).forEach(([key, value]: [string, unknown]) => {
       const templateVar = new RegExp(`{{\\s*${key}\\s*}}`, 'g');
       if (typeof value === 'function') {
-        window.handleClick = value;
-        newTemplate = newTemplate.replace(templateVar, `window.${key}()`);
+        console.log(key)
+        newTemplate = newTemplate.replace(templateVar, key);
       } else if (typeof value === 'object') {
         const temolateObjectVar: RegExp = new RegExp(`{{\\s*${key}\..*?}}`, 'g');
         const varsInObject: RegExpMatchArray | null = newTemplate.match(temolateObjectVar);

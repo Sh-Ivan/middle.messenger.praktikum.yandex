@@ -1,6 +1,6 @@
 function render(query, block) {
   const root = document.querySelector(query);
-  root.innerHTML = block.getContent().innerHTML;
+  root.appendChild(block.getContent());
   return root;
 }
 

@@ -7,21 +7,20 @@ const loginTmpl = new Templator(loginTemplate);
 class Login extends Block {
   constructor(props) {
     super('div', props);
-    this.handleClick = this.handleClick.bind(this);
   }
-
+/*
+  handleSubmit(e) {
+    e.preventDefault();
+  }
+  */
   handleClick(e) {
-    console.log(e);
-    // e.preventDefault();
-    console.log('click');
+    console.log('1111111111111111111111   click');
+    e.preventDefault();
   }
 
   render() {
     const context = {
-      handleSubmit: function hs() {
-        console.log('submit');
-        return false;
-      },
+      
     };
     return loginTmpl.compile(context);
   }
