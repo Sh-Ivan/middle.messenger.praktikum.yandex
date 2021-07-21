@@ -15,13 +15,13 @@ export default class Templator {
 
   compile(ctx: object): string {
     let newTemplate: string = this._template;
-    if (!ctx) {
+    if (!ctx || Object.keys(ctx).length === 0) {
       return this._template;
     }
     Object.entries(ctx).forEach(([key, value]: [string, unknown]) => {
-      const templateVar = new RegExp(`{{\\s*${key}\\s*}}`, 'g');
+      const templateVar = new RegExp(`\{\{\\s*${key}\\s*\}\}`, 'g');
+
       if (typeof value === 'function') {
-        console.log(key)
         newTemplate = newTemplate.replace(templateVar, key);
       } else if (typeof value === 'object') {
         const temolateObjectVar: RegExp = new RegExp(`{{\\s*${key}\..*?}}`, 'g');
@@ -30,13 +30,16 @@ export default class Templator {
           varsInObject.forEach((nextVar: string) => {
             const path: string = nextVar.slice(2, -2).trim();
             const newValue: unknown = getObjectValue(ctx, path);
-            newTemplate = newTemplate.replace(nextVar, newValue as string);
+            const replacer: string = newValue === '' ? '""' : (newValue as string);
+            newTemplate = newTemplate.replace(nextVar, replacer);
           });
         }
       } else {
-        newTemplate = newTemplate.replace(templateVar, value as string);
+        const replacer: string = value === '' ? '""' : (value as string);
+        newTemplate = newTemplate.replace(templateVar, replacer);
       }
     });
+
     return newTemplate;
   }
 }

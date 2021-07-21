@@ -16,6 +16,22 @@ body {
   display: flex;
 }
 
+.show {
+  display: block;
+}
+
+.hide {
+  display: none;
+}
+
+.input-error {
+  color: #f00;
+  font-size: 10px;
+  font-weight: bold;
+  margin-top: -5px;
+  margin-bottom: 10px;
+}
+
 .auth-panel {
   width: 340px;
   box-shadow: 0 0 6px rgba(0, 0, 0, 0.14);
@@ -194,6 +210,7 @@ body {
   font-size: 13px;
   color: #1e1e1e;
   padding-bottom: 7px;
+  cursor: pointer;
 }
 
 .user-profile-form__input {
@@ -202,6 +219,7 @@ body {
   font-size: 13px;
   color: #1e1e1e;
   text-align: right;
+  width: 80%;
 
   &:focus {
     outline: none;

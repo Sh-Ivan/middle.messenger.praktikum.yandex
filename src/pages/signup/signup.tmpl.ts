@@ -1,7 +1,7 @@
 export default `
   <main class="auth-panel auth-panel_signup">
     <h1 class="auth-panel__header">Регистрация</h1>
-    <form class="auth-form">
+    <form class="auth-form" on:submit={{handleSubmit}}>
       <label for="email" class="auth-form__label">Почта</label>
       <input type="email" id="email" name="email" placeholder="Почта" class="auth-form__input"">
       <label for="login" class="auth-form__label">Логин</label>

@@ -6,7 +6,7 @@ export default `
       <input type="text" id="login" name="login" placeholder="Логин" class="auth-form__input">
       <label for="password" class="auth-form__label">Пароль</label>
       <input type="password" id="password" name="password" placeholder="Пароль" class="auth-form__input">
-      <button type="submit" class="auth-form__button" on:click={{handleClick}}>Авторизоваться</button>
+      <button type="submit" class="auth-form__button">Авторизоваться</button>
     </form>
     <a href="/signup" class="auth-panel__link">Нет аккаунта?</a>
   </main>

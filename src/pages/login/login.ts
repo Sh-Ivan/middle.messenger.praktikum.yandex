@@ -1,3 +1,4 @@
+/* eslint-disable class-methods-use-this */
 import Templator from '../../../utils/templator';
 import loginTemplate from './login.tmpl';
 import Block from '../../components/block/block';
@@ -8,20 +9,21 @@ class Login extends Block {
   constructor(props) {
     super('div', props);
   }
-/*
+
   handleSubmit(e) {
     e.preventDefault();
-  }
-  */
-  handleClick(e) {
-    console.log('1111111111111111111111   click');
-    e.preventDefault();
+    const formData = {};
+    const { elements } = e.currentTarget;
+    for (const element of elements) {
+      if (element.type !== 'submit') {
+        formData[element.name] = element.value;
+      }
+    }
+    console.log(formData);
   }
 
   render() {
-    const context = {
-      
-    };
+    const context = {};
     return loginTmpl.compile(context);
   }
 }
