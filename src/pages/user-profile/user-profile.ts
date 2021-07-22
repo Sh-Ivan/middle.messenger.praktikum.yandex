@@ -5,7 +5,7 @@ import Block from '../../components/block/block';
 const userProfileTmpl = new Templator(userProfileTemplate);
 
 class UserProfile extends Block {
-  constructor(props) {
+  constructor(props: object = {}) {
     super('div', props);
   }
 

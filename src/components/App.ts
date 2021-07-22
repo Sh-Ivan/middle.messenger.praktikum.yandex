@@ -7,12 +7,24 @@ import Chat from '../pages/chat/chat';
 import UserProfile from '../pages/user-profile/user-profile';
 import ChangePassword from '../pages/change-password/change-password';
 import EditUserProfile from '../pages/edit-user-profile/edit-user-profile';
+import IBlock from './block/block';
 
 const { pathname } = window.location;
 const defaultPage = new Chat();
 const editProfile = new EditUserProfile();
 
-const router = {
+type ROUTES =
+  | '/'
+  | '/login'
+  | '/signup'
+  | '/chat'
+  | '/user'
+  | '/page404'
+  | '/page500'
+  | '/change-password'
+  | '/edit-user-profile';
+
+const router: { [key: ROUTES]: IBlock } = {
   '/': defaultPage,
   '/login': new Login({ testProp: 'test proprety', hide: true }),
   '/signup': new Signup(),
@@ -24,6 +36,6 @@ const router = {
   '/edit-user-profile': editProfile,
 };
 
-const App = router[pathname] ? router[pathname] : router['/page404'];
+const App: IBlock = router[pathname] !== undefined ? router[pathname] : router['/page404'];
 
 export default App;

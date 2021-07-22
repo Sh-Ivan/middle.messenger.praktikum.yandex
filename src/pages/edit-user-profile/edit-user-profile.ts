@@ -2,7 +2,7 @@
 import Templator from '../../../utils/templator';
 import editUserProfileTemplate from './edit-user-profile.tmpl';
 import Block from '../../components/block/block';
-import validate from '../../../utils/validate';
+import { validate, toggleErrorElement } from '../../../utils/validate';
 
 const editUserProfileTmpl = new Templator(editUserProfileTemplate);
 const initialContext = {
@@ -15,7 +15,7 @@ const initialContext = {
 };
 
 class EditUserProfile extends Block {
-  constructor(props) {
+  constructor(props: object = {}) {
     super('div', props);
   }
 
@@ -24,53 +24,30 @@ class EditUserProfile extends Block {
     const formData = {};
     const { elements } = e.currentTarget as HTMLElement;
     for (const element of elements) {
-      const errorElement = document.querySelector(`[data-error="${element.name}"]`);
       const validateResult = validate(element);
-      if (errorElement) {
-        if (validateResult !== 'valid') {
-          errorElement.textContent = validateResult;
-          errorElement.classList.remove('hide');
-        } else {
-          errorElement.classList.add('hide');
-        }
-      }
+      toggleErrorElement(element, validateResult);
 
       if (element.type !== 'submit') {
         formData[element.name] = element.value;
       }
     }
+    console.log(formData);
   }
 
   handleFocus(e) {
     const element = e.target;
-    const errorElement = document.querySelector(`[data-error="${element.name}"]`);
     const validateResult = validate(element);
-    if (errorElement) {
-      if (validateResult !== 'valid') {
-        errorElement.textContent = validateResult;
-        errorElement.classList.remove('hide');
-      } else {
-        errorElement.classList.add('hide');
-      }
-    }
+    toggleErrorElement(element, validateResult);
   }
 
   handleBlur(e) {
     const element = e.target;
-    const errorElement = document.querySelector(`[data-error="${element.name}"]`);
     const validateResult = validate(element);
-    if (errorElement) {
-      if (validateResult !== 'valid') {
-        errorElement.textContent = validateResult;
-        errorElement.classList.remove('hide');
-      } else {
-        errorElement.classList.add('hide');
-      }
-    }
+    toggleErrorElement(element, validateResult);
   }
 
   render() {
-    const context = { ...initialContext, ...this.props.context };
+    const context = { ...initialContext };
     return editUserProfileTmpl.compile(context);
   }
 }

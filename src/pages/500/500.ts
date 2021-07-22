@@ -5,12 +5,12 @@ import Block from '../../components/block/block';
 const page500Tmpl = new Templator(page500Template);
 
 class Page500 extends Block {
-  constructor(props) {
-    super('div', props);
+  constructor() {
+    super('div');
   }
 
   render() {
-    return page500Tmpl.compile(this.props);
+    return page500Tmpl.compile();
   }
 }
 

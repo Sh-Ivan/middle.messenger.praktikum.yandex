@@ -1,6 +1,19 @@
 import EventBus from './event-bus';
 
-class Block {
+export interface IBlock {
+  element: HTMLElement;
+  props: unknown;
+  init: () => void;
+  hide: () => void;
+  show: () => void;
+  render: () => void;
+  componentDidMount: () => void;
+  componentDidUpdate: () => boolean;
+  setProps: (nextProps: unknown) => void;
+  getContent: () => HTMLElement;
+}
+
+class Block implements IBlock {
   static EVENTS = {
     INIT: 'init',
     FLOW_CDM: 'flow:component-did-mount',
@@ -74,7 +87,7 @@ class Block {
     return true;
   }
 
-  setProps = (nextProps) => {
+  setProps = (nextProps: unknown) => {
     if (!nextProps) {
       return;
     }

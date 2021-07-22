@@ -5,7 +5,7 @@ import Block from '../../components/block/block';
 const chatTmpl = new Templator(chatTemplate);
 
 class Chat extends Block {
-  constructor(props) {
+  constructor(props: object = {}) {
     super('div', props);
   }
 

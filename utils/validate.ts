@@ -1,6 +1,7 @@
 const EMAIL_REG_EXP = /.+@.+\..+/i;
 const PHONE_REG_EXP = /^\+?\d+[0-9-]{5,15}$/;
-function validate(element): string {
+
+export function validate(element): string {
   let validateResult: string = '';
   switch (element.type) {
     case 'email':
@@ -18,10 +19,32 @@ function validate(element): string {
         validateResult = 'Номер телефона должен содержать только цифры и символы + или - и содержать не менее 5 цифр';
       }
       break;
+    case 'password':
+      if (element.name === 'password2') {
+        const { password } = element.closest('form');
+        if (password.value !== element.value) {
+          validateResult = 'Пароли не совпадают';
+        }
+      }
+      if (element.value.length < 8) {
+        validateResult = 'Пароль должен содержать не менее 8 символов';
+      }
+      break;
     default:
       validateResult = 'valid';
   }
+  toggleErrorElement(element, validateResult);
   return validateResult;
 }
 
-export default validate;
+export function toggleErrorElement(element, validateResult) {
+  const errorElement = element.closest('form').querySelector(`[data-error="${element.name}"]`);
+  if (errorElement) {
+    if (validateResult !== 'valid') {
+      errorElement.textContent = validateResult;
+      errorElement.classList.remove('hide');
+    } else {
+      errorElement.classList.add('hide');
+    }
+  }
+}

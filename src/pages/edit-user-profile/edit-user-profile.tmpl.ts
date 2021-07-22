@@ -4,9 +4,6 @@ export default `
     <div class="user-profile__edit">
       <form class="user-profile__form " on:submit={{handleSubmit}} novalidate>
         <div class="user-profile__row">
-         
-        </div>
-        <div class="user-profile__row">
           <label for="email" class="user-profile-form__label">Почта</label>
           <input type="email" id="email" name="email" placeholder="Почта" class="user-profile-form__input"
           value={{email}} on:focus={{handleFocus}} on:blur={{handleBlur}}>

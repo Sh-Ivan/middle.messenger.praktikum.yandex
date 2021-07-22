@@ -1,6 +1,10 @@
-function render(query, block) {
-  const root = document.querySelector(query);
-  root.appendChild(block.getContent());
+import { IBlock } from '../src/components/block/block';
+
+function render(query: string, block: IBlock) {
+  const root: Element | null = document.querySelector(query);
+  if (root !== null) {
+    root.appendChild(block.getContent());
+  }
   return root;
 }
 

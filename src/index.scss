@@ -48,7 +48,7 @@ body {
 }
 
 .auth-panel_signup {
-  height: 615px;
+  min-height: 615px;
 }
 
 .auth-panel__header {
@@ -228,6 +228,9 @@ body {
   &::placeholder {
     font-family: 'Oxygen', sans-serif;
     font-size: 13px;
+  }
+  &:disabled {
+    background: none;
   }
 }
 
