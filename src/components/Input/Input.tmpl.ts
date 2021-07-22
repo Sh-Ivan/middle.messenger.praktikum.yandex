@@ -1,5 +1,8 @@
 export default `
-  <label for="email" class="user-profile-form__label">Почта</label>
-  <input type="email" id="email" name="email" placeholder="Почта" class="user-profile-form__input"
-  value={{email}} on:focus={{handleFocus}} on:blur={{handleBlur}}>
+  <div class="{{wrapperClass}}">
+    <label for="{{inputName}}" class="{{labelClass}}">{{labelText}}</label>
+    <input type="{{inputName}}" id="{{inputName}}" name="{{inputName}}" placeholder="{{placeholer}}" class="{{inputClass}}"
+    value={{inputName}} on:focus={{handleFocus}} on:blur={{handleBlur}}>
+  </div>
+  <span class="input-error hide" data-error="{{inputName}}"></span>
 `;
