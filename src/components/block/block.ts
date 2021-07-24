@@ -1,4 +1,6 @@
-import EventBus from './event-bus';
+import EventBus from '../../helpers/event-bus';
+
+type TProps = { [key: string]: unknown };
 
 export interface IBlock {
   element: HTMLElement;
@@ -6,14 +8,19 @@ export interface IBlock {
   init: () => void;
   hide: () => void;
   show: () => void;
-  render: () => void;
+  render: () => string;
   componentDidMount: () => void;
   componentDidUpdate: () => boolean;
   setProps: (nextProps: unknown) => void;
   getContent: () => HTMLElement;
 }
 
-class Block implements IBlock {
+type Meta = {
+  tagName: string;
+  props: TProps;
+};
+
+class Block<T> implements IBlock {
   static EVENTS = {
     INIT: 'init',
     FLOW_CDM: 'flow:component-did-mount',
@@ -21,18 +28,15 @@ class Block implements IBlock {
     FLOW_CDU: 'flow:component-did-update',
   };
 
-  _element = null;
+  _element: HTMLElement;
 
-  _meta = null;
+  _meta: Meta | null = null;
 
-  /** JSDoc
-   * @param {string} tagName
-   * @param {Object} props
-   *
-   *
-   * @returns {void}
-   */
-  constructor(tagName = 'div', props = {}) {
+  eventBus: () => EventBus;
+
+  props: TProps;
+
+  constructor(tagName = 'div', props: TProps) {
     const eventBus = new EventBus();
 
     this._meta = {
@@ -40,7 +44,9 @@ class Block implements IBlock {
       props,
     };
 
-    this.props = this._makePropsProxy(props);
+    if (props) {
+      this.props = this._makePropsProxy(props);
+    }
 
     this.eventBus = () => eventBus;
 
@@ -48,7 +54,7 @@ class Block implements IBlock {
     eventBus.emit(Block.EVENTS.INIT);
   }
 
-  _registerEvents(eventBus) {
+  _registerEvents(eventBus: EventBus) {
     eventBus.on(Block.EVENTS.INIT, this.init.bind(this));
     eventBus.on(Block.EVENTS.FLOW_CDM, this._componentDidMount.bind(this));
     eventBus.on(Block.EVENTS.FLOW_RENDER, this._render.bind(this));
@@ -56,7 +62,7 @@ class Block implements IBlock {
   }
 
   _createResources() {
-    const { tagName } = this._meta;
+    const tagName = this._meta !== null ? this._meta?.tagName : 'div';
     this._element = this._createDocumentElement(tagName);
   }
 
@@ -70,29 +76,27 @@ class Block implements IBlock {
     this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
   }
 
-  // Может переопределять пользователь, необязательно трогать
-  componentDidMount(oldProps) {}
+  componentDidMount(): void {}
 
-  _componentDidUpdate(oldProps, newProps) {
+  _componentDidUpdate(oldProps: T, newProps: T) {
     if (newProps !== oldProps) {
-      const response = this.componentDidUpdate(oldProps, newProps);
+      const response = this.componentDidUpdate();
       if (response) {
         this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
       }
     }
   }
 
-  // Может переопределять пользователь, необязательно трогать
-  componentDidUpdate(oldProps, newProps) {
+  componentDidUpdate() {
     return true;
   }
 
-  setProps = (nextProps: unknown) => {
+  setProps = (nextProps: TProps): void => {
     if (!nextProps) {
       return;
     }
     const oldProps = this.props;
-    this.props = this._makePropsProxy(Object.assign(this._meta.props, nextProps));
+    this.props = this._makePropsProxy(Object.assign(oldProps, nextProps));
     this.eventBus().emit(Block.EVENTS.FLOW_CDU, oldProps, nextProps);
   };
 
@@ -102,50 +106,51 @@ class Block implements IBlock {
 
   _render() {
     const block = this.render();
-    // Этот небезопасный метод для упрощения логики
-    // Используйте шаблонизатор из npm или напишите свой безопасный
-    // Нужно не в строку компилировать (или делать это правильно),
-    // либо сразу в DOM-элементы возвращать из compile DOM-ноду
     this._element.innerHTML = block;
-    this._element = this._element.firstElementChild;
-    for (const el of this._element.querySelectorAll('*')) {
-      for (const attr of el.attributes) {
-        if (attr.name.search(/on:/) !== -1) {
-          const eventName = attr.name.trim().slice(3);
-          const eventHandler = attr.value.slice(2, -2);
-          el.addEventListener(eventName, this[eventHandler]);
+    this._element = this._element.firstElementChild
+      ? (this._element.firstElementChild as HTMLElement)
+      : this._element;
+    const elements = this._element.querySelectorAll('*');
+
+    for (let i = 0; i < elements.length; i += 1) {
+      const element = <HTMLElement>elements[i];
+      for (let j = 0; j < element.attributes.length; j += 1) {
+        const attribute = element.attributes[j];
+        if (attribute.name.search(/on:/) !== -1) {
+          const eventName = attribute.name.trim().slice(3);
+          const eventHandler: string = attribute.value.slice(2, -2);
+          // eslint-disable-next-line keyword-spacing
+          const listener = <EventListener>this.props[eventHandler];
+          element.addEventListener(eventName, listener);
         }
       }
     }
   }
 
-  // Может переопределять пользователь, необязательно трогать
-  render() {}
+  render() {
+    return '';
+  }
 
   getContent() {
     return this.element;
   }
 
-  _makePropsProxy(props) {
-    return props;
-    // Можно и так передать this
-    // Такой способ больше не применяется с приходом ES6+
-    const self = this;
-    props = new Proxy(props, {
-      deleteProperty(target, prop) {
+  _makePropsProxy(props: {}) {
+    const proxedProps = new Proxy(props, {
+      deleteProperty() {
         throw new Error('нет доступа');
       },
     });
 
-    return props;
+    return proxedProps;
   }
 
-  _createDocumentElement(tagName) {
+  _createDocumentElement(tagName: string) {
     // Можно сделать метод, который через фрагменты в цикле создаёт сразу несколько блоков
     return document.createElement(tagName);
   }
 
-  show() {
+  show(): void {
     this._element.style.display = 'block';
   }
 

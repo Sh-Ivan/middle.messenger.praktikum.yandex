@@ -11,27 +11,32 @@ export default `
         <span class="input-error hide" data-error="email"></span>
         <div class="user-profile__row">
           <label for="login" class="user-profile-form__label">Логин</label>
-          <input type="text" id="login" name="login" placeholder="Логин" class="user-profile-form__input" value={{login}}>
+          <input type="text" id="login" name="login" placeholder="Логин" class="user-profile-form__input" 
+          value={{login}} on:focus={{handleFocus}} on:blur={{handleBlur}}>
         </div>
         <span class="input-error hide" data-error="login"></span>
         <div class="user-profile__row">
           <label for="first_name" class="user-profile-form__label">Имя</label>
-          <input type="text" id="first_name" name="first_name" placeholder="Имя" class="user-profile-form__input" value={{firstName}}>
+          <input type="text" id="first_name" name="first_name" placeholder="Имя" class="user-profile-form__input" 
+          value={{firstName}} on:focus={{handleFocus}} on:blur={{handleBlur}}>
         </div>
         <span class="input-error hide" data-error="first_name"></span>
         <div class="user-profile__row">
           <label for="second_name" class="user-profile-form__label">Фамилия</label>
-          <input type="text" id="second_name" name="second_name" placeholder="Фамилия" class="user-profile-form__input" value={{secondName}}>
+          <input type="text" id="second_name" name="second_name" placeholder="Фамилия" class="user-profile-form__input" 
+          value={{secondName}} on:focus={{handleFocus}} on:blur={{handleBlur}}>
         </div>
         <span class="input-error hide" data-error="second_name"></span>
         <div class="user-profile__row">
           <label for="display_name" class="user-profile-form__label">Имя в чате</label>
-          <input type="text" id="display_name" name="display_name" placeholder="Имя в чате" class="user-profile-form__input" value={{displayName}}>
+          <input type="text" id="display_name" name="display_name" placeholder="Имя в чате" class="user-profile-form__input" 
+          value={{displayName}} on:focus={{handleFocus}} on:blur={{handleBlur}}>
         </div>
         <span class="input-error hide" data-error="display_name"></span>
         <div class="user-profile__row">
           <label for="phone" class="user-profile-form__label">Телефон</label>
-          <input type="tel" id="phone" name="phone" placeholder="Телефон" class="user-profile-form__input" value={{phone}}>
+          <input type="tel" id="phone" name="phone" placeholder="Телефон" class="user-profile-form__input" 
+          value={{phone}} on:focus={{handleFocus}} on:blur={{handleBlur}}>
         </div>
         <span class="input-error hide" data-error="phone"></span>
 

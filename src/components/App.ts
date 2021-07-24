@@ -8,34 +8,27 @@ import UserProfile from '../pages/user-profile/user-profile';
 import ChangePassword from '../pages/change-password/change-password';
 import EditUserProfile from '../pages/edit-user-profile/edit-user-profile';
 import IBlock from './block/block';
+import handleSubmit from '../helpers/formSubmit';
+import { handleFocus, handleBlur } from '../helpers/inputValidate';
 
 const { pathname } = window.location;
 const defaultPage = new Chat();
-const editProfile = new EditUserProfile();
+const editProfile = new EditUserProfile({ handleSubmit, handleFocus, handleBlur });
 
-type ROUTES =
-  | '/'
-  | '/login'
-  | '/signup'
-  | '/chat'
-  | '/user'
-  | '/page404'
-  | '/page500'
-  | '/change-password'
-  | '/edit-user-profile';
+type TRoute = { [key: string]: IBlock<unknown> };
 
-const router: { [key: ROUTES]: IBlock } = {
+const router: TRoute = {
   '/': defaultPage,
-  '/login': new Login({ testProp: 'test proprety', hide: true }),
-  '/signup': new Signup(),
+  '/login': new Login({ handleSubmit, handleFocus, handleBlur }),
+  '/signup': new Signup({ handleSubmit, handleFocus, handleBlur }),
   '/chat': defaultPage,
   '/user': new UserProfile(),
   '/page404': new Page404(),
   '/page500': new Page500(),
-  '/change-password': new ChangePassword(),
+  '/change-password': new ChangePassword({ handleSubmit, handleFocus, handleBlur }),
   '/edit-user-profile': editProfile,
 };
 
-const App: IBlock = router[pathname] !== undefined ? router[pathname] : router['/page404'];
+const App = router[pathname] !== undefined ? router[pathname] : router['/page404'];
 
 export default App;

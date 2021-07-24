@@ -1,7 +1,7 @@
-import Templator from '../../../utils/templator';
+import Templator from '../../helpers/templator';
 import inputTemplate from './Input.tmpl';
 import Block from '../../components/block/block';
-import validate from '../../../utils/validate';
+import validate from '../../helpers/validate';
 
 const inputTmpl = new Templator(inputTemplate);
 

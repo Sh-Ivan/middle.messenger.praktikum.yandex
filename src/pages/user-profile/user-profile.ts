@@ -1,11 +1,16 @@
-import Templator from '../../../utils/templator';
+import Templator from '../../helpers/templator';
 import userProfileTemplate from './user-profile.tmpl';
 import Block from '../../components/block/block';
+import TUser from '../../helpers/TUser';
 
 const userProfileTmpl = new Templator(userProfileTemplate);
 
-class UserProfile extends Block {
-  constructor(props: object = {}) {
+type userProps = {
+  user?: TUser;
+};
+
+class UserProfile extends Block<userProps> {
+  constructor(props: userProps = {}) {
     super('div', props);
   }
 

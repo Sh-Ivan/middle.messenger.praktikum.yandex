@@ -19,11 +19,13 @@ export default class Templator {
       return this._template;
     }
     Object.entries(ctx).forEach(([key, value]: [string, unknown]) => {
+      // eslint-disable-next-line no-useless-escape
       const templateVar = new RegExp(`\{\{\\s*${key}\\s*\}\}`, 'g');
 
       if (typeof value === 'function') {
         newTemplate = newTemplate.replace(templateVar, key);
       } else if (typeof value === 'object') {
+        // eslint-disable-next-line no-useless-escape
         const temolateObjectVar: RegExp = new RegExp(`{{\\s*${key}\..*?}}`, 'g');
         const varsInObject: RegExpMatchArray | null = newTemplate.match(temolateObjectVar);
         if (varsInObject !== null) {

@@ -4,7 +4,7 @@ export default function getObjectValue<T1, T2>(
   defaultValue?: T2,
 ): unknown | T2 {
   const arrPath: string[] = path.split('.');
-  const result = arrPath.reduce((result: any, value: string) => {
+  const result = arrPath.reduce((result: unknown, value: string) => {
     if (result && typeof result === 'object') return result[value];
   }, obj);
   return result || defaultValue;

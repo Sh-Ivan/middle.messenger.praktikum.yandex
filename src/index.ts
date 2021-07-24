@@ -1,4 +1,4 @@
 import App from './components/App';
-import render from '../utils/render';
+import render from './helpers/render';
 
 render('.root', App);

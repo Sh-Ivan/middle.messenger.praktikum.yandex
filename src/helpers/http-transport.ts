@@ -1,3 +1,4 @@
+/* eslint-disable implicit-arrow-linebreak */
 enum METHODS {
   GET = 'GET',
   PUT = 'PUT',
@@ -23,14 +24,18 @@ function queryStringify<TRequest>(data: TRequest): string {
   return queryString.slice(0, -1);
 }
 
-class HTTPTransport {
-  get = (url: string, options: Options): Promise<unknown> => this.request(url, { ...options, method: METHODS.GET });
+class HTTPTransport<TRequest> {
+  get = (url: string, options: Options<TRequest>): Promise<unknown> =>
+    this.request(url, { ...options, method: METHODS.GET });
 
-  post = (url: string, options = {}): Promise<unknown> => this.request(url, { ...options, method: METHODS.POST });
+  post = (url: string, options: Options<TRequest>): Promise<unknown> =>
+    this.request(url, { ...options, method: METHODS.POST });
 
-  put = (url: string, options = {}): Promise<unknown> => this.request(url, { ...options, method: METHODS.PUT });
+  put = (url: string, options: Options<TRequest>): Promise<unknown> =>
+    this.request(url, { ...options, method: METHODS.PUT });
 
-  delete = (url: string, options = {}): Promise<unknown> => this.request(url, { ...options, method: METHODS.DELETE });
+  delete = (url: string, options: Options<TRequest>): Promise<unknown> =>
+    this.request(url, { ...options, method: METHODS.DELETE });
 
   request = (url: string, options: Options<TRequest>) => {
     const {

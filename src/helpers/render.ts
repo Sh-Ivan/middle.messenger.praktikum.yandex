@@ -1,4 +1,4 @@
-import { IBlock } from '../src/components/block/block';
+import { IBlock } from '../components/block/block';
 
 function render(query: string, block: IBlock) {
   const root: Element | null = document.querySelector(query);

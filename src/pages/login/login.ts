@@ -1,37 +1,19 @@
 /* eslint-disable class-methods-use-this */
-import Templator from '../../../utils/templator';
+import Templator from '../../helpers/templator';
 import loginTemplate from './login.tmpl';
 import Block from '../../components/block/block';
-import { validate } from '../../../utils/validate';
 
 const loginTmpl = new Templator(loginTemplate);
 
-class Login extends Block {
-  constructor(props) {
+type loginProps = {
+  handleSubmit: (e: Event) => void;
+  handleBlur: (e: Event) => void;
+  handleFocus: (e: Event) => void;
+};
+
+class Login extends Block<loginProps> {
+  constructor(props: loginProps) {
     super('div', props);
-  }
-
-  handleSubmit(e) {
-    e.preventDefault();
-    const formData = {};
-    const { elements } = e.currentTarget;
-    for (const element of elements) {
-      const validateResult = validate(element);
-      if (element.type !== 'submit') {
-        formData[element.name] = element.value;
-      }
-    }
-    console.log(formData);
-  }
-
-  handleFocus(e) {
-    const element = e.target;
-    const validateResult = validate(element);
-  }
-
-  handleBlur(e) {
-    const element = e.target;
-    const validateResult = validate(element);
   }
 
   render() {
