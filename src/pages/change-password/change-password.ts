@@ -2,6 +2,7 @@ import Templator from '../../helpers/templator';
 import changePasswordTemplate from './change-password.tmpl';
 import Block from '../../components/block/block';
 import TUser from '../../helpers/TUser';
+import Button from '../../components/Button/Button';
 
 const changePasswordTmpl = new Templator(changePasswordTemplate);
 
@@ -18,7 +19,13 @@ class ChangePassword extends Block<changePasswordProps> {
   }
 
   render() {
-    return changePasswordTmpl.compile({});
+    const context = {
+      saveButton: new Button({
+        class: 'auth-form__button',
+        text: 'Сохранить',
+      }).getContent().outerHTML,
+    };
+    return changePasswordTmpl.compile(context);
   }
 }
 

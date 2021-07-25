@@ -1,6 +1,7 @@
 import Templator from '../../helpers/templator';
 import signupTemplate from './signup.tmpl';
 import Block from '../../components/block/block';
+import Button from '../../components/Button/Button';
 
 const signupTmpl = new Templator(signupTemplate);
 
@@ -16,7 +17,13 @@ class Signup extends Block<signupdProps> {
   }
 
   render() {
-    return signupTmpl.compile({});
+    const context = {
+      signupButton: new Button({
+        class: 'auth-form__button',
+        text: 'Зарегистрироваться',
+      }).getContent().outerHTML,
+    };
+    return signupTmpl.compile(context);
   }
 }
 

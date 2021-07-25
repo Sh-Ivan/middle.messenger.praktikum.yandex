@@ -1,7 +1,7 @@
-/* eslint-disable class-methods-use-this */
 import Templator from '../../helpers/templator';
 import loginTemplate from './login.tmpl';
 import Block from '../../components/block/block';
+import Button from '../../components/Button/Button';
 
 const loginTmpl = new Templator(loginTemplate);
 
@@ -17,7 +17,12 @@ class Login extends Block<loginProps> {
   }
 
   render() {
-    const context = {};
+    const context = {
+      loginButton: new Button({
+        class: 'auth-form__button',
+        text: 'Авторизоваться',
+      }).getContent().outerHTML,
+    };
     return loginTmpl.compile(context);
   }
 }

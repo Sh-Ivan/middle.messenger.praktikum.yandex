@@ -30,7 +30,7 @@ export default `
       <input type="password" id="password2" name="password2" placeholder="Пароль (еще раз)" class="auth-form__input"
       on:focus={{handleFocus}} on:blur={{handleBlur}}>
       <span class="input-error hide" data-error="password2"></span>
-      <button type="submit" class="auth-form__button">Зарегистрироваться</button>
+      {{ signupButton }}
     </form>
     <a href="/login" class="auth-panel__link">Войти</a>
   </main>

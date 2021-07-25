@@ -3,6 +3,7 @@ import Templator from '../../helpers/templator';
 import editUserProfileTemplate from './edit-user-profile.tmpl';
 import Block from '../../components/block/block';
 import TUser from '../../helpers/TUser';
+import Button from '../../components/Button/Button';
 
 const editUserProfileTmpl = new Templator(editUserProfileTemplate);
 
@@ -28,7 +29,13 @@ class EditUserProfile extends Block<editUserProfileProps> {
   }
 
   render() {
-    const context = { ...initialContext };
+    const button = {
+      saveButton: new Button({
+        class: 'auth-form__button auth-form__button_center',
+        text: 'Сохранить изменения',
+      }).getContent().outerHTML,
+    };
+    const context = { ...initialContext, ...button };
     return editUserProfileTmpl.compile(context);
   }
 }

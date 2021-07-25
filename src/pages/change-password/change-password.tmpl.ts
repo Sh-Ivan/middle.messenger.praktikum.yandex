@@ -14,7 +14,7 @@ export default `
       <input type="password" id="password2" name="password2" class="auth-form__input"
       on:focus={{handleFocus}} on:blur={{handleBlur}}>
       <span class="input-error hide" data-error="password2"></span>
-      <button type="submit" class="auth-form__button">Сохранить</button>
+      {{ saveButton }}
     </form>
     <a href="/user" class="auth-panel__link">Вернуться к профилю</a>
   </main>
