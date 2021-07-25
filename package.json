@@ -4,10 +4,12 @@
   "description": "### Откройте pull request в ветку main из ветки, где вы разрабатывали проект, и добавьте ссылку на этот pr в README.md в ветке main. Название pull request может быть любое.",
   "main": "index.html",
   "scripts": {
+    "//": "Согласен с замечанием, но если не укзать эту команду - при отправке pull request на github не проходит тест с ошибкой NO PARCEL IN START SCRIPT",
     "start": "parcel -p 3000 static/index.html",
+    "server": "node server.js",
     "dev": "parcel -p 3000 static/index.html",
     "build": "parcel build static/index.html",
-    "server": "node server.js"
+    "lint": "eslint . --fix && npx stylelint . --fix"
   },
   "repository": {
     "type": "git",
@@ -24,10 +26,21 @@
   },
   "homepage": "https://github.com/Sh-Ivan/middle.messenger.praktikum.yandex#readme",
   "devDependencies": {
-    "parcel-bundler": "^1.12.5",
-    "sass": "^1.35.2"
+    "@typescript-eslint/eslint-plugin": "^4.28.4",
+    "@typescript-eslint/parser": "^4.28.4",
+    "eslint": "^7.31.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.23.4",
+    "prettier-eslint": "^12.0.0",
+    "sass": "^1.35.2",
+    "stylelint": "^13.13.1",
+    "stylelint-config-sass-guidelines": "^8.0.0",
+    "stylelint-config-standard": "^22.0.0",
+    "stylelint-selector-bem-pattern": "^2.1.0",
+    "typescript": "^4.3.5"
   },
   "dependencies": {
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "parcel-bundler": "^1.12.5"
   }
 }
