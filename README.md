@@ -42,3 +42,8 @@ npm run lint
 
 - [Макеты Figma](https://www.figma.com/file/oswzyNtaNEE3b2kOYA6zHu/Chat-messenger?node-id=0%3A1)
 - [Pull request](https://github.com/Sh-Ivan/middle.messenger.praktikum.yandex/pull/1)
+
+## Использованы инструменты
+
+- Для сборки [Parcel](https://ru.parceljs.org/)
+- Анализаторы кода [ESLint](https://eslint.org/) и [Stylelint](https://stylelint.io/)
