@@ -7,6 +7,7 @@ import Chat from '../pages/chat/chat';
 import UserProfile from '../pages/user-profile/user-profile';
 import ChangePassword from '../pages/change-password/change-password';
 import EditUserProfile from '../pages/edit-user-profile/edit-user-profile';
+import ChatPage from './ChatList/chat';
 import IBlock from './block/block';
 import handleSubmit from '../helpers/formSubmit';
 import { handleFocus, handleBlur } from '../helpers/inputValidate';
@@ -21,7 +22,7 @@ const router: TRoute = {
   '/': defaultPage,
   '/login': new Login({ handleSubmit, handleFocus, handleBlur }),
   '/signup': new Signup({ handleSubmit, handleFocus, handleBlur }),
-  '/chat': defaultPage,
+  '/chat': new ChatPage(),
   '/user': new UserProfile(),
   '/page404': new Page404(),
   '/page500': new Page500(),
