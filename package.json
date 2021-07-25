@@ -4,7 +4,8 @@
   "description": "### Откройте pull request в ветку main из ветки, где вы разрабатывали проект, и добавьте ссылку на этот pr в README.md в ветке main. Название pull request может быть любое.",
   "main": "index.html",
   "scripts": {
-    "start": "npm run server",
+    "//": "Согласен с замечанием, но если не укзать эту команду - при отправке pull request на github не проходит тест с ошибкой NO PARCEL IN START SCRIPT",
+    "start": "parcel -p 3000 static/index.html",
     "server": "node server.js",
     "dev": "parcel -p 3000 static/index.html",
     "build": "parcel build static/index.html",
