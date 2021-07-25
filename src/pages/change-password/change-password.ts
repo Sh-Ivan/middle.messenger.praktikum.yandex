@@ -23,7 +23,8 @@ class ChangePassword extends Block<changePasswordProps> {
       saveButton: new Button({
         class: 'auth-form__button',
         text: 'Сохранить',
-      }).getContent().outerHTML,
+        type: 'submit',
+      }).textContent,
     };
     return changePasswordTmpl.compile(context);
   }

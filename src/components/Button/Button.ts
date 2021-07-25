@@ -8,6 +8,7 @@ type buttonProps = {
   handleClick?: (e: Event) => void;
   class: string;
   text: string;
+  type: string;
 };
 
 class Button extends Block<buttonProps> {

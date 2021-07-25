@@ -36,6 +36,8 @@ class Block<T> implements IBlock {
 
   props: TProps;
 
+  textContent: string;
+
   constructor(tagName = 'div', props: TProps) {
     const eventBus = new EventBus();
 
@@ -105,8 +107,8 @@ class Block<T> implements IBlock {
   }
 
   _render() {
-    const block = this.render();
-    this._element.innerHTML = block;
+    this.textContent = this.render();
+    this._element.innerHTML = this.textContent;
     this._element = this._element.firstElementChild
       ? (this._element.firstElementChild as HTMLElement)
       : this._element;

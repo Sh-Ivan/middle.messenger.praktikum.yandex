@@ -14,7 +14,7 @@ npm install
 
 ## Запуск проекта
 
-Сборка и запуск проекта на localhost://3000:
+Запуск проекта на localhost://3000:
 
 ```bash
 npm start
@@ -32,7 +32,7 @@ npm run dev
 npm run build
 ```
 
-Проверка:
+Проверка кода:
 
 ```bash
 npm run lint

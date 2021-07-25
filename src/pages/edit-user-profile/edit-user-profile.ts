@@ -33,7 +33,8 @@ class EditUserProfile extends Block<editUserProfileProps> {
       saveButton: new Button({
         class: 'auth-form__button auth-form__button_center',
         text: 'Сохранить изменения',
-      }).getContent().outerHTML,
+        type: 'submit',
+      }).textContent,
     };
     const context = { ...initialContext, ...button };
     return editUserProfileTmpl.compile(context);

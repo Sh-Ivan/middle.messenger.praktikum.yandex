@@ -21,7 +21,8 @@ class Login extends Block<loginProps> {
       loginButton: new Button({
         class: 'auth-form__button',
         text: 'Авторизоваться',
-      }).getContent().outerHTML,
+        type: 'submit',
+      }).textContent,
     };
     return loginTmpl.compile(context);
   }

@@ -21,7 +21,8 @@ class Signup extends Block<signupdProps> {
       signupButton: new Button({
         class: 'auth-form__button',
         text: 'Зарегистрироваться',
-      }).getContent().outerHTML,
+        type: 'submit',
+      }).textContent,
     };
     return signupTmpl.compile(context);
   }

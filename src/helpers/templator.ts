@@ -13,7 +13,7 @@ export default class Templator {
     this._template = template;
   }
 
-  compile(ctx: object = {}): string {
+  compile(ctx: { [key: string]: unknown } = {}): string {
     let newTemplate: string = this._template;
     if (!ctx || Object.keys(ctx).length === 0) {
       return this._template;
