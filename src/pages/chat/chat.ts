@@ -4,7 +4,9 @@ import Block from '../../components/block/block';
 
 const chatTmpl = new Templator(chatTemplate);
 
-interface TChatProps {}
+interface TChatProps {
+  [key: string]: unknown;
+}
 
 class Chat extends Block<TChatProps> {
   constructor(props: TChatProps = {}) {

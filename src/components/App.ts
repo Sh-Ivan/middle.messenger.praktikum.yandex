@@ -8,28 +8,30 @@ import UserProfile from '../pages/user-profile/user-profile';
 import ChangePassword from '../pages/change-password/change-password';
 import EditUserProfile from '../pages/edit-user-profile/edit-user-profile';
 import ChatPage from './ChatList/chat';
-import IBlock from './block/block';
 import handleSubmit from '../helpers/formSubmit';
 import { handleFocus, handleBlur } from '../helpers/inputValidate';
+import Router from '../helpers/Router';
 
-const { pathname } = window.location;
-const defaultPage = new Chat();
-const editProfile = new EditUserProfile({ handleSubmit, handleFocus, handleBlur });
+export const AppRouter = new Router('.root');
 
-type TRoute = { [key: string]: IBlock<unknown> };
+AppRouter.use('login', Login)
+  .use('/', Chat)
+  .use('/login', Login, { handleSubmit, handleFocus, handleBlur })
+  .use('/signup', Signup, { handleSubmit, handleFocus, handleBlur })
+  .use('/page404', Page404)
+  .use('/page500', Page500)
+  .use('/user', UserProfile)
+  .use('/change-password', ChangePassword, { handleSubmit, handleFocus, handleBlur })
+  .use('/edit-user-profile', EditUserProfile, {
+    handleSubmit,
+    handleFocus,
+    handleBlur,
+    back: AppRouter.back,
+  })
+  .use('/chat', ChatPage)
+  .use('404', Page404)
+  .start();
 
-const router: TRoute = {
-  '/': defaultPage,
-  '/login': new Login({ handleSubmit, handleFocus, handleBlur }),
-  '/signup': new Signup({ handleSubmit, handleFocus, handleBlur }),
-  '/chat': new ChatPage(),
-  '/user': new UserProfile(),
-  '/page404': new Page404(),
-  '/page500': new Page500(),
-  '/change-password': new ChangePassword({ handleSubmit, handleFocus, handleBlur }),
-  '/edit-user-profile': editProfile,
-};
-
-const App = router[pathname] !== undefined ? router[pathname] : router['/page404'];
+const App = AppRouter;
 
 export default App;

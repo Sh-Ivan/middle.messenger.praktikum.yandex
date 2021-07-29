@@ -42,7 +42,7 @@ export default `
 
         <div class="user-profile__links">
           <button type="submit" class="auth-form__button auth-form__button_center">Сохранить изменения</button>
-          <a href="/user" class="auth-panel__link user-profile__link_reject">Отменить</a>
+          <a href="#" on:click={{back}} class="auth-panel__link user-profile__link_reject">Назад</a>
         </div>
       </form>
 

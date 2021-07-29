@@ -1,6 +1,8 @@
 import EventBus from '../../helpers/event-bus';
 
-type TProps = { [key: string]: unknown };
+export interface TProps {
+  [key: string]: unknown;
+}
 
 export interface IBlock {
   element: HTMLElement;
@@ -119,8 +121,11 @@ class Block<T> implements IBlock {
       for (let j = 0; j < element.attributes.length; j += 1) {
         const attribute = element.attributes[j];
         if (attribute.name.search(/on:/) !== -1) {
+          console.log(attribute.name);
+          console.log(element);
           const eventName = attribute.name.trim().slice(3);
           const eventHandler: string = attribute.value.slice(2, -2);
+          console.log(this.props);
           // eslint-disable-next-line keyword-spacing
           const listener = <EventListener>this.props[eventHandler];
           element.addEventListener(eventName, listener);
