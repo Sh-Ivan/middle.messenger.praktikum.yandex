@@ -5,6 +5,8 @@ import Button from '../../components/Button/Button';
 
 const loginTmpl = new Templator(loginTemplate);
 
+type blockProps
+
 type loginProps = {
   handleSubmit: (e: Event) => void;
   handleBlur: (e: Event) => void;
