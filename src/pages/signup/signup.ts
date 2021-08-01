@@ -2,6 +2,9 @@ import Templator from '../../helpers/templator';
 import signupTemplate from './signup.tmpl';
 import Block from '../../components/block/block';
 import Button from '../../components/Button/Button';
+import handleSubmit from '../../helpers/formSubmit';
+import { handleFocus, handleBlur } from '../../helpers/inputValidate';
+import signupController from '../../controllers/signup-controller';
 
 const signupTmpl = new Templator(signupTemplate);
 
@@ -13,7 +16,17 @@ type signupdProps = {
 
 class Signup extends Block<signupdProps> {
   constructor(props: signupdProps) {
-    super('div', props);
+    super('div', {
+      ...props,
+      handleBlur,
+      handleFocus,
+      handleSubmit: (e: Event) => {
+        const data = handleSubmit(e);
+        if (data !== null) {
+          signupController(data);
+        }
+      },
+    });
   }
 
   render() {

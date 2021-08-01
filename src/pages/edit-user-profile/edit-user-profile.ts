@@ -1,9 +1,13 @@
 /* eslint-disable class-methods-use-this */
 import Templator from '../../helpers/templator';
 import editUserProfileTemplate from './edit-user-profile.tmpl';
-import Block from '../../components/block/block';
+import Block, { TProps } from '../../components/block/block';
 import TUser from '../../helpers/TUser';
 import Button from '../../components/Button/Button';
+import handleSubmit from '../../helpers/formSubmit';
+import { handleFocus, handleBlur } from '../../helpers/inputValidate';
+import editUserController from '../../controllers/edit-user-controller';
+import chatController from '../../controllers/chat-controller';
 
 const editUserProfileTmpl = new Templator(editUserProfileTemplate);
 
@@ -14,18 +18,25 @@ type editUserProfileProps = {
   handleFocus: (e: Event) => void;
 };
 
-const initialContext = {
-  email: '',
-  login: '',
-  firstName: '',
-  secondName: '',
-  displayName: '',
-  phone: '',
-};
-
 class EditUserProfile extends Block<editUserProfileProps> {
   constructor(props: editUserProfileProps) {
-    super('div', props);
+    super('div', {
+      ...props,
+      handleFocus,
+      handleBlur,
+      handleSubmit: (e: Event) => {
+        const data = handleSubmit(e);
+        if (data !== null) {
+          editUserController(data);
+        }
+      },
+    });
+  }
+
+  componentDidMount() {
+    chatController((user: TProps) => {
+      this.setProps({ user });
+    });
   }
 
   render() {
@@ -36,7 +47,8 @@ class EditUserProfile extends Block<editUserProfileProps> {
         type: 'submit',
       }).textContent,
     };
-    const context = { ...initialContext, ...button };
+    const { user } = this.props as editUserProfileProps;
+    const context = { ...button, ...user };
     return editUserProfileTmpl.compile(context);
   }
 }

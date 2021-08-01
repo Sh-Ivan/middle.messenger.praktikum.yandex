@@ -8,6 +8,7 @@ export default class Router {
   history: History;
   _currentRoute: Route | null;
   _rootQuery: string;
+  private: { usePrivate: boolean; redirectRouter: string };
 
   constructor(rootQuery: string) {
     if (Router.__instance) {
@@ -18,6 +19,7 @@ export default class Router {
     this.history = window.history;
     this._currentRoute = null;
     this._rootQuery = rootQuery;
+    this.private = { usePrivate: true, redirectRouter: '/' };
 
     Router.__instance = this;
     this.back = this.back.bind(this);
@@ -25,8 +27,8 @@ export default class Router {
     this.go = this.go.bind(this);
   }
 
-  use(pathname: string, block: any, props?: TProps): Router {
-    const route = new Route(pathname, block, { ...props, rootQuery: this._rootQuery });
+  use(pathname: string, block: any, props?: TProps, isPrivate: boolean = false): Router {
+    const route = new Route(pathname, block, { ...props, rootQuery: this._rootQuery, isPrivate });
     this.routes.push(route);
     return this;
   }
@@ -39,7 +41,15 @@ export default class Router {
   }
 
   _onRoute(pathname: string): void {
-    const route = this.getRoute(pathname) || this.getRoute('404');
+    let route = this.getRoute(pathname) || this.getRoute('404');
+    if (!route) {
+      return;
+    }
+
+    if (route._props.isPrivate && this.private.usePrivate) {
+      route = this.getRoute(this.private.redirectRouter);
+    }
+
     if (!route) {
       return;
     }

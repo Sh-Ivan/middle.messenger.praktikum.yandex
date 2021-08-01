@@ -14,7 +14,7 @@ export function toggleErrorElement(element: HTMLInputElement, validateResult: st
 }
 
 export function validate(element: HTMLInputElement): string {
-  let validateResult: string = '';
+  let validateResult: string = 'valid';
   switch (element.type) {
     case 'email':
       if (!element.value.match(EMAIL_REG_EXP)) {
@@ -44,7 +44,6 @@ export function validate(element: HTMLInputElement): string {
       }
       break;
     default:
-      validateResult = 'valid';
   }
   toggleErrorElement(element, validateResult);
   return validateResult;

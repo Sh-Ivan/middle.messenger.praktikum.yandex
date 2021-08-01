@@ -7,10 +7,10 @@ enum METHODS {
 }
 
 type Options<TRequest> = {
-  method: METHODS;
-  timeout: number;
-  headers: { [key: string]: string };
-  data: TRequest;
+  method?: METHODS;
+  timeout?: number;
+  headers?: { [key: string]: string };
+  data?: TRequest;
 };
 
 function queryStringify<TRequest>(data: TRequest): string {
@@ -25,6 +25,12 @@ function queryStringify<TRequest>(data: TRequest): string {
 }
 
 class HTTPTransport<TRequest> {
+  baseUrl: string;
+
+  constructor(baseUrl: string) {
+    this.baseUrl = baseUrl;
+  }
+
   get = (url: string, options: Options<TRequest>): Promise<unknown> =>
     this.request(url, { ...options, method: METHODS.GET });
 
@@ -38,6 +44,7 @@ class HTTPTransport<TRequest> {
     this.request(url, { ...options, method: METHODS.DELETE });
 
   request = (url: string, options: Options<TRequest>) => {
+    const fullUrl: string = this.baseUrl + url;
     const {
       method,
       timeout = 5000,
@@ -46,7 +53,11 @@ class HTTPTransport<TRequest> {
     } = options;
     return new Promise((resolve, reject) => {
       const xhr = new XMLHttpRequest();
-      xhr.open(method, method === METHODS.GET && !!data ? `${url}${queryStringify(data)}` : url);
+      xhr.withCredentials = true;
+      xhr.open(
+        method || METHODS.GET,
+        method === METHODS.GET && !!data ? `${fullUrl}${queryStringify(data)}` : fullUrl,
+      );
       xhr.timeout = timeout;
       Object.entries(headers).forEach(([key, value]) => {
         xhr.setRequestHeader(key, value);

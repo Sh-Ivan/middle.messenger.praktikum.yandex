@@ -8,26 +8,35 @@ import UserProfile from '../pages/user-profile/user-profile';
 import ChangePassword from '../pages/change-password/change-password';
 import EditUserProfile from '../pages/edit-user-profile/edit-user-profile';
 import ChatPage from './ChatList/chat';
-import handleSubmit from '../helpers/formSubmit';
-import { handleFocus, handleBlur } from '../helpers/inputValidate';
 import Router from '../helpers/Router';
+
+let userData;
+try {
+  userData = JSON.parse(localStorage.getItem('user') || '');
+} catch (e) {
+  localStorage.removeItem('user');
+}
 
 export const AppRouter = new Router('.root');
 
+AppRouter.private = { usePrivate: !userData, redirectRouter: '/login' };
+
 AppRouter.use('login', Login)
   .use('/', Chat)
-  .use('/login', Login, { handleSubmit, handleFocus, handleBlur })
-  .use('/signup', Signup, { handleSubmit, handleFocus, handleBlur })
+  .use('/login', Login)
+  .use('/signup', Signup)
   .use('/page404', Page404)
   .use('/page500', Page500)
   .use('/user', UserProfile)
-  .use('/change-password', ChangePassword, { handleSubmit, handleFocus, handleBlur })
-  .use('/edit-user-profile', EditUserProfile, {
-    handleSubmit,
-    handleFocus,
-    handleBlur,
-    back: AppRouter.back,
-  })
+  .use('/change-password', ChangePassword)
+  .use(
+    '/edit-user-profile',
+    EditUserProfile,
+    {
+      back: AppRouter.back,
+    },
+    true,
+  )
   .use('/chat', ChatPage)
   .use('404', Page404)
   .start();

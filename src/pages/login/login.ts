@@ -2,6 +2,9 @@ import Templator from '../../helpers/templator';
 import loginTemplate from './login.tmpl';
 import Block from '../../components/block/block';
 import Button from '../../components/Button/Button';
+import handleSubmit from '../../helpers/formSubmit';
+import { handleFocus, handleBlur } from '../../helpers/inputValidate';
+import loginController from '../../controllers/login-controller';
 
 const loginTmpl = new Templator(loginTemplate);
 
@@ -13,7 +16,17 @@ type loginProps = {
 
 class Login extends Block<loginProps> {
   constructor(props: loginProps) {
-    super('div', props);
+    super('div', {
+      ...props,
+      handleBlur,
+      handleFocus,
+      handleSubmit: (e: Event) => {
+        const data = handleSubmit(e);
+        if (data !== null) {
+          loginController(data);
+        }
+      },
+    });
   }
 
   render() {
