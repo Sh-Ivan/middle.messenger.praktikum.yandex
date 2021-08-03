@@ -1,20 +1,49 @@
+import UserAPI from '../api/user-api';
 import UserStore from '../stores/UserStore';
-import { EVENTS, State } from '../helpers/store';
-import AuthAPI from '../api/auth-api';
 import { AppRouter } from '../components/App';
+import { EVENTS } from '../helpers/store';
 
-const authAPIInstance = new AuthAPI();
+const userAPIInstance = new UserAPI();
 
-const userController = (cb: any, signout: boolean = false): State => {
-  if (signout) {
-    localStorage.removeItem('user');
-
-    authAPIInstance.logout().then(() => AppRouter.go('/login'));
-  } else {
-    UserStore.on(EVENTS.STORE_CHANGED, cb);
+class UserController {
+  changeData(data: { [key: string]: string }): void {
+    userAPIInstance
+      .changeData(data)
+      .then((result: XMLHttpRequest) => {
+        console.log(result);
+        if (result.status === 200) {
+          UserStore.setState(JSON.parse(result.response));
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
 
-  return UserStore.getState();
-};
+  changeAvatar(data: { [key: string]: string }): void {
+    userAPIInstance
+      .changeAvatar(data)
+      .then((result: XMLHttpRequest) => {
+        console.log(result);
+        if (result.status === 200) {
+          UserStore.setState(JSON.parse(result.response));
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
 
-export default userController;
+  changePassword(data: { [key: string]: string }): void {
+    userAPIInstance
+      .changePassword(data)
+      .then((result: XMLHttpRequest) => {
+        console.log(result);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+}
+
+export default UserController;

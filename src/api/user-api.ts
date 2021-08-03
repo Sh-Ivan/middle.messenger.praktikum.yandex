@@ -11,12 +11,6 @@ export default class UserAPI {
     return userAPIInstance.put('profile/avatar', { data });
   }
 
-  /*
-  {
-  "oldPassword": "string",
-  "newPassword": "string"
-  }
-  */
   changePassword(data: any) {
     return userAPIInstance.put('password/', { data });
   }

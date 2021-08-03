@@ -4,9 +4,10 @@ import Block from '../../components/block/block';
 import Button from '../../components/Button/Button';
 import handleSubmit from '../../helpers/formSubmit';
 import { handleFocus, handleBlur } from '../../helpers/inputValidate';
-import signupController from '../../controllers/signup-controller';
+import AuthController from '../../controllers/auth-controller';
 
 const signupTmpl = new Templator(signupTemplate);
+const authController = new AuthController();
 
 type signupdProps = {
   handleSubmit: (e: Event) => void;
@@ -23,7 +24,7 @@ class Signup extends Block<signupdProps> {
       handleSubmit: (e: Event) => {
         const data = handleSubmit(e);
         if (data !== null) {
-          signupController(data);
+          authController.signup(data);
         }
       },
     });

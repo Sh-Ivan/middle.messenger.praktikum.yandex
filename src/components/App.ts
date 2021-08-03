@@ -21,7 +21,7 @@ export const AppRouter = new Router('.root');
 
 AppRouter.private = { usePrivate: !userData, redirectRouter: '/login' };
 
-AppRouter.use('login', Login)
+AppRouter.use('/login', Login)
   .use('/', Chat)
   .use('/login', Login)
   .use('/signup', Signup)
@@ -29,14 +29,9 @@ AppRouter.use('login', Login)
   .use('/page500', Page500)
   .use('/user', UserProfile)
   .use('/change-password', ChangePassword)
-  .use(
-    '/edit-user-profile',
-    EditUserProfile,
-    {
-      back: AppRouter.back,
-    },
-    true,
-  )
+  .use('/edit-user-profile', EditUserProfile, {
+    back: AppRouter.back,
+  })
   .use('/chat', ChatPage)
   .use('404', Page404)
   .start();

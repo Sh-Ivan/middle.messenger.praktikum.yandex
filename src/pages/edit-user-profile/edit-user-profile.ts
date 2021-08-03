@@ -6,10 +6,12 @@ import TUser from '../../helpers/TUser';
 import Button from '../../components/Button/Button';
 import handleSubmit from '../../helpers/formSubmit';
 import { handleFocus, handleBlur } from '../../helpers/inputValidate';
-import editUserController from '../../controllers/edit-user-controller';
-import chatController from '../../controllers/chat-controller';
+import AuthController from '../../controllers/auth-controller';
+import UserController from '../../controllers/user-controller';
 
 const editUserProfileTmpl = new Templator(editUserProfileTemplate);
+const authController = new AuthController();
+const userController = new UserController();
 
 type editUserProfileProps = {
   user?: TUser;
@@ -27,14 +29,15 @@ class EditUserProfile extends Block<editUserProfileProps> {
       handleSubmit: (e: Event) => {
         const data = handleSubmit(e);
         if (data !== null) {
-          editUserController(data);
+          userController.changeData(data);
         }
       },
     });
   }
 
   componentDidMount() {
-    chatController((user: TProps) => {
+    console.log('edit-user-mount');
+    authController.getUserInfo((user: TProps) => {
       this.setProps({ user });
     });
   }

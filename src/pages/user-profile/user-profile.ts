@@ -2,10 +2,10 @@ import Templator from '../../helpers/templator';
 import userProfileTemplate from './user-profile.tmpl';
 import Block, { TProps } from '../../components/block/block';
 import TUser from '../../helpers/TUser';
-import userController from '../../controllers/user-controller';
-import chatController from '../../controllers/chat-controller';
+import AuthController from '../../controllers/auth-controller';
 
 const userProfileTmpl = new Templator(userProfileTemplate);
+const authController = new AuthController();
 
 type userProps = {
   user?: TUser;
@@ -17,20 +17,19 @@ class UserProfile extends Block<userProps> {
       ...props,
       handleSignout: (e: Event) => {
         e.preventDefault();
-        userController(null, true);
+        authController.logout();
       },
     });
   }
 
   componentDidMount() {
-    chatController((user: TProps) => {
+    authController.getUserInfo((user: TProps) => {
       this.setProps({ user });
     });
   }
 
   render() {
     const { user } = this.props as userProps;
-    console.log(this.props);
     const context = { ...user };
 
     return userProfileTmpl.compile(context);

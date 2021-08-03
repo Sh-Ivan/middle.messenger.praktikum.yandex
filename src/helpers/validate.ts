@@ -1,8 +1,13 @@
 const EMAIL_REG_EXP = /.+@.+\..+/i;
 const PHONE_REG_EXP = /^\+?\d+[0-9-]{5,15}$/;
 
-export function toggleErrorElement(element: HTMLInputElement, validateResult: string) {
-  const errorElement = element.closest('form')?.querySelector(`[data-error="${element.name}"]`);
+export function toggleErrorElement(
+  element: HTMLInputElement,
+  validateResult: string,
+) {
+  const errorElement = element
+    .closest('form')
+    ?.querySelector(`[data-error="${element.name}"]`);
   if (errorElement) {
     if (validateResult !== 'valid') {
       errorElement.textContent = validateResult;

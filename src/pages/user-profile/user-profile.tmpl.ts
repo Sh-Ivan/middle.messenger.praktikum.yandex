@@ -41,7 +41,7 @@ export default `
 
       <div class="user-profile__links">
         <a href="/edit-user-profile" class="user-profile__link">Изменить данные</a>
-        <a href="/change-password" class="user-profile__link">Измениить пароль</a>
+        <a href="/change-password" class="user-profile__link">Изменить пароль</a>
         <a href="/login" class="user-profile__link user-profile__link_reject" on:click={{handleSignout}}>Выйти</a>
       </div>
     </form>
