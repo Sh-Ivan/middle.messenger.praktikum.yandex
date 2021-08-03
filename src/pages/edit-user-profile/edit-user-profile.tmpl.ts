@@ -50,8 +50,11 @@ export default `
         <div class="avatar-wrapper">
           <i class="avatar-icon"></i>
         </div>
-          <a href="/user" class="auth-panel__link">Загрузить новое фото</a>
-          <a href="/user" class="auth-panel__link user-profile__link_reject">Удалить фото</a>
+        <input type="file" id="avatar" accept="image/*" />
+        <label for="avatar"></label>
+          <a href="#" class="auth-panel__link" on:click={{changeAvatar}}>Загрузить новое фото</a>
+          </label>
+          <a href="#" class="auth-panel__link user-profile__link_reject" on:click={{deleteAvatar}}>Удалить фото</a>
       </aside>
     </div>
   </main>

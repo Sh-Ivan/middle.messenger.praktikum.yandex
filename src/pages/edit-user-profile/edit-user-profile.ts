@@ -32,6 +32,13 @@ class EditUserProfile extends Block<editUserProfileProps> {
           userController.changeData(data);
         }
       },
+      changeAvatar: (e: Event) => {
+        // photo
+        userController.changeAvatar({ avatar: '' });
+      },
+      deleteAvatar: () => {
+        userController.changeAvatar({ avatar: '' });
+      },
     });
   }
 

@@ -3,7 +3,7 @@ import HTTP from '../helpers/http';
 const chatAPIInstance = new HTTP('https://ya-praktikum.tech/api/v2/chats/');
 
 export default class ChatAPI {
-  chats() {
+  getChats() {
     return chatAPIInstance.get('', {});
   }
 
