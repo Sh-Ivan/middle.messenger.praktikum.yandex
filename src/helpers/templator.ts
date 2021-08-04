@@ -26,13 +26,18 @@ export default class Templator {
         newTemplate = newTemplate.replace(templateVar, key);
       } else if (typeof value === 'object') {
         // eslint-disable-next-line no-useless-escape
-        const temolateObjectVar: RegExp = new RegExp(`{{\\s*${key}\..*?}}`, 'g');
-        const varsInObject: RegExpMatchArray | null = newTemplate.match(temolateObjectVar);
+        const temolateObjectVar: RegExp = new RegExp(
+          `{{\\s*${key}\..*?}}`,
+          'g',
+        );
+        const varsInObject: RegExpMatchArray | null =
+          newTemplate.match(temolateObjectVar);
         if (varsInObject !== null) {
           varsInObject.forEach((nextVar: string) => {
             const path: string = nextVar.slice(2, -2).trim();
             const newValue: unknown = getObjectValue(ctx, path);
-            const replacer: string = newValue === '' ? '""' : (newValue as string);
+            const replacer: string =
+              newValue === '' ? '""' : (newValue as string);
             newTemplate = newTemplate.replace(nextVar, replacer);
           });
         }

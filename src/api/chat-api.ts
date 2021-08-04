@@ -11,8 +11,20 @@ export default class ChatAPI {
     return chatAPIInstance.post('', { data });
   }
 
+  deleteChat(data: any) {
+    return chatAPIInstance.delete('', { data });
+  }
+
+  getToken(data: any) {
+    return chatAPIInstance.post(`token/${data.chatId}`, {});
+  }
+
   addUsers(data: any) {
     return chatAPIInstance.put('users', { data });
+  }
+
+  getChatUsers(data: any) {
+    return chatAPIInstance.get(`${data.id}/users`, {});
   }
 
   deleteUsers(data: any) {

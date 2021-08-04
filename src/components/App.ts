@@ -3,11 +3,11 @@ import Login from '../pages/login/login';
 import Signup from '../pages/signup/signup';
 import Page404 from '../pages/404/404';
 import Page500 from '../pages/500/500';
-import Chat from '../pages/chat/chat';
+import Nav from '../pages/nav/nav';
 import UserProfile from '../pages/user-profile/user-profile';
 import ChangePassword from '../pages/change-password/change-password';
 import EditUserProfile from '../pages/edit-user-profile/edit-user-profile';
-import ChatPage from './ChatList/chat';
+import Chat from '../pages/chat/chat';
 import Router from '../helpers/Router';
 
 let userData;
@@ -22,7 +22,7 @@ export const AppRouter = new Router('.root');
 AppRouter.private = { usePrivate: !userData, redirectRouter: '/login' };
 
 AppRouter.use('/login', Login)
-  .use('/', Chat)
+  .use('/', Nav)
   .use('/login', Login)
   .use('/signup', Signup)
   .use('/page404', Page404)
@@ -32,7 +32,7 @@ AppRouter.use('/login', Login)
   .use('/edit-user-profile', EditUserProfile, {
     back: AppRouter.back,
   })
-  .use('/chat', ChatPage)
+  .use('/chat', Chat)
   .use('404', Page404)
   .start();
 

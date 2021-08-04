@@ -8,7 +8,7 @@ class ChatController {
     chatAPIInstance
       .getChats()
       .then((result: XMLHttpRequest) => {
-        console.log(result);
+        console.log(result.response);
         if (result.status === 200) {
           //UserStore.setState(JSON.parse(result.response));
         }
@@ -23,7 +23,39 @@ class ChatController {
     chatAPIInstance
       .createChat(data)
       .then((result: XMLHttpRequest) => {
-        console.log(result);
+        console.log(result.response);
+        if (result.status === 200) {
+          //UserStore.setState(JSON.parse(result.response));
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  getToken(data: { [key: string]: string }): void {
+    chatAPIInstance
+      .getToken(data)
+      .then((result: XMLHttpRequest) => {
+        console.log(result.response);
+        if (result.status === 200) {
+          //UserStore.setState(JSON.parse(result.response));
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  /*
+  { "chatId": 0 }
+  */
+
+  deleteChat(data: { [key: string]: number }): void {
+    chatAPIInstance
+      .deleteChat(data)
+      .then((result: XMLHttpRequest) => {
+        console.log(result.response);
         if (result.status === 200) {
           //UserStore.setState(JSON.parse(result.response));
         }
@@ -40,11 +72,11 @@ class ChatController {
       "chatId": 0
     }
   */
-  addUsers(data: { [key: string]: string }): void {
+  addUsers(data: { [key: string]: unknown }): void {
     chatAPIInstance
       .addUsers(data)
       .then((result: XMLHttpRequest) => {
-        console.log(result);
+        console.log(result.response);
         if (result.status === 200) {
           //UserStore.setState(JSON.parse(result.response));
         }
@@ -54,11 +86,25 @@ class ChatController {
       });
   }
 
-  deleteUsers(data: { [key: string]: string }): void {
+  getChatUsers(data: { [key: string]: unknown }): void {
+    chatAPIInstance
+      .getChatUsers(data)
+      .then((result: XMLHttpRequest) => {
+        console.log(result.response);
+        if (result.status === 200) {
+          //UserStore.setState(JSON.parse(result.response));
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  deleteUsers(data: { [key: string]: any }): void {
     chatAPIInstance
       .addUsers(data)
       .then((result: XMLHttpRequest) => {
-        console.log(result);
+        console.log(result.response);
         if (result.status === 200) {
           //UserStore.setState(JSON.parse(result.response));
         }

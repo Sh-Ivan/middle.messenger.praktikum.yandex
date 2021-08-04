@@ -1,8 +1,8 @@
 import Templator from '../../helpers/templator';
-import chatTemplate from './chat.tmpl';
+import chatTemplate from './chat-list.tmpl';
 import Block from '../block/block';
 import TUser from '../../helpers/TUser';
-import './chat.scss';
+import './chat-list.scss';
 
 const chatTmpl = new Templator(chatTemplate);
 
@@ -10,7 +10,7 @@ type chatProps = {
   user?: TUser;
 };
 
-class chat extends Block<chatProps> {
+class ChatList extends Block<chatProps> {
   constructor(props: chatProps = {}) {
     super('div', props);
   }
@@ -21,4 +21,4 @@ class chat extends Block<chatProps> {
   }
 }
 
-export default chat;
+export default ChatList;
