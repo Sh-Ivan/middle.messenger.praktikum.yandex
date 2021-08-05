@@ -4,6 +4,6 @@ import getObjectValue from './getObjectValue';
 
 describe('Test getObjectValue', () => {
   it('should return true', () => {
-    expect(getObjectValue({ a: true }, a));
+    expect(getObjectValue({ a: true }, 'a'));
   });
 });
