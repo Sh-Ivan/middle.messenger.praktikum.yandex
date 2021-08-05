@@ -21,6 +21,14 @@ export type Message = {
 type TChat = {
   id: number;
   token: string;
+  title?: string;
+  avatar?: string;
+  unread_count?: number;
+  last_message?: {
+    user: TUser;
+    time: string;
+    content: string;
+  };
   users: TUser[];
   messages: Message[];
 };

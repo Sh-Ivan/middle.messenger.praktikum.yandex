@@ -1,5 +1,7 @@
 import ChatAPI from '../api/chat-api';
-import UserStore from '../stores/UserStore';
+import ChatStore from '../stores/ChatStore';
+import TChat from '../helpers/TChat';
+import { EVENTS } from '../helpers/store';
 
 const chatAPIInstance = new ChatAPI();
 
@@ -10,7 +12,7 @@ class ChatController {
       .then((result: XMLHttpRequest) => {
         console.log(result.response);
         if (result.status === 200) {
-          //UserStore.setState(JSON.parse(result.response));
+          ChatStore.setState(JSON.parse(result.response));
         }
       })
       .catch((error) => {
@@ -25,7 +27,7 @@ class ChatController {
       .then((result: XMLHttpRequest) => {
         console.log(result.response);
         if (result.status === 200) {
-          //UserStore.setState(JSON.parse(result.response));
+          //ChatStore.setState(JSON.parse(result.response));
         }
       })
       .catch((error) => {
@@ -33,13 +35,26 @@ class ChatController {
       });
   }
 
-  getToken(data: { [key: string]: string }): void {
+  getToken(data: { [chatId: string]: number }): void {
     chatAPIInstance
       .getToken(data)
       .then((result: XMLHttpRequest) => {
         console.log(result.response);
         if (result.status === 200) {
-          //UserStore.setState(JSON.parse(result.response));
+          const state = ChatStore.getState() as TChat[];
+          const chatIndex = state.findIndex((chat) => chat.id === data.chatId);
+          const token = JSON.parse(result.response)?.token;
+          if (chatIndex === -1) {
+            state.push({
+              id: data.chatId,
+              token,
+              users: [],
+              messages: [],
+            });
+          } else {
+            state[chatIndex].token = token;
+          }
+          ChatStore.setState(state);
         }
       })
       .catch((error) => {
@@ -57,7 +72,7 @@ class ChatController {
       .then((result: XMLHttpRequest) => {
         console.log(result.response);
         if (result.status === 200) {
-          //UserStore.setState(JSON.parse(result.response));
+          //ChatStore.setState(JSON.parse(result.response));
         }
       })
       .catch((error) => {
@@ -112,6 +127,10 @@ class ChatController {
       .catch((error) => {
         console.log(error);
       });
+  }
+
+  subscribeToChatStoreEvent(cb: any) {
+    ChatStore.on(EVENTS.STORE_CHANGED, cb);
   }
 }
 

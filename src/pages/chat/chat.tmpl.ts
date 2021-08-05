@@ -36,13 +36,15 @@ export default `
   <main class="chat-window">
     <haeder>Header</haeder>
     <section>ChatWindow</section>
-    <input type="text" name="chat-name">
   <button on:click={{createChat}}>Create chat</button>
   <button on:click={{getChats}}>Get chats</button>
+  <button on:click={{getToken}}>Get token</button>
   <button on:click={{deleteChat}}>Delete chat</button>
   <button on:click={{addUsers}}>Add User</button>
   <button on:click={{getChatUsers}}>Get chat users</button>
   <button on:click={{deleteUsers}}>Delete User</button>
+  <button on:click={{selectChat}}>Select chat</button>
+  <button on:click={{sendMessage}}>Send Message</button>
   </main>
 </div>
   
