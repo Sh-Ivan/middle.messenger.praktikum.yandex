@@ -82,7 +82,26 @@ export default `
       <div class="chat-header__name">Виктор</div>
       <i class="chat-header__menu"></i>
     </header>
-    <section class="chat-main">ChatWindow</section>
+    <section class="chat-main">
+      <div class="chat-main__date">19 июня</div>
+      <div class="chat-main__message chat-main__message_left">Привет! Смотри, тут всплыл интересный кусок лунной космической истории — НАСА в какой-то момент попросила Хассельблад адаптировать модель SWC для полетов на Луну. Сейчас мы все знаем что астронавты летали с моделью 500 EL — и к слову говоря, все тушки этих камер все еще находятся на поверхности Луны, так как астронавты с собой забрали только кассеты с пленкой.
+Хассельблад в итоге адаптировал SWC для космоса, но что-то пошло не так и на ракету они так никогда и не попали. Всего их было произведено 25 штук, одну из них недавно продали на аукционе за 45000 евро.
+        <span class="message-date">11:56</span>
+      </div>
+      <i class="chat-main__image chat-main__message_left"></i>      
+      <div class="chat-main__message chat-main__message_right">
+        Круто
+        <span class="message-date">12:00</span>
+      </div>
+      <div class="chat-main__message chat-main__message_right">
+        Круто
+        <span class="message-date">12:00</span>
+      </div>
+      <div class="chat-main__message chat-main__message_right">
+        Круто
+        <span class="message-date">12:00</span>
+      </div>
+    </section>
     <div class="send-message">
       <i class="send-message__icons send-message__icons_attach"></i>
       <input type="text" placeholder="Сообщение" class="send-message__input">

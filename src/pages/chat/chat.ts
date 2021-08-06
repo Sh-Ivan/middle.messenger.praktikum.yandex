@@ -105,6 +105,8 @@ class Chat extends Block<TChatProps> {
     chatController.getChats();
   }
 
+  componentDidUpdate(oldProps, newProps) {}
+
   render() {
     const { user, chats } = this.props as TChatProps;
     const context = { ...user, chats };
