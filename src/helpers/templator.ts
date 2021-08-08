@@ -24,20 +24,24 @@ export default class Templator {
 
       if (typeof value === 'function') {
         newTemplate = newTemplate.replace(templateVar, key);
+      } else if (Array.isArray(value)) {
+        let listElements = '';
+        value.forEach((elem: string) => {
+          listElements = listElements.concat(elem);
+        });
+        newTemplate = newTemplate.replace(templateVar, listElements);
+        const newCtx = { ...ctx };
+        newCtx[key] = null;
+        return new Templator(newTemplate).compile(newCtx);
       } else if (typeof value === 'object') {
         // eslint-disable-next-line no-useless-escape
-        const temolateObjectVar: RegExp = new RegExp(
-          `{{\\s*${key}\..*?}}`,
-          'g',
-        );
-        const varsInObject: RegExpMatchArray | null =
-          newTemplate.match(temolateObjectVar);
+        const temolateObjectVar: RegExp = new RegExp(`{{\\s*${key}\..*?}}`, 'g');
+        const varsInObject: RegExpMatchArray | null = newTemplate.match(temolateObjectVar);
         if (varsInObject !== null) {
           varsInObject.forEach((nextVar: string) => {
             const path: string = nextVar.slice(2, -2).trim();
             const newValue: unknown = getObjectValue(ctx, path);
-            const replacer: string =
-              newValue === '' ? '""' : (newValue as string);
+            const replacer: string = newValue === '' ? '""' : (newValue as string);
             newTemplate = newTemplate.replace(nextVar, replacer);
           });
         }

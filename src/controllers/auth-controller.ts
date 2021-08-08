@@ -21,7 +21,6 @@ class AuthController {
 
   getUserInfo(cb: any) {
     authAPIInstance.getUserInfo().then((res: XMLHttpRequest) => {
-      console.log(res);
       if (res.status === 200) {
         UserStore.on(EVENTS.STORE_CHANGED, cb);
         UserStore.setState(JSON.parse(res.response));
@@ -35,7 +34,6 @@ class AuthController {
     authAPIInstance
       .login(data)
       .then((result: XMLHttpRequest) => {
-        console.log(result);
         if (result.status === 200) {
           AppRouter.go('/');
         }

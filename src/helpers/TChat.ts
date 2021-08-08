@@ -1,5 +1,6 @@
 /* eslint-disable camelcase */
 import TUser from './TUser';
+import ChatSocketController from '../controllers/chat-socket-controller';
 
 export type Message = {
   chat_id: number;
@@ -31,6 +32,7 @@ type TChat = {
   };
   users: TUser[];
   messages: Message[];
+  controller: ChatSocketController;
 };
 
 export default TChat;

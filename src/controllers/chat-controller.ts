@@ -2,6 +2,7 @@ import ChatAPI from '../api/chat-api';
 import ChatStore from '../stores/ChatStore';
 import TChat from '../helpers/TChat';
 import { EVENTS } from '../helpers/store';
+import ChatSocketController from './chat-socket-controller';
 
 const chatAPIInstance = new ChatAPI();
 
@@ -10,7 +11,6 @@ class ChatController {
     chatAPIInstance
       .getChats()
       .then((result: XMLHttpRequest) => {
-        console.log(result.response);
         if (result.status === 200) {
           ChatStore.setState(JSON.parse(result.response));
         }
@@ -25,7 +25,6 @@ class ChatController {
     chatAPIInstance
       .createChat(data)
       .then((result: XMLHttpRequest) => {
-        console.log(result.response);
         if (result.status === 200) {
           //ChatStore.setState(JSON.parse(result.response));
         }
@@ -37,22 +36,24 @@ class ChatController {
 
   getToken(data: { [chatId: string]: number }): void {
     chatAPIInstance
-      .getToken(data)
+      .getToken(data.chatId)
       .then((result: XMLHttpRequest) => {
-        console.log(result.response);
         if (result.status === 200) {
+          const token = JSON.parse(result.response)?.token;
+          const chatSocketController = new ChatSocketController(data.userId, data.chatId, token);
           const state = ChatStore.getState() as TChat[];
           const chatIndex = state.findIndex((chat) => chat.id === data.chatId);
-          const token = JSON.parse(result.response)?.token;
           if (chatIndex === -1) {
             state.push({
               id: data.chatId,
               token,
               users: [],
               messages: [],
+              controller: chatSocketController,
             });
           } else {
             state[chatIndex].token = token;
+            state[chatIndex].controller = chatSocketController;
           }
           ChatStore.setState(state);
         }

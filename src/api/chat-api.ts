@@ -15,8 +15,8 @@ export default class ChatAPI {
     return chatAPIInstance.delete('', { data });
   }
 
-  getToken(data: any) {
-    return chatAPIInstance.post(`token/${data.chatId}`, {});
+  getToken(chatId: number) {
+    return chatAPIInstance.post(`token/${chatId}`, {});
   }
 
   addUsers(data: any) {
