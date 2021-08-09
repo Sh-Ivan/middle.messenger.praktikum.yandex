@@ -1,10 +1,13 @@
 import ChatStore from '../stores/ChatStore';
+
 const socketHost = 'wss://ya-praktikum.tech/ws/chats/';
 
 class ChatSocketController {
   socket: WebSocket;
+  _chatId: number;
 
   constructor(userId: number, chatId: number, token: string) {
+    this._chatId = chatId;
     this.socket = new WebSocket(`${socketHost}${userId}/${chatId}/${token}`);
 
     this.socket.addEventListener('open', () => {
@@ -17,13 +20,14 @@ class ChatSocketController {
       const state = ChatStore.getState();
       const messages = JSON.parse(event.data);
       console.log(messages);
-      const { chat_id } = messages[0];
-      const chatIndex = state.findIndex((chat: any) => chat.id === chat_id);
+      const chatIndex = state.findIndex(
+        (chat: any) => chat.id === this._chatId,
+      );
       if (chatIndex !== -1) {
         if (Array.isArray(messages)) {
           state[chatIndex].messages = messages;
         } else {
-          state[chatIndex].messages.unshift(messages[0]);
+          state[chatIndex].messages.unshift(messages);
         }
       }
       ChatStore.setState(state);

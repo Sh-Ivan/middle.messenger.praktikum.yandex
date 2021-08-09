@@ -130,12 +130,25 @@
   margin-left: 10px;
 }
 
-.chat-header__menu {
+.chat-header__menu-icon {
   background: url('/img/menu-3-dots.svg');
   height: 32px;
   width: 32px;
   margin-left: auto;
   cursor: pointer;
+}
+
+.chat-header__menu {
+  position: absolute;
+  right: 0;
+  top: 55px;
+}
+
+.chat-header__menu-item {
+  cursor: pointer;
+  &:hover {
+    background-color: rgb(243, 233, 233);
+  }
 }
 
 .chat-main {

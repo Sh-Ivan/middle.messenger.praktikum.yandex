@@ -7,12 +7,14 @@ import ChatSocketController from './chat-socket-controller';
 const chatAPIInstance = new ChatAPI();
 
 class ChatController {
-  getChats(): void {
+  getChats(userId: number): void {
     chatAPIInstance
       .getChats()
       .then((result: XMLHttpRequest) => {
         if (result.status === 200) {
-          ChatStore.setState(JSON.parse(result.response));
+          const chats = JSON.parse(result.response);
+          ChatStore.setState(chats);
+          this.getToken({ chatId: chats[0].id, userId });
         }
       })
       .catch((error) => {
@@ -40,7 +42,11 @@ class ChatController {
       .then((result: XMLHttpRequest) => {
         if (result.status === 200) {
           const token = JSON.parse(result.response)?.token;
-          const chatSocketController = new ChatSocketController(data.userId, data.chatId, token);
+          const chatSocketController = new ChatSocketController(
+            data.userId,
+            data.chatId,
+            token,
+          );
           const state = ChatStore.getState() as TChat[];
           const chatIndex = state.findIndex((chat) => chat.id === data.chatId);
           if (chatIndex === -1) {

@@ -6,6 +6,7 @@ import TUser from '../../helpers/TUser';
 import TChat from '../helpers/TChat';
 import AuthController from '../../controllers/auth-controller';
 import ChatController from '../../controllers/chat-controller';
+import { byTime } from '../../helpers/sortUtils';
 
 const chatTmpl = new Templator(chatTemplate);
 const authController = new AuthController();
@@ -82,17 +83,27 @@ class Chat extends Block<TChatProps> {
   componentDidMount() {
     authController.getUserInfo((user: TProps) => {
       this.setProps({ user });
+      chatController.getChats(user.id);
     });
     chatController.subscribeToChatStoreEvent((chats: TChat) => {
       this.setProps({ chats });
     });
-    chatController.getChats();
+  }
+
+  componentDidUpdate(prevProps, props) {
+    const messageList = document.querySelector('section.chat-main');
+    if (messageList) {
+      messageList.scrollTop = messageList.scrollHeight;
+    }
+    return false;
   }
 
   render() {
     const { user, chats, activeChatId } = this.props as TChatProps;
     const messages = chats?.find((chat) => chat.id === activeChatId)?.messages;
     const chatsLayout = chats?.map((chat) => {
+      const dateTime: Date = new Date(chat.last_message.time);
+      const time: string = dateTime.getHours() + ':' + dateTime.getMinutes();
       return `<li class="chat-list__item" on:click={{connectToChat}} data-id=${chat.id}>
       <div class="chat-list-item__avatar">
       </div>
@@ -102,7 +113,7 @@ class Chat extends Block<TChatProps> {
             ${chat.title}
           </div>
           <div class="chat-list-item__time">
-            ${chat.last_message.time}
+            ${time}
           </div>
         </div>
         <div class="chat-list-item__row">
@@ -117,16 +128,25 @@ class Chat extends Block<TChatProps> {
     </li>`;
     });
 
-    const messagesLayout = messages?.reverse().map((message: any) => {
+    let prevDate: Date;
+    const messagesLayout = messages?.sort(byTime).map((message: any) => {
+      let dateSeparator = '';
+      const dateTime: Date = new Date(message.time);
+      if ((Date.now() - dateTime) / (1000 * 3600 * 24) > 0) {
+        dateSeparator = '<div class="chat-main__date">Вчера</div>';
+        prevDate = dateTime;
+      }
+      const time: string = dateTime.getHours() + ':' + dateTime.getMinutes();
       const classes: string =
         message.user_id === user.id
           ? 'chat-main__message chat-main__message_left'
           : 'chat-main__message chat-main__message_right';
 
       return `
+      ${dateSeparator}
       <div class="${classes}">
         ${message.content}
-        <span class="message-date">${message.time}</span>
+        <span class="message-date">${time}</span>
       </div>`;
     });
 

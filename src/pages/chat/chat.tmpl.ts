@@ -81,10 +81,14 @@ export default `
     <header class="chat-header">
       <div class="chat-header__avatar"></div>
       <div class="chat-header__name">Виктор</div>
-      <i class="chat-header__menu"></i>
+      <i class="chat-header__menu-icon" on:click={{toggleMenu}}></i>
+      <div class="chat-header__menu">
+        <div>Добавить пользователя</div>
+        <div>Удалить пользователя</div>
+        <div>Удалить чат</div>
+      </div>
     </header>
     <section class="chat-main">
-      <div class="chat-main__date">19 июня</div>
       {{messagesLayout}}
       
     </section>
@@ -93,17 +97,6 @@ export default `
         <input type="text" placeholder="Сообщение" class="send-message__input">
         <button class="send-message__icons send-message__icons_send" type="submit"></button>
     </form>
-    <div style="display: none">
-  <button on:click={{createChat}}>Create chat</button>
-  <button on:click={{getChats}}>Get chats</button>
-  <button on:click={{getToken}}>Get token</button>
-  <button on:click={{deleteChat}}>Delete chat</button>
-  <button on:click={{addUsers}}>Add User</button>
-  <button on:click={{getChatUsers}}>Get chat users</button>
-  <button on:click={{deleteUsers}}>Delete User</button>
-  <button on:click={{selectChat}}>Select chat</button>
-  <button on:click={{sendMessage}}>Send Message</button>
-  </div>
   </main>
 </div>
   

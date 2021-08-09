@@ -83,11 +83,11 @@ class Block<T> implements IBlock {
   componentDidMount(): void {}
 
   _componentDidUpdate(oldProps: T, newProps: T) {
+    const response = this.componentDidUpdate();
     if (newProps !== oldProps) {
-      const response = this.componentDidUpdate();
-      if (response) {
-        this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
-      }
+      this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
+    } else if (response) {
+      this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
     }
   }
 
