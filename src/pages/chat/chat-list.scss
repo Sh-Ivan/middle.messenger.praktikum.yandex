@@ -19,8 +19,7 @@
 
 .list-search__users {
   position: absolute;
-  width: 244px;
-  padding: 0;
+  padding: 10px;
   list-style: none;
   top: 42px;
   border: 1px solid #bdbdbd;
@@ -36,8 +35,10 @@
   &:hover {
     background-color: #f8f8f8;
   }
-  height: 20px;
-  display: block;
+  height: 30px;
+  line-height: 30px;
+  width: 100%;
+  text-align: center;
 }
 
 .chat-list-search__avatar {

@@ -58,6 +58,7 @@ class Chat extends Block<TChatProps> {
       },
 
       handleSearchUser: (event: Event) => {
+        event.preventDefault();
         this.searchUser(event.target.value);
       },
 
@@ -117,6 +118,9 @@ class Chat extends Block<TChatProps> {
     chatController.subscribeToChatStoreEvent((chats: TChat) => {
       this.setProps({ chats });
     });
+    userController.subscribeToListUsersStoreEvent((listUsers: any) => {
+      this.setProps({ listUsers });
+    });
   }
 
   componentDidUpdate(prevProps, props) {
@@ -128,7 +132,8 @@ class Chat extends Block<TChatProps> {
   }
 
   render() {
-    const { user, chats, activeChatId } = this.props as TChatProps;
+    const { user, chats, activeChatId, listUsers } = this.props as TChatProps;
+    console.log(listUsers);
     const messages = chats?.find((chat) => chat.id === activeChatId)?.messages;
     const chatsLayout = chats?.map((chat) => {
       const dateTime: Date = new Date(chat.last_message.time);
@@ -179,11 +184,13 @@ class Chat extends Block<TChatProps> {
       </div>`;
     });
 
-    const findUsers = `
-      <li class="list-search__item">Петров Андрей</li>
-      <li class="list-search__item">Петров Андрей</li>
-      <li class="list-search__item">Петров Андрей</li>
-    `;
+    let findUsers = '';
+    if (listUsers) {
+      findUsers = listUsers?.map((user) => {
+        const userName = `${user.login}: ${user.first_name} ${user.second_name}`;
+        return `<li class="list-search__item">${userName}</li>`;
+      });
+    }
 
     const context = { ...user, chats, chatsLayout, messagesLayout, findUsers };
 

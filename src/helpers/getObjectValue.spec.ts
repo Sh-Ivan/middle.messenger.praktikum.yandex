@@ -1,9 +1,9 @@
-import { expect } from 'chai';
+import { assert } from 'chai';
 
 import getObjectValue from './getObjectValue';
 
 describe('Test getObjectValue', () => {
   it('should return true', () => {
-    expect(getObjectValue({ a: true }, 'a'));
+    assert.equal(getObjectValue({ a: true }, 'a'), true);
   });
 });

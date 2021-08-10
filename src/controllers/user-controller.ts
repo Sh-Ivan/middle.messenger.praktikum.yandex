@@ -1,6 +1,6 @@
 import UserAPI from '../api/user-api';
 import UserStore from '../stores/UserStore';
-import { AppRouter } from '../components/App';
+import ListUsers from '../stores/ListUsers';
 import { EVENTS } from '../helpers/store';
 
 const userAPIInstance = new UserAPI();
@@ -60,11 +60,16 @@ class UserController {
     userAPIInstance
       .searchUser(login)
       .then((result: XMLHttpRequest) => {
+        ListUsers.setState(JSON.parse(result.response));
         console.log(result);
       })
       .catch((error) => {
         console.log(error);
       });
+  }
+
+  subscribeToListUsersStoreEvent(cb: any) {
+    ListUsers.on(EVENTS.STORE_CHANGED, cb);
   }
 }
 
