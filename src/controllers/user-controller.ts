@@ -44,6 +44,28 @@ class UserController {
         console.log(error);
       });
   }
+
+  getUser(id: number): void {
+    userAPIInstance
+      .getUser(id)
+      .then((result: XMLHttpRequest) => {
+        console.log(result);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  searchUser(login: string): void {
+    userAPIInstance
+      .searchUser(login)
+      .then((result: XMLHttpRequest) => {
+        console.log(result);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
 }
 
 export default UserController;

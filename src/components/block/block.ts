@@ -110,6 +110,7 @@ class Block<T> implements IBlock {
 
   _render() {
     this.textContent = this.render();
+    //this._element = document.createElement(this._meta?.tagName);
     this._element.innerHTML = this.textContent;
     this._element = this._element.firstElementChild
       ? (this._element.firstElementChild as HTMLElement)

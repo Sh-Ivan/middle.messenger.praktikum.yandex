@@ -6,11 +6,14 @@ import TUser from '../../helpers/TUser';
 import TChat from '../helpers/TChat';
 import AuthController from '../../controllers/auth-controller';
 import ChatController from '../../controllers/chat-controller';
+import UserController from '../../controllers/user-controller';
 import { byTime } from '../../helpers/sortUtils';
+import debounce from '../../helpers/debounce';
 
 const chatTmpl = new Templator(chatTemplate);
 const authController = new AuthController();
 const chatController = new ChatController();
+const userController = new UserController();
 
 interface TChatProps {
   user: TUser;
@@ -20,6 +23,8 @@ interface TChatProps {
 }
 
 class Chat extends Block<TChatProps> {
+  searchUser = debounce(userController.searchUser, 1000);
+
   constructor(props: any = {}) {
     super('div', {
       ...props,
@@ -52,6 +57,26 @@ class Chat extends Block<TChatProps> {
         });
       },
 
+      handleSearchUser: (event: Event) => {
+        this.searchUser(event.target.value);
+      },
+
+      toggleMenu: () => {
+        const menu = document.querySelector('.chat-header__menu');
+        menu?.classList.toggle('hide');
+      },
+
+      toggleMainMenu: () => {
+        const menu = document.querySelector('.chat-list__menu');
+        menu?.classList.toggle('hide');
+      },
+
+      hideMenu: () => {
+        console.log('hide menu');
+        document.querySelector('.chat-list__menu')?.classList.add('hide');
+        document.querySelector('.chat-header__menu')?.classList.add('hide');
+      },
+
       connectToChat: (event: Event) => {
         const { id: userId } = this.props.user as TProps;
         const target = event.currentTarget as HTMLElement;
@@ -76,6 +101,10 @@ class Chat extends Block<TChatProps> {
           console.log(chat);
           chat.controller.sendMessage(message);
         }
+      },
+
+      logout: () => {
+        authController.logout();
       },
     });
   }
@@ -150,7 +179,13 @@ class Chat extends Block<TChatProps> {
       </div>`;
     });
 
-    const context = { ...user, chats, chatsLayout, messagesLayout };
+    const findUsers = `
+      <li class="list-search__item">Петров Андрей</li>
+      <li class="list-search__item">Петров Андрей</li>
+      <li class="list-search__item">Петров Андрей</li>
+    `;
+
+    const context = { ...user, chats, chatsLayout, messagesLayout, findUsers };
 
     return chatTmpl.compile(context);
   }

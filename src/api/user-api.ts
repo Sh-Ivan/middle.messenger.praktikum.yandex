@@ -14,4 +14,13 @@ export default class UserAPI {
   changePassword(data: any) {
     return userAPIInstance.put('password/', { data });
   }
+
+  getUser(id: number) {
+    return userAPIInstance.get(`${id}`, {});
+  }
+
+  searchUser(login: string) {
+    console.log({ login });
+    return userAPIInstance.post('search', { data: { login } });
+  }
 }

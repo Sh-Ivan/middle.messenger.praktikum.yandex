@@ -22,7 +22,7 @@ export const AppRouter = new Router('.root');
 AppRouter.private = { usePrivate: !userData, redirectRouter: '/login' };
 
 AppRouter.use('/login', Login)
-  .use('/', Nav)
+  .use('/', Chat)
   .use('/login', Login)
   .use('/signup', Signup)
   .use('/page404', Page404)
