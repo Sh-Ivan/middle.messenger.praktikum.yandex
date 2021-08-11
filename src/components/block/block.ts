@@ -67,8 +67,8 @@ class Block<T> implements IBlock {
 
   _createResources() {
     const tagName = this._meta !== null ? this._meta?.tagName : 'div';
-    //this._element = this._createDocumentElement(tagName);
-    this._element = document.createElement('template');
+    this._element = this._createDocumentElement(tagName);
+    //this._element = document.createElement('template');
   }
 
   init() {
@@ -111,14 +111,13 @@ class Block<T> implements IBlock {
 
   _render() {
     this.textContent = this.render();
-    console.log(this.textContent);
     this._element.innerHTML = this.textContent;
-    /*
+
     this._element = this._element.firstElementChild
       ? (this._element.firstElementChild as HTMLElement)
       : this._element;
-      */
-    const elements = this._element.content.querySelectorAll('*');
+
+    const elements = this._element.querySelectorAll('*');
 
     for (let i = 0; i < elements.length; i += 1) {
       const element = <HTMLElement>elements[i];

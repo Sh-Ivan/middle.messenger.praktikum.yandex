@@ -24,18 +24,16 @@ export default class Templator {
 
       if (typeof value === 'function') {
         newTemplate = newTemplate.replace(templateVar, key);
-      } else if (Array.isArray(value) && false) {
-        console.log(value);
+      } else if (Array.isArray(value)) {
         let listElements = '';
         value.forEach((elem: string) => {
           listElements = listElements.concat(elem);
         });
-        console.log(listElements);
         newTemplate = newTemplate.replace(templateVar, listElements);
         const newCtx = { ...ctx };
         newCtx[key] = null;
         return new Templator(newTemplate).compile(newCtx);
-      } else if (typeof value === 'object') {
+      } else if (typeof value === 'object' && value !== null) {
         // eslint-disable-next-line no-useless-escape
         const temolateObjectVar: RegExp = new RegExp(`{{\\s*${key}\..*?}}`, 'g');
         const varsInObject: RegExpMatchArray | null = newTemplate.match(temolateObjectVar);
@@ -48,7 +46,10 @@ export default class Templator {
           });
         }
       } else {
-        const replacer: string = value === '' ? '""' : (value as string);
+        let replacer: string = value === '' ? '""' : (value as string);
+        if (value === null || value === undefined) {
+          replacer = '';
+        }
         newTemplate = newTemplate.replace(templateVar, replacer);
       }
     });

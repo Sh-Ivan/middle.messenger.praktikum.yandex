@@ -23,14 +23,23 @@ interface TChatProps {
 }
 
 class Chat extends Block<TChatProps> {
-  searchUser = debounce(userController.searchUser, 1000);
+  //searchUser = debounce(userController.searchUser, 1000);
 
   constructor(props: any = {}) {
     super('div', {
       ...props,
 
-      createChat: () => {
-        chatController.createChat({ title: 'first' });
+      createChat: (event) => {
+        const answer = confirm(`Начать чат?`);
+        if (answer) {
+          const id = event.target.dataset.user;
+          console.log(id);
+          const user = this.props.listUsers.find((user) => user.id === +id);
+          if (user) {
+            chatController.createChat({ title: `${user.first_name} ${user.second_name}` });
+          }
+        }
+        //chatController.createChat({ title: 'first' });
       },
 
       deleteChat: () => {
@@ -59,7 +68,7 @@ class Chat extends Block<TChatProps> {
 
       handleSearchUser: (event: Event) => {
         event.preventDefault();
-        this.searchUser(event.target.value);
+        userController.searchUser(event.target.value);
       },
 
       toggleMenu: () => {
@@ -105,7 +114,6 @@ class Chat extends Block<TChatProps> {
         const { chats } = this.props as TChatProps;
         const chat = chats?.find((chat) => chat.id === this.props.activeChatId);
         if (chat) {
-          console.log(chat);
           chat.controller.sendMessage(message);
         }
       },
@@ -139,10 +147,9 @@ class Chat extends Block<TChatProps> {
 
   render() {
     const { user, chats, activeChatId, listUsers } = this.props as TChatProps;
-    console.log(this.props.chats);
     const messages = chats?.find((chat) => chat.id === activeChatId)?.messages;
     const chatsLayout = chats?.map((chat) => {
-      const dateTime: Date = new Date(chat.last_message.time);
+      const dateTime: Date = new Date(chat.last_message?.time);
       const time: string = dateTime.getHours() + ':' + dateTime.getMinutes();
       return `<li class="chat-list__item" on:click={{connectToChat}} data-id=${chat.id}>
       <div class="chat-list-item__avatar">
@@ -158,7 +165,7 @@ class Chat extends Block<TChatProps> {
         </div>
         <div class="chat-list-item__row">
           <div class="chat-list-item__message">
-           ${chat.last_message.content}
+           ${chat.last_message?.content}
           </div>
           <div class="chat-list-item__badge">
             ${chat.unread_count}
@@ -190,14 +197,18 @@ class Chat extends Block<TChatProps> {
       </div>`;
     });
 
-    let findUsers = '';
-    if (listUsers) {
-      findUsers = listUsers?.map((user) => {
-        const userName = `${user.login}: ${user.first_name} ${user.second_name}`;
-        return `<li class="list-search__item">${userName}</li>`;
+    let findUsers = null;
+    if (listUsers && listUsers.length > 0) {
+      console.log(listUsers);
+      findUsers = ['<ul class="list-search__users">'];
+      const listUsersLayout = listUsers?.map((user) => {
+        const userLogin = `${user.login}`;
+        const userName = `${user.first_name}${user.second_name}`;
+        return `<li class="list-search__item" on:click={{createChat}} data-user=${user.id}>${userLogin}: ${user.first_name} ${user.second_name}</li>`;
       });
+      findUsers.push(...listUsersLayout);
+      findUsers.push('</ul>');
     }
-
     const context = { ...user, chats, chatsLayout, messagesLayout, findUsers };
 
     return chatTmpl.compile(context);

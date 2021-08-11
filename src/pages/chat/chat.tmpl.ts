@@ -10,10 +10,8 @@ export default `
       </div>
       <div class="chat-list-search__field">
         <i class="search-icon"></i>
-        <input type="text" placeholder="Поиск" class="chat-list-search__input" on:input={{handleSearchUser}}>
-        <ul class="list-search__users">
+        <input type="text" placeholder="Поиск" class="chat-list-search__input" on:change={{handleSearchUser}}>
           {{findUsers}}
-        </ul>
       </div>
     </div>
     <ul class="chat-list__items">
