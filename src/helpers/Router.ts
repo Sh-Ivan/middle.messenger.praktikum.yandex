@@ -27,8 +27,17 @@ export default class Router {
     this.go = this.go.bind(this);
   }
 
-  use(pathname: string, block: any, props?: TProps, isPrivate: boolean = false): Router {
-    const route = new Route(pathname, block, { ...props, rootQuery: this._rootQuery, isPrivate });
+  use(
+    pathname: string,
+    block: any,
+    props?: TProps,
+    isPrivate: boolean = false,
+  ): Router {
+    const route = new Route(pathname, block, {
+      ...props,
+      rootQuery: this._rootQuery,
+      isPrivate,
+    });
     this.routes.push(route);
     return this;
   }

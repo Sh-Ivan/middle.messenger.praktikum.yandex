@@ -31,7 +31,11 @@ class Route {
 
   leave() {
     if (this._block) {
-      this._block.hide();
+      //this._block.hide();
+      const root = document.querySelector(this._props.rootQuery);
+      if (root !== null) {
+        root.innerHTML = '';
+      }
     }
   }
 
@@ -43,10 +47,10 @@ class Route {
     if (!this._block) {
       this._block = new this._blockClass(this._props) as IBlock;
       render(this._props.rootQuery, this._block);
-      return;
+      //return;
     }
 
-    this._block.show();
+    //this._block.show();
   }
 }
 

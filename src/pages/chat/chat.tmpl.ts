@@ -1,5 +1,5 @@
 export default `
-  <div class="chat-page" on:click={{hideMenu}}>
+  <div class="chat-page" on:click={{}}>
   <aside class="chat-list">
     <div class="chat-list__search">
       <div class="chat-list-search__avatar" on:click={{toggleMainMenu}}></div>

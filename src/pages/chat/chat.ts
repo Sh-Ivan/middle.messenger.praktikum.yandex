@@ -72,10 +72,16 @@ class Chat extends Block<TChatProps> {
         menu?.classList.toggle('hide');
       },
 
-      hideMenu: () => {
+      hideMenu: (event) => {
         console.log('hide menu');
-        document.querySelector('.chat-list__menu')?.classList.add('hide');
-        document.querySelector('.chat-header__menu')?.classList.add('hide');
+        const chatListMenu = document.querySelector('.chat-list__menu');
+        const chatHeaderMenu = document.querySelector('.chat-header__menu');
+        if (event.target !== chatListMenu) {
+          chatListMenu?.classList.add('hide');
+        }
+        if (event.target !== chatHeaderMenu) {
+          chatHeaderMenu?.classList.add('hide');
+        }
       },
 
       connectToChat: (event: Event) => {
@@ -123,7 +129,7 @@ class Chat extends Block<TChatProps> {
     });
   }
 
-  componentDidUpdate(prevProps, props) {
+  componentDidUpdate() {
     const messageList = document.querySelector('section.chat-main');
     if (messageList) {
       messageList.scrollTop = messageList.scrollHeight;
