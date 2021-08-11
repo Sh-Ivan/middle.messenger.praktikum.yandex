@@ -16,13 +16,9 @@ class ChatSocketController {
     });
 
     this.socket.addEventListener('message', (event) => {
-      console.log(event);
       const state = ChatStore.getState();
       const messages = JSON.parse(event.data);
-      console.log(messages);
-      const chatIndex = state.findIndex(
-        (chat: any) => chat.id === this._chatId,
-      );
+      const chatIndex = state.findIndex((chat: any) => chat.id === this._chatId);
       if (chatIndex !== -1) {
         if (Array.isArray(messages)) {
           state[chatIndex].messages = messages;

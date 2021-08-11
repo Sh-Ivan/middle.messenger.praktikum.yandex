@@ -46,6 +46,7 @@ class Route {
   render() {
     if (!this._block) {
       this._block = new this._blockClass(this._props) as IBlock;
+      console.log(this._block);
       render(this._props.rootQuery, this._block);
       //return;
     }

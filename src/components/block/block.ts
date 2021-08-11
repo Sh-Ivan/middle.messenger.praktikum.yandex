@@ -111,24 +111,20 @@ class Block<T> implements IBlock {
 
   _render() {
     this.textContent = this.render();
-    //this._element = document.createElement(this._meta?.tagName);
+    console.log(this.textContent);
     this._element.innerHTML = this.textContent;
-    //this._element = this._element.content;
-    console.log(this._element);
     /*
     this._element = this._element.firstElementChild
       ? (this._element.firstElementChild as HTMLElement)
       : this._element;
       */
     const elements = this._element.content.querySelectorAll('*');
-    console.log(elements);
 
     for (let i = 0; i < elements.length; i += 1) {
       const element = <HTMLElement>elements[i];
       for (let j = 0; j < element.attributes.length; j += 1) {
         const attribute = element.attributes[j];
         if (attribute.name.search(/on:/) !== -1) {
-          console.log(attribute.name);
           const eventName = attribute.name.trim().slice(3);
           const eventHandler: string = attribute.value.slice(2, -2);
           // eslint-disable-next-line keyword-spacing
@@ -144,7 +140,7 @@ class Block<T> implements IBlock {
   }
 
   getContent() {
-    return this.element.content;
+    return this.element;
   }
 
   _makePropsProxy(props: {}) {

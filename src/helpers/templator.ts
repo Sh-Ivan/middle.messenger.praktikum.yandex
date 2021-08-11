@@ -24,11 +24,13 @@ export default class Templator {
 
       if (typeof value === 'function') {
         newTemplate = newTemplate.replace(templateVar, key);
-      } else if (Array.isArray(value)) {
+      } else if (Array.isArray(value) && false) {
+        console.log(value);
         let listElements = '';
         value.forEach((elem: string) => {
           listElements = listElements.concat(elem);
         });
+        console.log(listElements);
         newTemplate = newTemplate.replace(templateVar, listElements);
         const newCtx = { ...ctx };
         newCtx[key] = null;

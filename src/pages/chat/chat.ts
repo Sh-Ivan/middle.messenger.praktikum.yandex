@@ -139,7 +139,7 @@ class Chat extends Block<TChatProps> {
 
   render() {
     const { user, chats, activeChatId, listUsers } = this.props as TChatProps;
-    console.log(listUsers);
+    console.log(this.props.chats);
     const messages = chats?.find((chat) => chat.id === activeChatId)?.messages;
     const chatsLayout = chats?.map((chat) => {
       const dateTime: Date = new Date(chat.last_message.time);
