@@ -4,8 +4,7 @@ export default `
     <div class="chat-list__search">
       <div class="chat-list-search__avatar" on:click={{toggleMainMenu}}></div>
       <div class="chat-list__menu hide" on:click={{toggleMainMenu}}>
-        <a href="/user" class="list-menu__item">Просмотреть профиль</a>
-        <div class="list-menu__item" on:click={{deleteUsers}}>Удалить пользователя</div>
+        <a href="/user" class="list-menu__item">Профиль пользователя</a>
         <div class="list-menu__item" on:click={{logout}}>Выйти</div>
       </div>
       <div class="chat-list-search__field">

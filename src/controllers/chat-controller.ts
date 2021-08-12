@@ -97,6 +97,7 @@ class ChatController {
         console.log(result.response);
         if (result.status === 200) {
           //UserStore.setState(JSON.parse(result.response));
+          this.getChatUsers({ id: +data.chatId });
         }
       })
       .catch((error) => {

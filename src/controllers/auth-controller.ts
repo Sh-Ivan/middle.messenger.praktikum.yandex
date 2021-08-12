@@ -34,6 +34,7 @@ class AuthController {
     authAPIInstance
       .login(data)
       .then((result: XMLHttpRequest) => {
+        console.log(result);
         if (result.status === 200) {
           AppRouter.go('/');
         }

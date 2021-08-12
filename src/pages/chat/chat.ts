@@ -39,7 +39,6 @@ class Chat extends Block<TChatProps> {
             chatController.createChat({ title: `${user.first_name} ${user.second_name}` });
           }
         }
-        //chatController.createChat({ title: 'first' });
       },
 
       deleteChat: () => {
@@ -47,10 +46,18 @@ class Chat extends Block<TChatProps> {
       },
 
       addUsers: () => {
-        chatController.addUsers({
-          users: [93096],
-          chatId: 243,
-        });
+        const userLogin = prompt('Введите логин пользователя');
+        userController.searchUser(userLogin);
+        const user = this.props.listUsers.find((user) => user.login === userLogin);
+        if (user) {
+          console.log(`User ${user.login} found`);
+          chatController.addUsers({
+            users: [user.id],
+            chatId: this.props.activeChatId,
+          });
+        } else {
+          console.log(`User ${user.login} not found!`);
+        }
       },
 
       getChatUsers: () => {
@@ -151,7 +158,9 @@ class Chat extends Block<TChatProps> {
     const chatsLayout = chats?.map((chat) => {
       const dateTime: Date = new Date(chat.last_message?.time);
       const time: string = dateTime.getHours() + ':' + dateTime.getMinutes();
-      return `<li class="chat-list__item" on:click={{connectToChat}} data-id=${chat.id}>
+      const classList =
+        chat.id === activeChatId ? 'chat-list__item chat-active' : 'chat-list__item';
+      return `<li class="${classList}" on:click={{connectToChat}} data-id=${chat.id}>
       <div class="chat-list-item__avatar">
       </div>
       <div class="chat-list-item__rows">
@@ -199,7 +208,6 @@ class Chat extends Block<TChatProps> {
 
     let findUsers = null;
     if (listUsers && listUsers.length > 0) {
-      console.log(listUsers);
       findUsers = ['<ul class="list-search__users">'];
       const listUsersLayout = listUsers?.map((user) => {
         const userLogin = `${user.login}`;
