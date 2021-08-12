@@ -19,14 +19,16 @@ class AuthController {
       });
   }
 
-  getUserInfo(cb: any) {
-    authAPIInstance.getUserInfo().then((res: XMLHttpRequest) => {
+  getUserInfo<T>(cb: any): Promise<T> {
+    return authAPIInstance.getUserInfo().then((res: XMLHttpRequest) => {
+      const userInfo = JSON.parse(res.response);
       if (res.status === 200) {
         UserStore.on(EVENTS.STORE_CHANGED, cb);
-        UserStore.setState(JSON.parse(res.response));
+        UserStore.setState(userInfo);
       } else {
         AppRouter.go('/login');
       }
+      return userInfo;
     });
   }
 

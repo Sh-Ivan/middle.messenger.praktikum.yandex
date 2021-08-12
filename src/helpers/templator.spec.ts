@@ -1,8 +1,8 @@
 import { assert } from 'chai';
 
-//import Router from './Router';
+//import templator from './templator';
 
-describe('Test Router', () => {
+describe('Test Templator', () => {
   it('Tests was written', () => {
     assert.equal(false, true);
   });

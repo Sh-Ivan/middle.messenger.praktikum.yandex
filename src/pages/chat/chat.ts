@@ -36,7 +36,9 @@ class Chat extends Block<TChatProps> {
           console.log(id);
           const user = this.props.listUsers.find((user) => user.id === +id);
           if (user) {
-            chatController.createChat({ title: `${user.first_name} ${user.second_name}` });
+            chatController.createChat({
+              title: `${user.first_name} ${user.second_name}`,
+            });
           }
         }
       },
@@ -47,17 +49,24 @@ class Chat extends Block<TChatProps> {
 
       addUsers: () => {
         const userLogin = prompt('Введите логин пользователя');
-        userController.searchUser(userLogin);
-        const user = this.props.listUsers.find((user) => user.login === userLogin);
-        if (user) {
-          console.log(`User ${user.login} found`);
-          chatController.addUsers({
-            users: [user.id],
-            chatId: this.props.activeChatId,
-          });
-        } else {
-          console.log(`User ${user.login} not found!`);
-        }
+        userController.searchUser(userLogin).then((result) => {
+          console.log(result);
+          /*
+            const user = this.props.listUsers.find(
+              (user) => user.login === userLogin,
+            );
+            console.log(`User seacrh`);
+            if (user) {
+              console.log(`User ${user.login} found`);
+              chatController.addUsers({
+                users: [user.id],
+                chatId: this.props.activeChatId,
+              });
+            } else {
+              console.log(`User ${user.login} not found!`);
+            }
+            */
+        });
       },
 
       getChatUsers: () => {
@@ -159,7 +168,9 @@ class Chat extends Block<TChatProps> {
       const dateTime: Date = new Date(chat.last_message?.time);
       const time: string = dateTime.getHours() + ':' + dateTime.getMinutes();
       const classList =
-        chat.id === activeChatId ? 'chat-list__item chat-active' : 'chat-list__item';
+        chat.id === activeChatId
+          ? 'chat-list__item chat-active'
+          : 'chat-list__item';
       return `<li class="${classList}" on:click={{connectToChat}} data-id=${chat.id}>
       <div class="chat-list-item__avatar">
       </div>

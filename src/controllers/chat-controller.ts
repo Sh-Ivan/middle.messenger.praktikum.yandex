@@ -7,15 +7,16 @@ import ChatSocketController from './chat-socket-controller';
 const chatAPIInstance = new ChatAPI();
 
 class ChatController {
-  getChats(userId: number): void {
-    chatAPIInstance
+  getChats<T>(userId: number): Promise<T> {
+    return chatAPIInstance
       .getChats()
       .then((result: XMLHttpRequest) => {
+        const chats = JSON.parse(result.response);
         if (result.status === 200) {
-          const chats = JSON.parse(result.response);
           ChatStore.setState(chats);
           this.getToken({ chatId: chats[0].id, userId });
         }
+        return chats;
       })
       .catch((error) => {
         console.log(error);
@@ -42,7 +43,11 @@ class ChatController {
       .then((result: XMLHttpRequest) => {
         if (result.status === 200) {
           const token = JSON.parse(result.response)?.token;
-          const chatSocketController = new ChatSocketController(data.userId, data.chatId, token);
+          const chatSocketController = new ChatSocketController(
+            data.userId,
+            data.chatId,
+            token,
+          );
           const state = ChatStore.getState() as TChat[];
           const chatIndex = state.findIndex((chat) => chat.id === data.chatId);
           if (chatIndex === -1) {
@@ -105,14 +110,16 @@ class ChatController {
       });
   }
 
-  getChatUsers(data: { [key: string]: unknown }): void {
-    chatAPIInstance
+  getChatUsers<T>(data: { [key: string]: unknown }): Promise<T> {
+    return chatAPIInstance
       .getChatUsers(data)
       .then((result: XMLHttpRequest) => {
         console.log(result.response);
+        const chatUsers = JSON.parse(result.response);
         if (result.status === 200) {
-          //UserStore.setState(JSON.parse(result.response));
+          //UserStore.setState(chatUsers);
         }
+        return chatUsers;
       })
       .catch((error) => {
         console.log(error);

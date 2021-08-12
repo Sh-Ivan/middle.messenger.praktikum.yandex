@@ -6,14 +6,16 @@ import { EVENTS } from '../helpers/store';
 const userAPIInstance = new UserAPI();
 
 class UserController {
-  changeData(data: { [key: string]: string }): void {
-    userAPIInstance
+  changeData<T>(data: { [key: string]: string }): Promise<T> {
+    return userAPIInstance
       .changeData(data)
       .then((result: XMLHttpRequest) => {
         console.log(result);
+        const newData = JSON.parse(result.response);
         if (result.status === 200) {
-          UserStore.setState(JSON.parse(result.response));
+          UserStore.setState(newData);
         }
+        return newData;
       })
       .catch((error) => {
         console.log(error);
@@ -45,23 +47,26 @@ class UserController {
       });
   }
 
-  getUser(id: number): void {
-    userAPIInstance
+  getUser<T>(id: number): Promise<T> {
+    return userAPIInstance
       .getUser(id)
       .then((result: XMLHttpRequest) => {
         console.log(result);
+        return JSON.parse(result.response);
       })
       .catch((error) => {
         console.log(error);
       });
   }
 
-  searchUser(login: string): void {
-    userAPIInstance
+  searchUser<T>(login: string): Promise<T> {
+    return userAPIInstance
       .searchUser(login)
       .then((result: XMLHttpRequest) => {
-        ListUsers.setState(JSON.parse(result.response));
-        console.log(result);
+        const listUsers = JSON.parse(result.response);
+        ListUsers.setState(listUsers);
+        console.log(listUsers);
+        return listUsers;
       })
       .catch((error) => {
         console.log(error);
