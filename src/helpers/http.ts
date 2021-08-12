@@ -61,7 +61,11 @@ class HTTPTransport<TRequest> {
           : fullUrl,
       );
       xhr.timeout = timeout;
+
       Object.entries(headers).forEach(([key, value]) => {
+        if (data?.form && key === 'Content-Type') {
+          return;
+        }
         xhr.setRequestHeader(key, value);
       });
 
@@ -75,6 +79,8 @@ class HTTPTransport<TRequest> {
 
       if (method === METHODS.GET || !data) {
         xhr.send();
+      } else if (data.form) {
+        xhr.send(data.form);
       } else {
         xhr.send(JSON.stringify(data));
       }

@@ -48,11 +48,11 @@ export default `
 
       <aside class="user-profile__aside">
         <div class="avatar-wrapper">
-          <i class="avatar-icon"></i>
+          {{userAvatar}}
         </div>
         <input type="file" id="avatar" accept="image/*" />
         <label for="avatar"></label>
-          <a href="#" class="auth-panel__link" on:click={{changeAvatar}}>Загрузить новое фото</a>
+          <a href="" class="auth-panel__link" on:click={{changeAvatar}}>Загрузить новое фото</a>
           </label>
           <a href="#" class="auth-panel__link user-profile__link_reject" on:click={{deleteAvatar}}>Удалить фото</a>
       </aside>

@@ -8,7 +8,9 @@ export default class UserAPI {
   }
 
   changeAvatar(data: any) {
-    return userAPIInstance.put('profile/avatar', { data });
+    return userAPIInstance.put('profile/avatar', {
+      data,
+    });
   }
 
   changePassword(data: any) {

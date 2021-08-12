@@ -32,9 +32,14 @@ class EditUserProfile extends Block<editUserProfileProps> {
           userController.changeData(data);
         }
       },
-      changeAvatar: (e: Event) => {
-        // photo
-        userController.changeAvatar({ avatar: '' });
+      changeAvatar: (event: Event) => {
+        event.preventDefault();
+        const avatar = document.getElementById('avatar');
+        if (avatar?.files.length > 0) {
+          const form = new FormData();
+          form.append('avatar', avatar.files[0]);
+          userController.changeAvatar({ form });
+        }
       },
       deleteAvatar: () => {
         userController.changeAvatar({ avatar: '' });
@@ -58,7 +63,16 @@ class EditUserProfile extends Block<editUserProfileProps> {
       }).textContent,
     };
     const { user } = this.props as editUserProfileProps;
-    const context = { ...button, ...user };
+    let userAvatar;
+    if (user?.avatar) {
+      userAvatar = `
+        <img src="https://ya-praktikum.tech/api/v2/uploads${user.avatar}">
+      `;
+    } else {
+      userAvatar = `<i class="avatar-icon"></i>`;
+    }
+    console.log(user);
+    const context = { ...button, ...user, userAvatar };
     return editUserProfileTmpl.compile(context);
   }
 }
