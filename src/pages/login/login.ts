@@ -5,6 +5,7 @@ import Button from '../../components/Button/Button';
 import handleSubmit from '../../helpers/formSubmit';
 import { handleFocus, handleBlur } from '../../helpers/inputValidate';
 import AuthController from '../../controllers/auth-controller';
+import AppRouter from '../../components/App';
 
 const loginTmpl = new Templator(loginTemplate);
 const authController = new AuthController();
@@ -28,6 +29,18 @@ class Login extends Block<loginProps> {
         }
       },
     });
+  }
+
+  componentDidMount() {
+    authController
+      .getUserInfo((user: TProps) => {
+        this.setProps({ user });
+      })
+      .then((user: TProps) => {
+        if (user) {
+          AppRouter.go('/');
+        }
+      });
   }
 
   render() {

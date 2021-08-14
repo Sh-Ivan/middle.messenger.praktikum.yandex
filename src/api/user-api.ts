@@ -22,7 +22,6 @@ export default class UserAPI {
   }
 
   searchUser(login: string) {
-    console.log({ login });
     return userAPIInstance.post('search', { data: { login } });
   }
 }

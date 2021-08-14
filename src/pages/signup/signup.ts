@@ -24,7 +24,11 @@ class Signup extends Block<signupdProps> {
       handleSubmit: (e: Event) => {
         const data = handleSubmit(e);
         if (data !== null) {
-          authController.signup(data);
+          const escapedData: { [key: string]: string } = {};
+          Object.entries(data).map(([key, value]) => {
+            escapedData[key] = escape(value);
+          });
+          authController.signup(escapedData);
         }
       },
     });

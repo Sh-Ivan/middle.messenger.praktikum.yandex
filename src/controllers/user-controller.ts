@@ -65,7 +65,6 @@ class UserController {
       .then((result: XMLHttpRequest) => {
         const listUsers = JSON.parse(result.response);
         ListUsers.setState(listUsers);
-        console.log(listUsers);
         return listUsers;
       })
       .catch((error) => {

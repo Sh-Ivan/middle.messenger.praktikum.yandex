@@ -1,5 +1,8 @@
 import Route from './Route';
 import { TProps } from '../components/block/block';
+import AuthController from '../controllers/auth-controller';
+
+const authController = new AuthController();
 
 export default class Router {
   static __instance: Router;
@@ -27,12 +30,7 @@ export default class Router {
     this.go = this.go.bind(this);
   }
 
-  use(
-    pathname: string,
-    block: any,
-    props?: TProps,
-    isPrivate: boolean = false,
-  ): Router {
+  use(pathname: string, block: any, props?: TProps, isPrivate: boolean = false): Router {
     const route = new Route(pathname, block, {
       ...props,
       rootQuery: this._rootQuery,
@@ -50,21 +48,23 @@ export default class Router {
   }
 
   _onRoute(pathname: string): void {
-    let route = this.getRoute(pathname) || this.getRoute('404');
-    if (!route) {
-      return;
-    }
-
-    if (route._props.isPrivate && this.private.usePrivate) {
-      route = this.getRoute(this.private.redirectRouter);
-    }
-
+    const route = this.getRoute(pathname) || this.getRoute('404');
     if (!route) {
       return;
     }
 
     if (this._currentRoute) {
       this._currentRoute.leave();
+    }
+
+    if (pathname !== '/login' && pathname !== '/signup') {
+      authController
+        .getUserInfo(() => {})
+        .then((user) => {
+          if (!user) {
+            this.go('/login');
+          }
+        });
     }
 
     this._currentRoute = route;

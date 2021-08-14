@@ -56,9 +56,7 @@ class HTTPTransport<TRequest> {
       xhr.withCredentials = true;
       xhr.open(
         method || METHODS.GET,
-        method === METHODS.GET && !!data
-          ? `${fullUrl}${queryStringify(data)}`
-          : fullUrl,
+        method === METHODS.GET && !!data ? `${fullUrl}${queryStringify(data)}` : fullUrl,
       );
       xhr.timeout = timeout;
 

@@ -208,7 +208,7 @@ a.list-menu__item {
 
 .chat-main {
   flex-grow: 1;
-  margin: 45px 20px 17px 16px;
+  margin: 15px 20px 7px 16px;
   overflow-y: auto;
 }
 
@@ -221,20 +221,35 @@ a.list-menu__item {
 }
 
 .chat-main__message {
-  max-width: 402px;
+  max-width: 600px;
   width: fit-content;
   padding: 11px;
   font-weight: 500;
   font-size: 12px;
   line-height: 15px;
   position: relative;
+
+  &:last-child {
+    margin-bottom: 10px;
+  }
+}
+
+.chat-main__message-image {
+  max-width: 600px;
+  max-height: 450px;
+}
+
+.chat-main__no-message {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .message-date {
   text-align: right;
   font-weight: 500;
   font-size: 9px;
-  float: right;
   color: #999999;
   line-height: 16px;
   padding-left: 8px;

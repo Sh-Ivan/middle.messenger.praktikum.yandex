@@ -46,9 +46,9 @@ export default class Templator {
           });
         }
       } else {
-        let replacer: string = value === '' ? '""' : (value as string);
+        let replacer: string = value === '' ? '&nbsp;' : (value as string);
         if (value === null || value === undefined) {
-          replacer = '';
+          replacer = '&nbsp;';
         }
         newTemplate = newTemplate.replace(templateVar, replacer);
       }

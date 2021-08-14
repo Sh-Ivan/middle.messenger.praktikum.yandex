@@ -8,6 +8,7 @@ import handleSubmit from '../../helpers/formSubmit';
 import { handleFocus, handleBlur } from '../../helpers/inputValidate';
 import AuthController from '../../controllers/auth-controller';
 import UserController from '../../controllers/user-controller';
+import escape from '../../helpers/escape';
 
 const editUserProfileTmpl = new Templator(editUserProfileTemplate);
 const authController = new AuthController();
@@ -29,11 +30,14 @@ class EditUserProfile extends Block<editUserProfileProps> {
       handleSubmit: (e: Event) => {
         const data = handleSubmit(e);
         if (data !== null) {
-          userController.changeData(data);
+          const escapedData: { [key: string]: string } = {};
+          Object.entries(data).map(([key, value]) => {
+            escapedData[key] = escape(value);
+          });
+          userController.changeData(escapedData);
         }
       },
-      changeAvatar: (event: Event) => {
-        event.preventDefault();
+      changeAvatar: () => {
         const avatar = document.getElementById('avatar');
         if (avatar?.files.length > 0) {
           const form = new FormData();
@@ -66,7 +70,7 @@ class EditUserProfile extends Block<editUserProfileProps> {
     let userAvatar;
     if (user?.avatar) {
       userAvatar = `
-        <img src="https://ya-praktikum.tech/api/v2/uploads${user.avatar}">
+        <img src="https://ya-praktikum.tech/api/v2/resources${user.avatar}" class="avatar-wrapper">
       `;
     } else {
       userAvatar = `<i class="avatar-icon"></i>`;

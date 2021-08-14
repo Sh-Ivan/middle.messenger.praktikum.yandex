@@ -5,24 +5,27 @@ const socketHost = 'wss://ya-praktikum.tech/ws/chats/';
 class ChatSocketController {
   socket: WebSocket;
   _chatId: number;
+  intervalId: number;
 
   constructor(userId: number, chatId: number, token: string) {
     this._chatId = chatId;
     this.socket = new WebSocket(`${socketHost}${userId}/${chatId}/${token}`);
 
     this.socket.addEventListener('open', () => {
-      console.log('Socket connection open');
       this.getMessages();
+      this.intervalId = setInterval(() => this.sendMessage('', 'ping'), 20000);
     });
 
     this.socket.addEventListener('message', (event) => {
       const state = ChatStore.getState();
       const messages = JSON.parse(event.data);
+      if (messages.type === 'pong') return;
       const chatIndex = state.findIndex((chat: any) => chat.id === this._chatId);
       if (chatIndex !== -1) {
         if (Array.isArray(messages)) {
           state[chatIndex].messages = messages;
-        } else {
+        } else if (messages.type === 'message' || messages.type === 'file') {
+          console.log(messages);
           state[chatIndex].messages.unshift(messages);
         }
       }
@@ -36,6 +39,7 @@ class ChatSocketController {
         console.log('Connection interrupped!');
       }
       console.log(`Code: ${event.code} | Reason: ${event.reason}`);
+      clearInterval(this.intervalId);
     });
 
     this.socket.addEventListener('error', (event) => {
@@ -43,12 +47,11 @@ class ChatSocketController {
     });
   }
 
-  sendMessage(message: string): void {
-    //console.log(message);
+  sendMessage(message: string, type: string = 'message'): void {
     this.socket.send(
       JSON.stringify({
         content: message,
-        type: 'message',
+        type,
       }),
     );
   }

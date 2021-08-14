@@ -2,9 +2,9 @@ export default `
   <main class="user-profile">
     <header class="user-profile__wrapper">
       <div class="avatar-wrapper">
-        <i class="avatar-icon"></i>
+        {{userAvatar}}
       </div>
-      <h2 class="user-profile__header">Иван</h2>
+      <h2 class="user-profile__header">{{fullName}}</h2>
     </header>
 
     <form class="user-profile__form ">

@@ -10,6 +10,7 @@ class AuthController {
     authAPIInstance
       .signup(data)
       .then((result: XMLHttpRequest) => {
+        console.log(result);
         if (result.status === 200) {
           AppRouter.go('/');
         }
@@ -20,15 +21,14 @@ class AuthController {
   }
 
   getUserInfo<T>(cb: any): Promise<T> {
-    return authAPIInstance.getUserInfo().then((res: XMLHttpRequest) => {
-      const userInfo = JSON.parse(res.response);
-      if (res.status === 200) {
+    return authAPIInstance.getUserInfo().then((result: XMLHttpRequest) => {
+      if (result.status === 200) {
+        const user = JSON.parse(result.response);
         UserStore.on(EVENTS.STORE_CHANGED, cb);
-        UserStore.setState(userInfo);
-      } else {
-        AppRouter.go('/login');
+        UserStore.setState(user);
+        return user;
       }
-      return userInfo;
+      AppRouter.go('/login');
     });
   }
 
@@ -36,7 +36,6 @@ class AuthController {
     authAPIInstance
       .login(data)
       .then((result: XMLHttpRequest) => {
-        console.log(result);
         if (result.status === 200) {
           AppRouter.go('/');
         }

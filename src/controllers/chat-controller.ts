@@ -43,11 +43,7 @@ class ChatController {
       .then((result: XMLHttpRequest) => {
         if (result.status === 200) {
           const token = JSON.parse(result.response)?.token;
-          const chatSocketController = new ChatSocketController(
-            data.userId,
-            data.chatId,
-            token,
-          );
+          const chatSocketController = new ChatSocketController(data.userId, data.chatId, token);
           const state = ChatStore.getState() as TChat[];
           const chatIndex = state.findIndex((chat) => chat.id === data.chatId);
           if (chatIndex === -1) {

@@ -7,13 +7,16 @@ import TChat from '../helpers/TChat';
 import AuthController from '../../controllers/auth-controller';
 import ChatController from '../../controllers/chat-controller';
 import UserController from '../../controllers/user-controller';
+import ResourceController from '../../controllers/resource-controller';
 import { byTime } from '../../helpers/sortUtils';
-import debounce from '../../helpers/debounce';
+import { isToday, isEqualDate } from '../../helpers/compareDate';
+import escape from '../../helpers/escape';
 
 const chatTmpl = new Templator(chatTemplate);
 const authController = new AuthController();
 const chatController = new ChatController();
 const userController = new UserController();
+const resourceController = new ResourceController();
 
 interface TChatProps {
   user: TUser;
@@ -23,8 +26,6 @@ interface TChatProps {
 }
 
 class Chat extends Block<TChatProps> {
-  //searchUser = debounce(userController.searchUser, 1000);
-
   constructor(props: any = {}) {
     super('div', {
       ...props,
@@ -33,7 +34,6 @@ class Chat extends Block<TChatProps> {
         const answer = confirm(`Начать чат?`);
         if (answer) {
           const id = event.target.dataset.user;
-          console.log(id);
           const user = this.props.listUsers.find((user) => user.id === +id);
           if (user) {
             chatController.createChat({
@@ -50,22 +50,15 @@ class Chat extends Block<TChatProps> {
       addUsers: () => {
         const userLogin = prompt('Введите логин пользователя');
         userController.searchUser(userLogin).then((result) => {
-          console.log(result);
-          /*
-            const user = this.props.listUsers.find(
-              (user) => user.login === userLogin,
-            );
-            console.log(`User seacrh`);
-            if (user) {
-              console.log(`User ${user.login} found`);
-              chatController.addUsers({
-                users: [user.id],
-                chatId: this.props.activeChatId,
-              });
-            } else {
-              console.log(`User ${user.login} not found!`);
-            }
-            */
+          const user = this.props.listUsers.find((user) => user.login === userLogin);
+          if (user) {
+            chatController.addUsers({
+              users: [user.id],
+              chatId: this.props.activeChat.id,
+            });
+          } else {
+            console.log(`User ${user.login} not found!`);
+          }
         });
       },
 
@@ -84,7 +77,8 @@ class Chat extends Block<TChatProps> {
 
       handleSearchUser: (event: Event) => {
         event.preventDefault();
-        userController.searchUser(event.target.value);
+        const escapedSearch = escape(event.target.value);
+        userController.searchUser(escapedSearch);
       },
 
       toggleMenu: () => {
@@ -98,7 +92,6 @@ class Chat extends Block<TChatProps> {
       },
 
       hideMenu: (event) => {
-        console.log('hide menu');
         const chatListMenu = document.querySelector('.chat-list__menu');
         const chatHeaderMenu = document.querySelector('.chat-header__menu');
         if (event.target !== chatListMenu) {
@@ -120,17 +113,32 @@ class Chat extends Block<TChatProps> {
           userId,
           chatId,
         });
-        this.setProps({ activeChatId: chatId });
+        const { chats } = this.props as TChatProps;
+        const chat = chats?.find((chat) => chat.id === chatId);
+        this.setProps({ activeChat: chat });
       },
 
       sendMessage: (event: Event) => {
         event.preventDefault();
-        const message = event.target[0].value;
-        event.target[0].value = '';
-        const { chats } = this.props as TChatProps;
-        const chat = chats?.find((chat) => chat.id === this.props.activeChatId);
+        const message = event.target.message.value;
+        const escapedMessage = escape(message);
+        const chat = this.props.activeChat;
         if (chat) {
-          chat.controller.sendMessage(message);
+          chat.controller.sendMessage(escapedMessage);
+        }
+      },
+
+      sendFile: (event: Event) => {
+        const image = event.target;
+        if (image?.files.length > 0) {
+          const form = new FormData();
+          form.append('resource', image.files[0]);
+          resourceController.sendFile({ form }).then((result) => {
+            const chat = this.props.activeChat;
+            if (chat) {
+              chat.controller.sendMessage(result.id, 'file');
+            }
+          });
         }
       },
 
@@ -143,7 +151,11 @@ class Chat extends Block<TChatProps> {
   componentDidMount() {
     authController.getUserInfo((user: TProps) => {
       this.setProps({ user });
-      chatController.getChats(user.id);
+      chatController.getChats(user.id).then((chats) => {
+        if (chats) {
+          this.setProps({ activeChat: chats[0] });
+        }
+      });
     });
     chatController.subscribeToChatStoreEvent((chats: TChat) => {
       this.setProps({ chats });
@@ -162,15 +174,16 @@ class Chat extends Block<TChatProps> {
   }
 
   render() {
-    const { user, chats, activeChatId, listUsers } = this.props as TChatProps;
-    const messages = chats?.find((chat) => chat.id === activeChatId)?.messages;
+    const { user, chats, activeChat, listUsers } = this.props as TChatProps;
+    const messages = activeChat?.messages;
     const chatsLayout = chats?.map((chat) => {
-      const dateTime: Date = new Date(chat.last_message?.time);
-      const time: string = dateTime.getHours() + ':' + dateTime.getMinutes();
+      let time: string = '';
+      if (chat.last_message) {
+        const dateTime: Date = new Date(chat.last_message?.time);
+        time = `${dateTime.getHours()}:${dateTime.getMinutes()}`;
+      }
       const classList =
-        chat.id === activeChatId
-          ? 'chat-list__item chat-active'
-          : 'chat-list__item';
+        chat.id === activeChat?.id ? 'chat-list__item chat-active' : 'chat-list__item';
       return `<li class="${classList}" on:click={{connectToChat}} data-id=${chat.id}>
       <div class="chat-list-item__avatar">
       </div>
@@ -185,7 +198,7 @@ class Chat extends Block<TChatProps> {
         </div>
         <div class="chat-list-item__row">
           <div class="chat-list-item__message">
-           ${chat.last_message?.content}
+           ${escape(chat.last_message?.content) || ''}
           </div>
           <div class="chat-list-item__badge">
             ${chat.unread_count}
@@ -196,26 +209,50 @@ class Chat extends Block<TChatProps> {
     });
 
     let prevDate: Date;
-    const messagesLayout = messages?.sort(byTime).map((message: any) => {
-      let dateSeparator = '';
+    let messagesLayout = messages?.sort(byTime).map((message: any) => {
+      let dateSeparator: string;
       const dateTime: Date = new Date(message.time);
-      if ((Date.now() - dateTime) / (1000 * 3600 * 24) > 0) {
-        dateSeparator = '<div class="chat-main__date">Вчера</div>';
-        prevDate = dateTime;
+      const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+      if (prevDate && isEqualDate(dateTime, prevDate)) {
+        dateSeparator = '';
+      } else if (!isToday(dateTime)) {
+        dateSeparator = `<div class="chat-main__date">${dateTime.toLocaleString(
+          'ru-Ru',
+          options,
+        )}</div>`;
+      } else {
+        dateSeparator = `<div class="chat-main__date">Сегодня</div>`;
       }
+
+      prevDate = dateTime;
       const time: string = dateTime.getHours() + ':' + dateTime.getMinutes();
       const classes: string =
         message.user_id === user.id
           ? 'chat-main__message chat-main__message_left'
           : 'chat-main__message chat-main__message_right';
 
+      let messageLayout;
+      if (message.type === 'file') {
+        messageLayout = `<div class="${classes}">
+          <img src="https://ya-praktikum.tech/api/v2/resources${message?.file?.path}" alt="image" 
+          class="chat-main__message-image"/>
+          <span class="message-date">${time}</span>
+        </div>`;
+      } else {
+        messageLayout = `
+        <div class="${classes}">
+          ${escape(message.content)}
+          <span class="message-date">${time}</span>
+        </div>`;
+      }
+
       return `
-      ${dateSeparator}
-      <div class="${classes}">
-        ${message.content}
-        <span class="message-date">${time}</span>
-      </div>`;
+      ${dateSeparator} ${messageLayout}`;
     });
+
+    if (messagesLayout?.length === 0) {
+      messagesLayout = '<div class="chat-main__no-message">Отправьте первое сообщение</div>';
+    }
 
     let findUsers = null;
     if (listUsers && listUsers.length > 0) {
@@ -228,7 +265,26 @@ class Chat extends Block<TChatProps> {
       findUsers.push(...listUsersLayout);
       findUsers.push('</ul>');
     }
-    const context = { ...user, chats, chatsLayout, messagesLayout, findUsers };
+
+    const activeChatTitle: string = activeChat?.title || null;
+
+    let userAvatar;
+    if (user?.avatar) {
+      userAvatar = `
+        <img src="https://ya-praktikum.tech/api/v2/resources${user.avatar}" class="chat-list-search__avatar">
+      `;
+    } else {
+      userAvatar = null;
+    }
+    const context = {
+      ...user,
+      chats,
+      chatsLayout,
+      messagesLayout,
+      findUsers,
+      activeChatTitle,
+      userAvatar,
+    };
 
     return chatTmpl.compile(context);
   }
