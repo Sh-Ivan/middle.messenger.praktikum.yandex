@@ -1,6 +1,7 @@
 import HTTP from '../helpers/http';
+import baseURL from './basURL';
 
-const authAPIInstance = new HTTP('https://ya-praktikum.tech/api/v2/auth/');
+const authAPIInstance = new HTTP(`${baseURL}/auth/`);
 
 export default class AuthAPI {
   signup(data: any) {
@@ -8,7 +9,7 @@ export default class AuthAPI {
   }
 
   getUserInfo() {
-    return authAPIInstance.get('user', {});
+    return authAPIInstance.get('user');
   }
 
   login(data: any) {
@@ -16,6 +17,6 @@ export default class AuthAPI {
   }
 
   logout() {
-    return authAPIInstance.post('logout', {});
+    return authAPIInstance.post('logout');
   }
 }

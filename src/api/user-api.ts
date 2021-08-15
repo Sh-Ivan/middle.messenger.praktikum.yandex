@@ -1,6 +1,7 @@
 import HTTP from '../helpers/http';
+import baseURL from './basURL';
 
-const userAPIInstance = new HTTP('https://ya-praktikum.tech/api/v2/user/');
+const userAPIInstance = new HTTP(`${baseURL}/user/`);
 
 export default class UserAPI {
   changeData(data: any) {
@@ -18,7 +19,7 @@ export default class UserAPI {
   }
 
   getUser(id: number) {
-    return userAPIInstance.get(`${id}`, {});
+    return userAPIInstance.get(`${id}`);
   }
 
   searchUser(login: string) {

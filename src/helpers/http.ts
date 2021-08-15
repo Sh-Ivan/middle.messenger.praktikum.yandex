@@ -31,19 +31,19 @@ class HTTPTransport {
     this.baseUrl = baseUrl;
   }
 
-  get = (url: string, options: Options): Promise<unknown> =>
+  get = (url: string, options: Options = {}): Promise<unknown> =>
     this.request(url, { ...options, method: METHODS.GET });
 
-  post = (url: string, options: Options): Promise<unknown> =>
+  post = (url: string, options: Options = {}): Promise<unknown> =>
     this.request(url, { ...options, method: METHODS.POST });
 
-  put = (url: string, options: Options): Promise<unknown> =>
+  put = (url: string, options: Options = {}): Promise<unknown> =>
     this.request(url, { ...options, method: METHODS.PUT });
 
-  delete = (url: string, options: Options): Promise<unknown> =>
+  delete = (url: string, options: Options = {}): Promise<unknown> =>
     this.request(url, { ...options, method: METHODS.DELETE });
 
-  request = (url: string, options: Options) => {
+  request = (url: string, options: Options = {}) => {
     const fullUrl: string = this.baseUrl + url;
     const {
       method,
