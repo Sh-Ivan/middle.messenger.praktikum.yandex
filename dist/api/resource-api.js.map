@@ -1,0 +1,1 @@
+{"version":3,"file":"resource-api.js","sourceRoot":"","sources":["../../src/api/resource-api.ts"],"names":[],"mappings":";;AAAA,0CAAmC;AAEnC,MAAM,mBAAmB,GAAG,IAAI,cAAI,CAAC,6CAA6C,CAAC,CAAC;AAEpF,MAAqB,UAAU;IAC7B,QAAQ,CAAC,IAAS;QAChB,OAAO,mBAAmB,CAAC,IAAI,CAAC,EAAE,EAAE,EAAE,IAAI,EAAE,CAAC,CAAC;IAChD,CAAC;CACF;AAJD,6BAIC"}
