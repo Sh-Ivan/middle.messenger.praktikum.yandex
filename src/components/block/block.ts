@@ -1,8 +1,12 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import EventBus from '../../helpers/event-bus';
 
-type TProps = { [key: string]: unknown };
+export interface TProps {
+  [key: string]: unknown;
+}
 
-export interface IBlock {
+export interface IBlock<T> {
   element: HTMLElement;
   props: unknown;
   init: () => void;
@@ -10,7 +14,7 @@ export interface IBlock {
   show: () => void;
   render: () => string;
   componentDidMount: () => void;
-  componentDidUpdate: () => boolean;
+  componentDidUpdate: (oldProps: T, newProps: T) => boolean;
   setProps: (nextProps: unknown) => void;
   getContent: () => HTMLElement;
 }
@@ -20,7 +24,7 @@ type Meta = {
   props: TProps;
 };
 
-class Block<T> implements IBlock {
+class Block<T> implements IBlock<T> {
   static EVENTS = {
     INIT: 'init',
     FLOW_CDM: 'flow:component-did-mount',
@@ -35,6 +39,8 @@ class Block<T> implements IBlock {
   eventBus: () => EventBus;
 
   props: TProps;
+
+  textContent: string;
 
   constructor(tagName = 'div', props: TProps) {
     const eventBus = new EventBus();
@@ -64,6 +70,7 @@ class Block<T> implements IBlock {
   _createResources() {
     const tagName = this._meta !== null ? this._meta?.tagName : 'div';
     this._element = this._createDocumentElement(tagName);
+    //this._element = document.createElement('template');
   }
 
   init() {
@@ -79,15 +86,15 @@ class Block<T> implements IBlock {
   componentDidMount(): void {}
 
   _componentDidUpdate(oldProps: T, newProps: T) {
+    const response = this.componentDidUpdate(oldProps, newProps);
     if (newProps !== oldProps) {
-      const response = this.componentDidUpdate();
-      if (response) {
-        this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
-      }
+      this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
+    } else if (response) {
+      this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
     }
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(_oldProps: T, _newProps: T) {
     return true;
   }
 
@@ -96,7 +103,7 @@ class Block<T> implements IBlock {
       return;
     }
     const oldProps = this.props;
-    this.props = this._makePropsProxy(Object.assign(oldProps, nextProps));
+    this.props = this._makePropsProxy({ ...oldProps, ...nextProps });
     this.eventBus().emit(Block.EVENTS.FLOW_CDU, oldProps, nextProps);
   };
 
@@ -105,11 +112,13 @@ class Block<T> implements IBlock {
   }
 
   _render() {
-    const block = this.render();
-    this._element.innerHTML = block;
+    this.textContent = this.render();
+    this._element.innerHTML = this.textContent;
+
     this._element = this._element.firstElementChild
       ? (this._element.firstElementChild as HTMLElement)
       : this._element;
+
     const elements = this._element.querySelectorAll('*');
 
     for (let i = 0; i < elements.length; i += 1) {

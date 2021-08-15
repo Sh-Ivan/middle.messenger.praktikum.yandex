@@ -1,11 +1,16 @@
-export default function getObjectValue<T1, T2>(
-  obj: T1,
-  path: string,
-  defaultValue?: T2,
-): unknown | T2 {
-  const arrPath: string[] = path.split('.');
-  const result = arrPath.reduce((result: unknown, value: string) => {
-    if (result && typeof result === 'object') return result[value];
-  }, obj);
-  return result || defaultValue;
+type Tobject = { [key: string]: unknown };
+
+function getObjectValue<T>(obj: Tobject, path: string, defaultValue?: T): T | unknown {
+  const objectKeys: string[] = path.split('.');
+  let result: Tobject = obj;
+  for (let i = 0; i < objectKeys.length; i += 1) {
+    result = result[objectKeys[i]] as Tobject;
+
+    if (result === undefined) {
+      return defaultValue;
+    }
+  }
+  return result;
 }
+
+export default getObjectValue;

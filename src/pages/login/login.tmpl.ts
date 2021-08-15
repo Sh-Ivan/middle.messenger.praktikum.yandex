@@ -10,7 +10,7 @@ export default `
       <input type="password" id="password" name="password" placeholder="Пароль" class="auth-form__input"
       on:focus={{handleFocus}} on:blur={{handleBlur}}>
       <span class="input-error hide" data-error="password"></span>
-      <button type="submit" class="auth-form__button">Авторизоваться</button>
+      {{loginButton}}
     </form>
     <a href="/signup" class="auth-panel__link">Нет аккаунта?</a>
   </main>

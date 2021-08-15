@@ -13,7 +13,7 @@ export default class Templator {
     this._template = template;
   }
 
-  compile(ctx: object = {}): string {
+  compile(ctx: { [key: string]: unknown } = {}): string {
     let newTemplate: string = this._template;
     if (!ctx || Object.keys(ctx).length === 0) {
       return this._template;
@@ -24,20 +24,35 @@ export default class Templator {
 
       if (typeof value === 'function') {
         newTemplate = newTemplate.replace(templateVar, key);
-      } else if (typeof value === 'object') {
+      } else if (Array.isArray(value)) {
+        let listElements = '';
+        value.forEach((elem: string) => {
+          listElements = listElements.concat(elem);
+        });
+        newTemplate = newTemplate.replace(templateVar, listElements);
+        const newCtx = { ...ctx };
+        newCtx[key] = null;
+        return new Templator(newTemplate).compile(newCtx);
+      } else if (typeof value === 'object' && value !== null) {
         // eslint-disable-next-line no-useless-escape
-        const temolateObjectVar: RegExp = new RegExp(`{{\\s*${key}\..*?}}`, 'g');
+        const temolateObjectVar: RegExp = new RegExp(`{{\\s*${key}\\s*\}\}?`, 'g');
         const varsInObject: RegExpMatchArray | null = newTemplate.match(temolateObjectVar);
         if (varsInObject !== null) {
           varsInObject.forEach((nextVar: string) => {
             const path: string = nextVar.slice(2, -2).trim();
+            console.log(ctx);
+            console.log(path);
             const newValue: unknown = getObjectValue(ctx, path);
+            console.log(newValue);
             const replacer: string = newValue === '' ? '""' : (newValue as string);
             newTemplate = newTemplate.replace(nextVar, replacer);
           });
         }
       } else {
-        const replacer: string = value === '' ? '""' : (value as string);
+        let replacer: string = value === '' ? '&nbsp;' : (value as string);
+        if (value === null || value === undefined) {
+          replacer = '&nbsp;';
+        }
         newTemplate = newTemplate.replace(templateVar, replacer);
       }
     });

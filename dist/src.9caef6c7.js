@@ -192,23 +192,18 @@ module.hot.accept(reloadCSS);
 },{"./../static/img/union.svg":[["union.4fc3f647.svg","img/union.svg"],"img/union.svg"],"_css_loader":"../node_modules/parcel-bundler/src/builtins/css-loader.js"}],"../src/helpers/getObjectValue.ts":[function(require,module,exports) {
 "use strict";
 
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
 function getObjectValue(obj, path, defaultValue) {
-  var objectKeys = path.split('.');
-  var result = obj;
-
-  for (var i = 0; i < objectKeys.length; i += 1) {
-    result = result[objectKeys[i]];
-
-    if (result === undefined) {
-      return result;
-    }
-  }
-
-  return result !== null && result !== void 0 ? result : defaultValue;
+  var arrPath = path.split('.');
+  var result = arrPath.reduce(function (result, value) {
+    if (result && _typeof(result) === 'object') return result[value];
+  }, obj);
+  return result || defaultValue;
 }
 
 exports.default = getObjectValue;
@@ -306,7 +301,7 @@ exports.default = Templator;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = "\n  <main class=\"auth-panel auth-panel_login\">\n    <h1 class=\"auth-panel__header\">\u0412\u0445\u043E\u0434</h1>\n    <form class=\"auth-form\" on:submit={{handleSubmit}}>\n      <label for=\"login\" class=\"auth-form__label\">\u041B\u043E\u0433\u0438\u043D</label>\n      <input type=\"text\" id=\"login\" name=\"login\" placeholder=\"\u041B\u043E\u0433\u0438\u043D\" class=\"auth-form__input\"\n      on:focus={{handleFocus}} on:blur={{handleBlur}}>\n      <span class=\"input-error hide\" data-error=\"login\"></span>\n      <label for=\"password\" class=\"auth-form__label\">\u041F\u0430\u0440\u043E\u043B\u044C</label>\n      <input type=\"password\" id=\"password\" name=\"password\" placeholder=\"\u041F\u0430\u0440\u043E\u043B\u044C\" class=\"auth-form__input\"\n      on:focus={{handleFocus}} on:blur={{handleBlur}}>\n      <span class=\"input-error hide\" data-error=\"password\"></span>\n      {{loginButton}}\n    </form>\n    <a href=\"/signup\" class=\"auth-panel__link\">\u041D\u0435\u0442 \u0430\u043A\u043A\u0430\u0443\u043D\u0442\u0430?</a>\n  </main>\n";
+exports.default = "\n  <main class=\"auth-panel auth-panel_login\">\n    <h1 class=\"auth-panel__header\">\u0412\u0445\u043E\u0434</h1>\n    <form class=\"auth-form\" on:submit={{handleSubmit}}>\n      <label for=\"login\" class=\"auth-form__label\">\u041B\u043E\u0433\u0438\u043D</label>\n      <input type=\"text\" id=\"login\" name=\"login\" placeholder=\"\u041B\u043E\u0433\u0438\u043D\" class=\"auth-form__input\"\n      on:focus={{handleFocus}} on:blur={{handleBlur}}>\n      <span class=\"input-error hide\" data-error=\"login\"></span>\n      <label for=\"password\" class=\"auth-form__label\">\u041F\u0430\u0440\u043E\u043B\u044C</label>\n      <input type=\"password\" id=\"password\" name=\"password\" placeholder=\"\u041F\u0430\u0440\u043E\u043B\u044C\" class=\"auth-form__input\"\n      on:focus={{handleFocus}} on:blur={{handleBlur}}>\n      <span class=\"input-error hide\" data-error=\"password\"></span>\n      <button type=\"submit\" class=\"auth-form__button\">\u0410\u0432\u0442\u043E\u0440\u0438\u0437\u043E\u0432\u0430\u0442\u044C\u0441\u044F</button>\n    </form>\n    <a href=\"/signup\" class=\"auth-panel__link\">\u041D\u0435\u0442 \u0430\u043A\u043A\u0430\u0443\u043D\u0442\u0430?</a>\n  </main>\n";
 },{}],"../src/helpers/event-bus.ts":[function(require,module,exports) {
 "use strict";
 
@@ -486,8 +481,8 @@ var Block = /*#__PURE__*/function () {
   }, {
     key: "_render",
     value: function _render() {
-      this.textContent = this.render();
-      this._element.innerHTML = this.textContent;
+      var block = this.render();
+      this._element.innerHTML = block;
       this._element = this._element.firstElementChild ? this._element.firstElementChild : this._element;
 
       var elements = this._element.querySelectorAll('*');
@@ -556,14 +551,7 @@ Block.EVENTS = {
   FLOW_CDU: 'flow:component-did-update'
 };
 exports.default = Block;
-},{"../../helpers/event-bus":"../src/helpers/event-bus.ts"}],"../src/components/Button/Button.tmpl.ts":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = "\n  <button type=\"{{type}}\" class=\"{{ class }}\">{{ text }}</button>\n";
-},{}],"../src/components/Button/Button.ts":[function(require,module,exports) {
+},{"../../helpers/event-bus":"../src/helpers/event-bus.ts"}],"../src/pages/login/login.ts":[function(require,module,exports) {
 "use strict";
 
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
@@ -597,80 +585,13 @@ var __importDefault = this && this.__importDefault || function (mod) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-
-var templator_1 = __importDefault(require("../../helpers/templator"));
-
-var Button_tmpl_1 = __importDefault(require("./Button.tmpl"));
-
-var block_1 = __importDefault(require("../block/block"));
-
-var buttonTmpl = new templator_1.default(Button_tmpl_1.default);
-
-var Button = /*#__PURE__*/function (_block_1$default) {
-  _inherits(Button, _block_1$default);
-
-  var _super = _createSuper(Button);
-
-  function Button(props) {
-    _classCallCheck(this, Button);
-
-    return _super.call(this, 'button', props);
-  }
-
-  _createClass(Button, [{
-    key: "render",
-    value: function render() {
-      var context = Object.assign({}, this.props);
-      return buttonTmpl.compile(context);
-    }
-  }]);
-
-  return Button;
-}(block_1.default);
-
-exports.default = Button;
-},{"../../helpers/templator":"../src/helpers/templator.ts","./Button.tmpl":"../src/components/Button/Button.tmpl.ts","../block/block":"../src/components/block/block.ts"}],"../src/pages/login/login.ts":[function(require,module,exports) {
-"use strict";
-
-function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-var __importDefault = this && this.__importDefault || function (mod) {
-  return mod && mod.__esModule ? mod : {
-    "default": mod
-  };
-};
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
+/* eslint-disable class-methods-use-this */
 
 var templator_1 = __importDefault(require("../../helpers/templator"));
 
 var login_tmpl_1 = __importDefault(require("./login.tmpl"));
 
 var block_1 = __importDefault(require("../../components/block/block"));
-
-var Button_1 = __importDefault(require("../../components/Button/Button"));
 
 var loginTmpl = new templator_1.default(login_tmpl_1.default);
 
@@ -688,13 +609,7 @@ var Login = /*#__PURE__*/function (_block_1$default) {
   _createClass(Login, [{
     key: "render",
     value: function render() {
-      var context = {
-        loginButton: new Button_1.default({
-          class: 'auth-form__button',
-          text: 'Авторизоваться',
-          type: 'submit'
-        }).textContent
-      };
+      var context = {};
       return loginTmpl.compile(context);
     }
   }]);
@@ -703,13 +618,13 @@ var Login = /*#__PURE__*/function (_block_1$default) {
 }(block_1.default);
 
 exports.default = Login;
-},{"../../helpers/templator":"../src/helpers/templator.ts","./login.tmpl":"../src/pages/login/login.tmpl.ts","../../components/block/block":"../src/components/block/block.ts","../../components/Button/Button":"../src/components/Button/Button.ts"}],"../src/pages/signup/signup.tmpl.ts":[function(require,module,exports) {
+},{"../../helpers/templator":"../src/helpers/templator.ts","./login.tmpl":"../src/pages/login/login.tmpl.ts","../../components/block/block":"../src/components/block/block.ts"}],"../src/pages/signup/signup.tmpl.ts":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = "\n  <main class=\"auth-panel auth-panel_signup\">\n    <h1 class=\"auth-panel__header\">\u0420\u0435\u0433\u0438\u0441\u0442\u0440\u0430\u0446\u0438\u044F</h1>\n    <form class=\"auth-form\" on:submit={{handleSubmit}}>\n      <label for=\"email\" class=\"auth-form__label\">\u041F\u043E\u0447\u0442\u0430</label>\n      <input type=\"email\" id=\"email\" name=\"email\" placeholder=\"\u041F\u043E\u0447\u0442\u0430\" class=\"auth-form__input\"\n      on:focus={{handleFocus}} on:blur={{handleBlur}}>\n      <span class=\"input-error hide\" data-error=\"email\"></span>\n      <label for=\"login\" class=\"auth-form__label\">\u041B\u043E\u0433\u0438\u043D</label>\n      <input type=\"text\" id=\"login\" name=\"login\" placeholder=\"\u041B\u043E\u0433\u0438\u043D\" class=\"auth-form__input\"\n      on:focus={{handleFocus}} on:blur={{handleBlur}}>\n      <span class=\"input-error hide\" data-error=\"login\"></span>\n      <label for=\"first_name\" class=\"auth-form__label\">\u0418\u043C\u044F</label>\n      <input type=\"text\" id=\"first_name\" name=\"first_name\" placeholder=\"\u0418\u043C\u044F\" class=\"auth-form__input\"\n      on:focus={{handleFocus}} on:blur={{handleBlur}}>\n      <span class=\"input-error hide\" data-error=\"first_name\"></span>\n      <label for=\"second_name\" class=\"auth-form__label\">\u0424\u0430\u043C\u0438\u043B\u0438\u044F</label>\n      <input type=\"text\" id=\"second_name\" name=\"second_name\" placeholder=\"\u0424\u0430\u043C\u0438\u043B\u0438\u044F\" class=\"auth-form__input\"\n      on:focus={{handleFocus}} on:blur={{handleBlur}}>\n      <span class=\"input-error hide\" data-error=\"second_name\"></span>\n      <label for=\"phone\" class=\"auth-form__label\">\u0422\u0435\u043B\u0435\u0444\u043E\u043D</label>\n      <input type=\"tel\" id=\"phone\" name=\"phone\" placeholder=\"\u0422\u0435\u043B\u0435\u0444\u043E\u043D\" class=\"auth-form__input\"\n      on:focus={{handleFocus}} on:blur={{handleBlur}}>\n      <span class=\"input-error hide\" data-error=\"phone\"></span>\n      <label for=\"password\" class=\"auth-form__label\">\u041F\u0430\u0440\u043E\u043B\u044C</label>\n      <input type=\"password\" id=\"password\" name=\"password\" placeholder=\"\u041F\u0430\u0440\u043E\u043B\u044C\" class=\"auth-form__input\"\n      on:focus={{handleFocus}} on:blur={{handleBlur}}>\n      <span class=\"input-error hide\" data-error=\"password\"></span>\n      <label for=\"password2\" class=\"auth-form__label\">\u041F\u0430\u0440\u043E\u043B\u044C (\u0435\u0449\u0435 \u0440\u0430\u0437)</label>\n      <input type=\"password\" id=\"password2\" name=\"password2\" placeholder=\"\u041F\u0430\u0440\u043E\u043B\u044C (\u0435\u0449\u0435 \u0440\u0430\u0437)\" class=\"auth-form__input\"\n      on:focus={{handleFocus}} on:blur={{handleBlur}}>\n      <span class=\"input-error hide\" data-error=\"password2\"></span>\n      {{ signupButton }}\n    </form>\n    <a href=\"/login\" class=\"auth-panel__link\">\u0412\u043E\u0439\u0442\u0438</a>\n  </main>\n";
+exports.default = "\n  <main class=\"auth-panel auth-panel_signup\">\n    <h1 class=\"auth-panel__header\">\u0420\u0435\u0433\u0438\u0441\u0442\u0440\u0430\u0446\u0438\u044F</h1>\n    <form class=\"auth-form\" on:submit={{handleSubmit}}>\n      <label for=\"email\" class=\"auth-form__label\">\u041F\u043E\u0447\u0442\u0430</label>\n      <input type=\"email\" id=\"email\" name=\"email\" placeholder=\"\u041F\u043E\u0447\u0442\u0430\" class=\"auth-form__input\"\n      on:focus={{handleFocus}} on:blur={{handleBlur}}>\n      <span class=\"input-error hide\" data-error=\"email\"></span>\n      <label for=\"login\" class=\"auth-form__label\">\u041B\u043E\u0433\u0438\u043D</label>\n      <input type=\"text\" id=\"login\" name=\"login\" placeholder=\"\u041B\u043E\u0433\u0438\u043D\" class=\"auth-form__input\"\n      on:focus={{handleFocus}} on:blur={{handleBlur}}>\n      <span class=\"input-error hide\" data-error=\"login\"></span>\n      <label for=\"first_name\" class=\"auth-form__label\">\u0418\u043C\u044F</label>\n      <input type=\"text\" id=\"first_name\" name=\"first_name\" placeholder=\"\u0418\u043C\u044F\" class=\"auth-form__input\"\n      on:focus={{handleFocus}} on:blur={{handleBlur}}>\n      <span class=\"input-error hide\" data-error=\"first_name\"></span>\n      <label for=\"second_name\" class=\"auth-form__label\">\u0424\u0430\u043C\u0438\u043B\u0438\u044F</label>\n      <input type=\"text\" id=\"second_name\" name=\"second_name\" placeholder=\"\u0424\u0430\u043C\u0438\u043B\u0438\u044F\" class=\"auth-form__input\"\n      on:focus={{handleFocus}} on:blur={{handleBlur}}>\n      <span class=\"input-error hide\" data-error=\"second_name\"></span>\n      <label for=\"phone\" class=\"auth-form__label\">\u0422\u0435\u043B\u0435\u0444\u043E\u043D</label>\n      <input type=\"tel\" id=\"phone\" name=\"phone\" placeholder=\"\u0422\u0435\u043B\u0435\u0444\u043E\u043D\" class=\"auth-form__input\"\n      on:focus={{handleFocus}} on:blur={{handleBlur}}>\n      <span class=\"input-error hide\" data-error=\"phone\"></span>\n      <label for=\"password\" class=\"auth-form__label\">\u041F\u0430\u0440\u043E\u043B\u044C</label>\n      <input type=\"password\" id=\"password\" name=\"password\" placeholder=\"\u041F\u0430\u0440\u043E\u043B\u044C\" class=\"auth-form__input\"\n      on:focus={{handleFocus}} on:blur={{handleBlur}}>\n      <span class=\"input-error hide\" data-error=\"password\"></span>\n      <label for=\"password2\" class=\"auth-form__label\">\u041F\u0430\u0440\u043E\u043B\u044C (\u0435\u0449\u0435 \u0440\u0430\u0437)</label>\n      <input type=\"password\" id=\"password2\" name=\"password2\" placeholder=\"\u041F\u0430\u0440\u043E\u043B\u044C (\u0435\u0449\u0435 \u0440\u0430\u0437)\" class=\"auth-form__input\"\n      on:focus={{handleFocus}} on:blur={{handleBlur}}>\n      <span class=\"input-error hide\" data-error=\"password2\"></span>\n      <button type=\"submit\" class=\"auth-form__button\">\u0417\u0430\u0440\u0435\u0433\u0438\u0441\u0442\u0440\u0438\u0440\u043E\u0432\u0430\u0442\u044C\u0441\u044F</button>\n    </form>\n    <a href=\"/login\" class=\"auth-panel__link\">\u0412\u043E\u0439\u0442\u0438</a>\n  </main>\n";
 },{}],"../src/pages/signup/signup.ts":[function(require,module,exports) {
 "use strict";
 
@@ -751,8 +666,6 @@ var signup_tmpl_1 = __importDefault(require("./signup.tmpl"));
 
 var block_1 = __importDefault(require("../../components/block/block"));
 
-var Button_1 = __importDefault(require("../../components/Button/Button"));
-
 var signupTmpl = new templator_1.default(signup_tmpl_1.default);
 
 var Signup = /*#__PURE__*/function (_block_1$default) {
@@ -769,14 +682,7 @@ var Signup = /*#__PURE__*/function (_block_1$default) {
   _createClass(Signup, [{
     key: "render",
     value: function render() {
-      var context = {
-        signupButton: new Button_1.default({
-          class: 'auth-form__button',
-          text: 'Зарегистрироваться',
-          type: 'submit'
-        }).textContent
-      };
-      return signupTmpl.compile(context);
+      return signupTmpl.compile({});
     }
   }]);
 
@@ -784,7 +690,7 @@ var Signup = /*#__PURE__*/function (_block_1$default) {
 }(block_1.default);
 
 exports.default = Signup;
-},{"../../helpers/templator":"../src/helpers/templator.ts","./signup.tmpl":"../src/pages/signup/signup.tmpl.ts","../../components/block/block":"../src/components/block/block.ts","../../components/Button/Button":"../src/components/Button/Button.ts"}],"../src/pages/404/404.tmpl.ts":[function(require,module,exports) {
+},{"../../helpers/templator":"../src/helpers/templator.ts","./signup.tmpl":"../src/pages/signup/signup.tmpl.ts","../../components/block/block":"../src/components/block/block.ts"}],"../src/pages/404/404.tmpl.ts":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1094,7 +1000,7 @@ exports.default = UserProfile;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = "\n  <main class=\"auth-panel auth-panel_login\">\n    <h1 class=\"auth-panel__header\">\u0418\u0437\u043C\u0435\u043D\u0438\u0442\u044C \u043F\u0430\u0440\u043E\u043B\u044C</h1>\n    <form class=\"auth-form\" on:submit={{handleSubmit}}>\n      <label for=\"oldPassword\" class=\"auth-form__label\">\u0412\u0432\u0435\u0434\u0438\u0442\u0435 \u0441\u0442\u0430\u0440\u044B\u0439 \u043F\u0430\u0440\u043E\u043B\u044C</label>\n      <input type=\"password\" id=\"oldPassword\" name=\"oldPassword\" class=\"auth-form__input\"\n      on:focus={{handleFocus}} on:blur={{handleBlur}}>\n      <span class=\"input-error hide\" data-error=\"oldPassword\"></span>\n      <label for=\"password\" class=\"auth-form__label\">\u0412\u0432\u0435\u0434\u0438\u0442\u0435 \u043D\u043E\u0432\u044B\u0439 \u043F\u0430\u0440\u043E\u043B\u044C</label>\n      <input type=\"password\" id=\"password\" name=\"password\" class=\"auth-form__input\"\n      on:focus={{handleFocus}} on:blur={{handleBlur}}>\n      <span class=\"input-error hide\" data-error=\"password\"></span>\n      <label for=\"password2\" class=\"auth-form__label\">\u0412\u0432\u0435\u0434\u0438\u0442\u0435 \u043D\u043E\u0432\u044B\u0439 \u043F\u0430\u0440\u043E\u043B\u044C \u0435\u0449\u0435 \u0440\u0430\u0437</label>\n      <input type=\"password\" id=\"password2\" name=\"password2\" class=\"auth-form__input\"\n      on:focus={{handleFocus}} on:blur={{handleBlur}}>\n      <span class=\"input-error hide\" data-error=\"password2\"></span>\n      {{ saveButton }}\n    </form>\n    <a href=\"/user\" class=\"auth-panel__link\">\u0412\u0435\u0440\u043D\u0443\u0442\u044C\u0441\u044F \u043A \u043F\u0440\u043E\u0444\u0438\u043B\u044E</a>\n  </main>\n";
+exports.default = "\n  <main class=\"auth-panel auth-panel_login\">\n    <h1 class=\"auth-panel__header\">\u0418\u0437\u043C\u0435\u043D\u0438\u0442\u044C \u043F\u0430\u0440\u043E\u043B\u044C</h1>\n    <form class=\"auth-form\" on:submit={{handleSubmit}}>\n      <label for=\"oldPassword\" class=\"auth-form__label\">\u0412\u0432\u0435\u0434\u0438\u0442\u0435 \u0441\u0442\u0430\u0440\u044B\u0439 \u043F\u0430\u0440\u043E\u043B\u044C</label>\n      <input type=\"password\" id=\"oldPassword\" name=\"oldPassword\" class=\"auth-form__input\"\n      on:focus={{handleFocus}} on:blur={{handleBlur}}>\n      <span class=\"input-error hide\" data-error=\"oldPassword\"></span>\n      <label for=\"password\" class=\"auth-form__label\">\u0412\u0432\u0435\u0434\u0438\u0442\u0435 \u043D\u043E\u0432\u044B\u0439 \u043F\u0430\u0440\u043E\u043B\u044C</label>\n      <input type=\"password\" id=\"password\" name=\"password\" class=\"auth-form__input\"\n      on:focus={{handleFocus}} on:blur={{handleBlur}}>\n      <span class=\"input-error hide\" data-error=\"password\"></span>\n      <label for=\"password2\" class=\"auth-form__label\">\u0412\u0432\u0435\u0434\u0438\u0442\u0435 \u043D\u043E\u0432\u044B\u0439 \u043F\u0430\u0440\u043E\u043B\u044C \u0435\u0449\u0435 \u0440\u0430\u0437</label>\n      <input type=\"password\" id=\"password2\" name=\"password2\" class=\"auth-form__input\"\n      on:focus={{handleFocus}} on:blur={{handleBlur}}>\n      <span class=\"input-error hide\" data-error=\"password2\"></span>\n      <button type=\"submit\" class=\"auth-form__button\">\u0421\u043E\u0445\u0440\u0430\u043D\u0438\u0442\u044C</button>\n    </form>\n    <a href=\"/user\" class=\"auth-panel__link\">\u0412\u0435\u0440\u043D\u0443\u0442\u044C\u0441\u044F \u043A \u043F\u0440\u043E\u0444\u0438\u043B\u044E</a>\n  </main>\n";
 },{}],"../src/pages/change-password/change-password.ts":[function(require,module,exports) {
 "use strict";
 
@@ -1136,8 +1042,6 @@ var change_password_tmpl_1 = __importDefault(require("./change-password.tmpl"));
 
 var block_1 = __importDefault(require("../../components/block/block"));
 
-var Button_1 = __importDefault(require("../../components/Button/Button"));
-
 var changePasswordTmpl = new templator_1.default(change_password_tmpl_1.default);
 
 var ChangePassword = /*#__PURE__*/function (_block_1$default) {
@@ -1154,14 +1058,7 @@ var ChangePassword = /*#__PURE__*/function (_block_1$default) {
   _createClass(ChangePassword, [{
     key: "render",
     value: function render() {
-      var context = {
-        saveButton: new Button_1.default({
-          class: 'auth-form__button',
-          text: 'Сохранить',
-          type: 'submit'
-        }).textContent
-      };
-      return changePasswordTmpl.compile(context);
+      return changePasswordTmpl.compile({});
     }
   }]);
 
@@ -1169,7 +1066,7 @@ var ChangePassword = /*#__PURE__*/function (_block_1$default) {
 }(block_1.default);
 
 exports.default = ChangePassword;
-},{"../../helpers/templator":"../src/helpers/templator.ts","./change-password.tmpl":"../src/pages/change-password/change-password.tmpl.ts","../../components/block/block":"../src/components/block/block.ts","../../components/Button/Button":"../src/components/Button/Button.ts"}],"../src/pages/edit-user-profile/edit-user-profile.tmpl.ts":[function(require,module,exports) {
+},{"../../helpers/templator":"../src/helpers/templator.ts","./change-password.tmpl":"../src/pages/change-password/change-password.tmpl.ts","../../components/block/block":"../src/components/block/block.ts"}],"../src/pages/edit-user-profile/edit-user-profile.tmpl.ts":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1218,8 +1115,6 @@ var edit_user_profile_tmpl_1 = __importDefault(require("./edit-user-profile.tmpl
 
 var block_1 = __importDefault(require("../../components/block/block"));
 
-var Button_1 = __importDefault(require("../../components/Button/Button"));
-
 var editUserProfileTmpl = new templator_1.default(edit_user_profile_tmpl_1.default);
 var initialContext = {
   email: '',
@@ -1244,14 +1139,7 @@ var EditUserProfile = /*#__PURE__*/function (_block_1$default) {
   _createClass(EditUserProfile, [{
     key: "render",
     value: function render() {
-      var button = {
-        saveButton: new Button_1.default({
-          class: 'auth-form__button auth-form__button_center',
-          text: 'Сохранить изменения',
-          type: 'submit'
-        }).textContent
-      };
-      var context = Object.assign(Object.assign({}, initialContext), button);
+      var context = Object.assign({}, initialContext);
       return editUserProfileTmpl.compile(context);
     }
   }]);
@@ -1260,89 +1148,7 @@ var EditUserProfile = /*#__PURE__*/function (_block_1$default) {
 }(block_1.default);
 
 exports.default = EditUserProfile;
-},{"../../helpers/templator":"../src/helpers/templator.ts","./edit-user-profile.tmpl":"../src/pages/edit-user-profile/edit-user-profile.tmpl.ts","../../components/block/block":"../src/components/block/block.ts","../../components/Button/Button":"../src/components/Button/Button.ts"}],"../src/components/ChatList/chat.tmpl.ts":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = "\n<div class=\"chat-page\">\n  <aside class=\"chat-list\">\n    <div class=\"chat-list__search\">\n      <div class=\"chat-list-search__avatar\"></div>\n      <div class=\"chat-list-search__field\">\n        <i class=\"search-icon\"></i>\n        <input type=\"text\" placeholder=\"\u041F\u043E\u0438\u0441\u043A\" class=\"chat-list-search__input\"\">\n      </div>\n    </div>\n    <ul class=\"chat-list__items\">\n      <li class=\"chat-list__item\">\n        <div class=\"chat-list-item__avatar\">\n        </div>\n        <div class=\"chat-list-item__rows\">\n          <div class=\"chat-list-item__row\">\n            <div class=\"chat-list-item__name\">\n              \u0412\u0438\u043A\u0442\u043E\u0440 \u0421\u0438\u043A\u043E\u0440\u0441\u043A\u0438\u0439\n            </div>\n            <div class=\"chat-list-item__time\">\n              12:15\n            </div>\n          </div>\n          <div class=\"chat-list-item__row\">\n            <div class=\"chat-list-item__message\">\n              \u041F\u043E\u0434\u0442\u0432\u0435\u0440\u0436\u0434\u0430\u044E \u0432\u0441\u0442\u0440\u0435\u0447\u0443 \u0441\u0435\u0433\u043E\u0434\u043D\u044F \u0432 19.00\n            </div>\n            <div class=\"chat-list-item__badge\">\n              16\n            </div>\n          </div>\n        </div>\n      </li>\n    </ul>\n  </aside>\n  <main class=\"chat-window\">\n    <haeder>Header</haeder>\n    <section>ChatWindoe</section>\n  </main>\n</div>\n";
-},{}],"../src/components/ChatList/chat.scss":[function(require,module,exports) {
-var reloadCSS = require('_css_loader');
-
-module.hot.dispose(reloadCSS);
-module.hot.accept(reloadCSS);
-},{"./../../../static/img/search.svg":[["search.1e31d98f.svg","img/search.svg"],"img/search.svg"],"_css_loader":"../node_modules/parcel-bundler/src/builtins/css-loader.js"}],"../src/components/ChatList/chat.ts":[function(require,module,exports) {
-"use strict";
-
-function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-var __importDefault = this && this.__importDefault || function (mod) {
-  return mod && mod.__esModule ? mod : {
-    "default": mod
-  };
-};
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var templator_1 = __importDefault(require("../../helpers/templator"));
-
-var chat_tmpl_1 = __importDefault(require("./chat.tmpl"));
-
-var block_1 = __importDefault(require("../block/block"));
-
-require("./chat.scss");
-
-var chatTmpl = new templator_1.default(chat_tmpl_1.default);
-
-var chat = /*#__PURE__*/function (_block_1$default) {
-  _inherits(chat, _block_1$default);
-
-  var _super = _createSuper(chat);
-
-  function chat() {
-    var props = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-
-    _classCallCheck(this, chat);
-
-    return _super.call(this, 'div', props);
-  }
-
-  _createClass(chat, [{
-    key: "render",
-    value: function render() {
-      var context = {};
-      return chatTmpl.compile(context);
-    }
-  }]);
-
-  return chat;
-}(block_1.default);
-
-exports.default = chat;
-},{"../../helpers/templator":"../src/helpers/templator.ts","./chat.tmpl":"../src/components/ChatList/chat.tmpl.ts","../block/block":"../src/components/block/block.ts","./chat.scss":"../src/components/ChatList/chat.scss"}],"../src/helpers/validate.ts":[function(require,module,exports) {
+},{"../../helpers/templator":"../src/helpers/templator.ts","./edit-user-profile.tmpl":"../src/pages/edit-user-profile/edit-user-profile.tmpl.ts","../../components/block/block":"../src/components/block/block.ts"}],"../src/helpers/validate.ts":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1501,8 +1307,6 @@ var change_password_1 = __importDefault(require("../pages/change-password/change
 
 var edit_user_profile_1 = __importDefault(require("../pages/edit-user-profile/edit-user-profile"));
 
-var chat_2 = __importDefault(require("./ChatList/chat"));
-
 var formSubmit_1 = __importDefault(require("../helpers/formSubmit"));
 
 var inputValidate_1 = require("../helpers/inputValidate");
@@ -1526,7 +1330,7 @@ var router = {
     handleFocus: inputValidate_1.handleFocus,
     handleBlur: inputValidate_1.handleBlur
   }),
-  '/chat': new chat_2.default(),
+  '/chat': defaultPage,
   '/user': new user_profile_1.default(),
   '/page404': new _404_1.default(),
   '/page500': new _500_1.default(),
@@ -1539,7 +1343,7 @@ var router = {
 };
 var App = router[pathname] !== undefined ? router[pathname] : router['/page404'];
 exports.default = App;
-},{"../index.scss":"../src/index.scss","../pages/login/login":"../src/pages/login/login.ts","../pages/signup/signup":"../src/pages/signup/signup.ts","../pages/404/404":"../src/pages/404/404.ts","../pages/500/500":"../src/pages/500/500.ts","../pages/chat/chat":"../src/pages/chat/chat.ts","../pages/user-profile/user-profile":"../src/pages/user-profile/user-profile.ts","../pages/change-password/change-password":"../src/pages/change-password/change-password.ts","../pages/edit-user-profile/edit-user-profile":"../src/pages/edit-user-profile/edit-user-profile.ts","./ChatList/chat":"../src/components/ChatList/chat.ts","../helpers/formSubmit":"../src/helpers/formSubmit.ts","../helpers/inputValidate":"../src/helpers/inputValidate.ts"}],"../src/helpers/render.ts":[function(require,module,exports) {
+},{"../index.scss":"../src/index.scss","../pages/login/login":"../src/pages/login/login.ts","../pages/signup/signup":"../src/pages/signup/signup.ts","../pages/404/404":"../src/pages/404/404.ts","../pages/500/500":"../src/pages/500/500.ts","../pages/chat/chat":"../src/pages/chat/chat.ts","../pages/user-profile/user-profile":"../src/pages/user-profile/user-profile.ts","../pages/change-password/change-password":"../src/pages/change-password/change-password.ts","../pages/edit-user-profile/edit-user-profile":"../src/pages/edit-user-profile/edit-user-profile.ts","../helpers/formSubmit":"../src/helpers/formSubmit.ts","../helpers/inputValidate":"../src/helpers/inputValidate.ts"}],"../src/helpers/render.ts":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1603,7 +1407,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50142" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "58859" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
