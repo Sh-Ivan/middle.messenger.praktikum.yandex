@@ -1,6 +1,6 @@
 # Messenger – приложение-чат для обмена сообщениями
 
-https://github.com/Sh-Ivan/middle.messenger.praktikum.yandex/pull/4
+https://github.com/Sh-Ivan/middle.messenger.praktikum.yandex/pull/5
 
 ## Адрес сайта
 
@@ -38,12 +38,19 @@ npm run build
 npm run lint
 ```
 
+Запуск тестов:
+
+```bash
+npm run test
+```
+
 ## Ссылки
 
 - [Макеты Figma](https://www.figma.com/file/oswzyNtaNEE3b2kOYA6zHu/Chat-messenger?node-id=0%3A1)
-- [Pull request](https://github.com/Sh-Ivan/middle.messenger.praktikum.yandex/pull/1)
+- [Pull request](https://github.com/Sh-Ivan/middle.messenger.praktikum.yandex/pull/5)
 
 ## Использованы инструменты
 
 - Для сборки [Parcel](https://ru.parceljs.org/)
 - Анализаторы кода [ESLint](https://eslint.org/) и [Stylelint](https://stylelint.io/)
+- Для тестов [Mocha](https://mochajs.org/) и [Chai](https://www.chaijs.com/)

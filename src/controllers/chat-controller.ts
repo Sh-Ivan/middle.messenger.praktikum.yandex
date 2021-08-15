@@ -13,8 +13,11 @@ class ChatController {
       .then((result: XMLHttpRequest) => {
         const chats = JSON.parse(result.response);
         if (result.status === 200) {
+          console.log(chats);
           ChatStore.setState(chats);
-          this.getToken({ chatId: chats[0].id, userId });
+          if (chats.length > 0) {
+            this.getToken({ chatId: chats[0].id, userId });
+          }
         }
         return chats;
       })
@@ -23,13 +26,12 @@ class ChatController {
       });
   }
 
-  // { "title": "string" }
-  createChat(data: { [key: string]: string }): void {
+  createChat(data: { [key: string]: string }, userId: number): void {
     chatAPIInstance
       .createChat(data)
       .then((result: XMLHttpRequest) => {
         if (result.status === 200) {
-          //ChatStore.setState(JSON.parse(result.response));
+          this.getChats(userId);
         }
       })
       .catch((error) => {
@@ -66,17 +68,12 @@ class ChatController {
       });
   }
 
-  /*
-  { "chatId": 0 }
-  */
-
-  deleteChat(data: { [key: string]: number }): void {
+  deleteChat(data: { [key: string]: number }, userId: number): void {
     chatAPIInstance
       .deleteChat(data)
       .then((result: XMLHttpRequest) => {
-        console.log(result.response);
         if (result.status === 200) {
-          //ChatStore.setState(JSON.parse(result.response));
+          this.getChats(userId);
         }
       })
       .catch((error) => {
@@ -84,20 +81,11 @@ class ChatController {
       });
   }
 
-  /* {
-      "users": [
-        0
-      ],
-      "chatId": 0
-    }
-  */
-  addUsers(data: { [key: string]: unknown }): void {
+  addUsers(data: { [key: string]: any }): void {
     chatAPIInstance
       .addUsers(data)
       .then((result: XMLHttpRequest) => {
-        console.log(result.response);
         if (result.status === 200) {
-          //UserStore.setState(JSON.parse(result.response));
           this.getChatUsers({ id: +data.chatId });
         }
       })
@@ -110,11 +98,8 @@ class ChatController {
     return chatAPIInstance
       .getChatUsers(data)
       .then((result: XMLHttpRequest) => {
-        console.log(result.response);
         const chatUsers = JSON.parse(result.response);
-        if (result.status === 200) {
-          //UserStore.setState(chatUsers);
-        }
+        console.log(chatUsers);
         return chatUsers;
       })
       .catch((error) => {
@@ -124,11 +109,10 @@ class ChatController {
 
   deleteUsers(data: { [key: string]: any }): void {
     chatAPIInstance
-      .addUsers(data)
+      .deleteUsers(data)
       .then((result: XMLHttpRequest) => {
-        console.log(result.response);
         if (result.status === 200) {
-          //UserStore.setState(JSON.parse(result.response));
+          this.getChatUsers({ id: +data.chatId });
         }
       })
       .catch((error) => {

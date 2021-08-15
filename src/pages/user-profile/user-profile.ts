@@ -37,7 +37,7 @@ class UserProfile extends Block<userProps> {
         <img src="https://ya-praktikum.tech/api/v2/resources${user.avatar}" class="avatar-wrapper">
       `;
     } else {
-      userAvatar = `<i class="avatar-icon"></i>`;
+      userAvatar = '<i class="avatar-icon"></i>';
     }
     const context = { ...user, fullName, userAvatar };
 

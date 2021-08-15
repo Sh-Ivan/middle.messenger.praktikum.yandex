@@ -22,7 +22,7 @@ class UserController {
       });
   }
 
-  changeAvatar(data: { [key: string]: string }): void {
+  changeAvatar(data: { form: FormData }): void {
     userAPIInstance
       .changeAvatar(data)
       .then((result: XMLHttpRequest) => {

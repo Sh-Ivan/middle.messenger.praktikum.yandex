@@ -31,6 +31,7 @@ class EditUserProfile extends Block<editUserProfileProps> {
         const data = handleSubmit(e);
         if (data !== null) {
           const escapedData: { [key: string]: string } = {};
+          // eslint-disable-next-line array-callback-return
           Object.entries(data).map(([key, value]) => {
             escapedData[key] = escape(value);
           });
@@ -38,21 +39,22 @@ class EditUserProfile extends Block<editUserProfileProps> {
         }
       },
       changeAvatar: () => {
-        const avatar = document.getElementById('avatar');
-        if (avatar?.files.length > 0) {
+        const avatar = document.getElementById('avatar') as HTMLInputElement;
+        if (avatar && avatar.files && avatar.files.length > 0) {
           const form = new FormData();
           form.append('avatar', avatar.files[0]);
           userController.changeAvatar({ form });
         }
       },
       deleteAvatar: () => {
-        userController.changeAvatar({ avatar: '' });
+        const form = new FormData();
+        form.append('avatar', '');
+        userController.changeAvatar({ form });
       },
     });
   }
 
   componentDidMount() {
-    console.log('edit-user-mount');
     authController.getUserInfo((user: TProps) => {
       this.setProps({ user });
     });
@@ -73,9 +75,8 @@ class EditUserProfile extends Block<editUserProfileProps> {
         <img src="https://ya-praktikum.tech/api/v2/resources${user.avatar}" class="avatar-wrapper">
       `;
     } else {
-      userAvatar = `<i class="avatar-icon"></i>`;
+      userAvatar = '<i class="avatar-icon"></i>';
     }
-    console.log(user);
     const context = { ...button, ...user, userAvatar };
     return editUserProfileTmpl.compile(context);
   }

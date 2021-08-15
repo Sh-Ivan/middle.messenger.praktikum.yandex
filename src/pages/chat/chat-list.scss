@@ -2,11 +2,12 @@
   width: 100%;
   display: flex;
 }
+
 .chat-list {
   display: flex;
   flex-direction: column;
   width: 320px;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
   padding: 0 20px;
 }
 
@@ -32,13 +33,14 @@
 
 .list-search__item {
   cursor: pointer;
-  &:hover {
-    background-color: #f8f8f8;
-  }
   height: 30px;
   line-height: 30px;
   width: 100%;
   text-align: center;
+
+  &:hover {
+    background-color: #f8f8f8;
+  }
 }
 
 .chat-list-search__avatar {
@@ -61,6 +63,7 @@
 
 .list-menu__item {
   cursor: pointer;
+
   &:hover {
     background-color: rgba(239, 239, 239, 1);
   }
@@ -85,7 +88,7 @@ a.list-menu__item {
   padding-left: 20px;
   border: none;
   outline: none;
-  font-family: Oxygen;
+  font-family: 'Oxygen', sans-serif;
   font-style: normal;
   font-weight: 300;
   font-size: 14px;
@@ -124,6 +127,7 @@ a.list-menu__item {
   display: flex;
   margin-bottom: 20px;
   cursor: pointer;
+
   &:hover {
     background-color: #e4edfd;
   }
@@ -197,10 +201,12 @@ a.list-menu__item {
   top: 55px;
   box-shadow: 4px 4px 4px 4px rgba(0, 0, 0, 0.25);
   padding: 10px;
+  z-index: 100;
 }
 
 .header-menu__item {
   cursor: pointer;
+
   &:hover {
     background-color: rgba(239, 239, 239, 1);
   }
@@ -216,7 +222,7 @@ a.list-menu__item {
   font-weight: 500;
   font-size: 12px;
   text-align: center;
-  color: #999999;
+  color: #999;
   margin-bottom: 33px;
 }
 
@@ -250,14 +256,14 @@ a.list-menu__item {
   text-align: right;
   font-weight: 500;
   font-size: 9px;
-  color: #999999;
+  color: #999;
   line-height: 16px;
   padding-left: 8px;
 }
 
 .chat-main__message_left {
   background: #f8f8f8;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 0 10px 10px 10px;
 }
 
@@ -278,9 +284,6 @@ a.list-menu__item {
 .chat-main__message_right + .chat-main__message_right,
 .chat-main__message_left + .chat-main__message_left {
   margin-top: 5px;
-}
-
-.chat-main__image {
 }
 
 .send-message {
@@ -305,7 +308,7 @@ a.list-menu__item {
   &::placeholder {
     font-weight: 500;
     font-size: 12px;
-    color: #999999;
+    color: #999;
   }
 }
 

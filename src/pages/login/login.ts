@@ -1,6 +1,6 @@
 import Templator from '../../helpers/templator';
 import loginTemplate from './login.tmpl';
-import Block from '../../components/block/block';
+import Block, { TProps } from '../../components/block/block';
 import Button from '../../components/Button/Button';
 import handleSubmit from '../../helpers/formSubmit';
 import { handleFocus, handleBlur } from '../../helpers/inputValidate';

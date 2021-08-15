@@ -1,11 +1,7 @@
 import EventBus from './event-bus';
 import TChat from './TChat';
 
-export type State =
-  | {
-      [key: string]: unknown;
-    }
-  | TChat[];
+export type State = { [key: string]: any } | TChat[];
 
 export enum EVENTS {
   STORE_CHANGED = 'store-changed',

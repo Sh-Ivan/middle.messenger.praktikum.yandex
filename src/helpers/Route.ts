@@ -12,7 +12,7 @@ interface RouteProps extends TProps {
 class Route {
   _pathname: string;
   _blockClass: any;
-  _block: IBlock | null;
+  _block: IBlock<unknown> | null;
   _props: RouteProps;
 
   constructor(pathname: string, view: any, props: RouteProps) {
@@ -31,7 +31,6 @@ class Route {
 
   leave() {
     if (this._block) {
-      //this._block.hide();
       const root = document.querySelector(this._props.rootQuery);
       if (root !== null) {
         root.innerHTML = '';
@@ -45,7 +44,7 @@ class Route {
 
   render() {
     if (!this._block) {
-      this._block = new this._blockClass(this._props) as IBlock;
+      this._block = new this._blockClass(this._props) as IBlock<unknown>;
     }
     render(this._props.rootQuery, this._block);
   }

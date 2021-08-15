@@ -6,11 +6,11 @@ enum METHODS {
   DELETE = 'DELETE',
 }
 
-type Options<TRequest> = {
+type Options = {
   method?: METHODS;
   timeout?: number;
   headers?: { [key: string]: string };
-  data?: TRequest;
+  data?: { [key: string]: any };
 };
 
 function queryStringify<TRequest>(data: TRequest): string {
@@ -24,26 +24,26 @@ function queryStringify<TRequest>(data: TRequest): string {
   return queryString.slice(0, -1);
 }
 
-class HTTPTransport<TRequest> {
+class HTTPTransport {
   baseUrl: string;
 
   constructor(baseUrl: string) {
     this.baseUrl = baseUrl;
   }
 
-  get = (url: string, options: Options<TRequest>): Promise<unknown> =>
+  get = (url: string, options: Options): Promise<unknown> =>
     this.request(url, { ...options, method: METHODS.GET });
 
-  post = (url: string, options: Options<TRequest>): Promise<unknown> =>
+  post = (url: string, options: Options): Promise<unknown> =>
     this.request(url, { ...options, method: METHODS.POST });
 
-  put = (url: string, options: Options<TRequest>): Promise<unknown> =>
+  put = (url: string, options: Options): Promise<unknown> =>
     this.request(url, { ...options, method: METHODS.PUT });
 
-  delete = (url: string, options: Options<TRequest>): Promise<unknown> =>
+  delete = (url: string, options: Options): Promise<unknown> =>
     this.request(url, { ...options, method: METHODS.DELETE });
 
-  request = (url: string, options: Options<TRequest>) => {
+  request = (url: string, options: Options) => {
     const fullUrl: string = this.baseUrl + url;
     const {
       method,

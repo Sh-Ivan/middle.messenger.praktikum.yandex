@@ -1,10 +1,12 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import EventBus from '../../helpers/event-bus';
 
 export interface TProps {
   [key: string]: unknown;
 }
 
-export interface IBlock {
+export interface IBlock<T> {
   element: HTMLElement;
   props: unknown;
   init: () => void;
@@ -12,7 +14,7 @@ export interface IBlock {
   show: () => void;
   render: () => string;
   componentDidMount: () => void;
-  componentDidUpdate: () => boolean;
+  componentDidUpdate: (oldProps: T, newProps: T) => boolean;
   setProps: (nextProps: unknown) => void;
   getContent: () => HTMLElement;
 }
@@ -22,7 +24,7 @@ type Meta = {
   props: TProps;
 };
 
-class Block<T> implements IBlock {
+class Block<T> implements IBlock<T> {
   static EVENTS = {
     INIT: 'init',
     FLOW_CDM: 'flow:component-did-mount',
@@ -84,7 +86,7 @@ class Block<T> implements IBlock {
   componentDidMount(): void {}
 
   _componentDidUpdate(oldProps: T, newProps: T) {
-    const response = this.componentDidUpdate();
+    const response = this.componentDidUpdate(oldProps, newProps);
     if (newProps !== oldProps) {
       this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
     } else if (response) {
@@ -92,7 +94,7 @@ class Block<T> implements IBlock {
     }
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(_oldProps: T, _newProps: T) {
     return true;
   }
 
@@ -101,7 +103,7 @@ class Block<T> implements IBlock {
       return;
     }
     const oldProps = this.props;
-    this.props = this._makePropsProxy(Object.assign(oldProps, nextProps));
+    this.props = this._makePropsProxy({ ...oldProps, ...nextProps });
     this.eventBus().emit(Block.EVENTS.FLOW_CDU, oldProps, nextProps);
   };
 

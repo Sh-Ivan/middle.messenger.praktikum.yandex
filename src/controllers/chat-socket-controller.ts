@@ -1,3 +1,4 @@
+import TChat from '../helpers/TChat';
 import ChatStore from '../stores/ChatStore';
 
 const socketHost = 'wss://ya-praktikum.tech/ws/chats/';
@@ -17,15 +18,14 @@ class ChatSocketController {
     });
 
     this.socket.addEventListener('message', (event) => {
-      const state = ChatStore.getState();
+      const state = ChatStore.getState() as TChat[];
       const messages = JSON.parse(event.data);
       if (messages.type === 'pong') return;
-      const chatIndex = state.findIndex((chat: any) => chat.id === this._chatId);
+      const chatIndex: number = state.findIndex((chat: any) => chat.id === this._chatId);
       if (chatIndex !== -1) {
         if (Array.isArray(messages)) {
           state[chatIndex].messages = messages;
         } else if (messages.type === 'message' || messages.type === 'file') {
-          console.log(messages);
           state[chatIndex].messages.unshift(messages);
         }
       }

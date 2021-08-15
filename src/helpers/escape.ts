@@ -1,6 +1,6 @@
 function escape(str: string): string {
   if (!str) return str;
-  const htmlEscapes = {
+  const htmlEscapes: { [key: string]: string } = {
     '&': '&amp;',
     '<': '&lt;',
     '>': '&gt;',

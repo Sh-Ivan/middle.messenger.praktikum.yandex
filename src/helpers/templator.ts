@@ -35,12 +35,15 @@ export default class Templator {
         return new Templator(newTemplate).compile(newCtx);
       } else if (typeof value === 'object' && value !== null) {
         // eslint-disable-next-line no-useless-escape
-        const temolateObjectVar: RegExp = new RegExp(`{{\\s*${key}\..*?}}`, 'g');
+        const temolateObjectVar: RegExp = new RegExp(`{{\\s*${key}\\s*\}\}?`, 'g');
         const varsInObject: RegExpMatchArray | null = newTemplate.match(temolateObjectVar);
         if (varsInObject !== null) {
           varsInObject.forEach((nextVar: string) => {
             const path: string = nextVar.slice(2, -2).trim();
+            console.log(ctx);
+            console.log(path);
             const newValue: unknown = getObjectValue(ctx, path);
+            console.log(newValue);
             const replacer: string = newValue === '' ? '""' : (newValue as string);
             newTemplate = newTemplate.replace(nextVar, replacer);
           });

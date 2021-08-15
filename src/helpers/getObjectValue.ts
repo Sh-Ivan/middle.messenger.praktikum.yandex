@@ -7,10 +7,10 @@ function getObjectValue<T>(obj: Tobject, path: string, defaultValue?: T): T | un
     result = result[objectKeys[i]] as Tobject;
 
     if (result === undefined) {
-      return result;
+      return defaultValue;
     }
   }
-  return result ?? defaultValue;
+  return result;
 }
 
 export default getObjectValue;

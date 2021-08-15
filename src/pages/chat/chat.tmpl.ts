@@ -7,6 +7,7 @@ export default `
       </div>
       <div class="chat-list__menu hide" on:click={{toggleMainMenu}}>
         <a href="/user" class="list-menu__item">Профиль пользователя</a>
+        <div class="list-menu__item" on:click={{createChat}}>Создать чат</div>
         <div class="list-menu__item" on:click={{logout}}>Выйти</div>
       </div>
       <div class="chat-list-search__field">
