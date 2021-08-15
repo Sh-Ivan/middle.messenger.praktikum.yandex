@@ -1,6 +1,6 @@
 # Messenger – приложение-чат для обмена сообщениями
 
-https://github.com/Sh-Ivan/middle.messenger.praktikum.yandex/pull/4
+https://github.com/Sh-Ivan/middle.messenger.praktikum.yandex/pull/5
 
 ## Адрес сайта
 
@@ -41,7 +41,7 @@ npm run lint
 ## Ссылки
 
 - [Макеты Figma](https://www.figma.com/file/oswzyNtaNEE3b2kOYA6zHu/Chat-messenger?node-id=0%3A1)
-- [Pull request](https://github.com/Sh-Ivan/middle.messenger.praktikum.yandex/pull/1)
+- [Pull request](https://github.com/Sh-Ivan/middle.messenger.praktikum.yandex/pull/5)
 
 ## Использованы инструменты
 
