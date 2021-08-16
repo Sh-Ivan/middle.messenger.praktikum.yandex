@@ -178,11 +178,14 @@ class Chat extends Block<TChatProps> {
         this.setProps({ activeChat: props.chats[0] });
       }
     }
+    return true;
+  }
+
+  componentDidRender() {
     const messageList = document.querySelector('section.chat-main');
     if (messageList) {
       messageList.scrollTop = messageList.scrollHeight;
     }
-    return true;
   }
 
   render() {

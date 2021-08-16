@@ -1,8 +1,4 @@
-$links-color: #2f80ed;
-$box-shadow-color: rgba(0, 0, 0, 0.25);
-$error-color: #f00;
-$text-color: #1e1e1e;
-$label-color: #999;
+@import 'variables';
 
 html,
 body {
@@ -38,7 +34,7 @@ body {
 
 .auth-panel {
   width: 340px;
-  box-shadow: 0 0 6px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 0 6px $box-shadow-color;
   border-radius: 12px;
   align-self: center;
   margin: auto;
@@ -93,17 +89,18 @@ body {
   font-size: 13px;
   color: $text-color;
 
-  &:focus {
-    outline: none;
-    border-bottom: 3px solid $links-color;
-    &::placeholder {
-      color: transparent;
-    }
-  }
-
   &::placeholder {
     font-family: 'Oxygen', sans-serif;
     font-size: 13px;
+  }
+
+  &:focus {
+    outline: none;
+    border-bottom: 3px solid $links-color;
+
+    &::placeholder {
+      color: transparent;
+    }
   }
 }
 
@@ -112,7 +109,7 @@ body {
   background: $links-color;
   border: none;
   border-radius: 8px;
-  color: #fff;
+  color: $button-text-color;
   font-family: 'Oxygen', sans-serif;
   cursor: pointer;
   margin-top: auto;
@@ -176,7 +173,7 @@ body {
   text-align: center;
   width: 130px;
   height: 130px;
-  background: #efefef;
+  background: $avatar-bg-color;
   border-radius: 50%;
   margin: auto;
 }
@@ -216,7 +213,7 @@ body {
 
 .user-profile-form__label {
   font-size: 13px;
-  color: #1e1e1e;
+  color: $text-color;
   padding-bottom: 7px;
   cursor: pointer;
 }
@@ -225,7 +222,7 @@ body {
   padding-bottom: 7px;
   border: none;
   font-size: 13px;
-  color: #1e1e1e;
+  color: $text-color;
   text-align: right;
   width: 80%;
 
@@ -246,7 +243,7 @@ body {
 }
 
 .user-profile__row {
-  border-bottom: 1px solid #eaeaea;
+  border-bottom: 1px solid $border-color;
   display: flex;
   justify-content: space-between;
   margin-bottom: 10px;
@@ -266,12 +263,12 @@ body {
   color: $links-color;
   text-decoration: none;
   text-align: start;
-  border-bottom: 1px solid #eaeaea;
+  border-bottom: 1px solid $border-color;
   padding-bottom: 7px;
 }
 
 .user-profile__link_reject {
-  color: #f00;
+  color: $error-color;
 }
 
 .user-profile__edit {
