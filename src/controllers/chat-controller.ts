@@ -21,9 +21,7 @@ class ChatController {
         }
         return chats;
       })
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch(console.log);
   }
 
   createChat(data: { [key: string]: string }, userId: number): void {
@@ -34,9 +32,7 @@ class ChatController {
           this.getChats(userId);
         }
       })
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch(console.log);
   }
 
   getToken(data: { [chatId: string]: number }): void {
@@ -63,9 +59,7 @@ class ChatController {
           ChatStore.setState(state);
         }
       })
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch(console.log);
   }
 
   deleteChat(data: { [key: string]: number }, userId: number): void {
@@ -76,9 +70,7 @@ class ChatController {
           this.getChats(userId);
         }
       })
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch(console.log);
   }
 
   addUsers(data: { [key: string]: any }): void {
@@ -89,9 +81,7 @@ class ChatController {
           this.getChatUsers({ id: +data.chatId });
         }
       })
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch(console.log);
   }
 
   getChatUsers<T>(data: { [key: string]: unknown }): Promise<T> {
@@ -102,9 +92,7 @@ class ChatController {
         console.log(chatUsers);
         return chatUsers;
       })
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch(console.log);
   }
 
   deleteUsers(data: { [key: string]: any }): void {
@@ -115,9 +103,7 @@ class ChatController {
           this.getChatUsers({ id: +data.chatId });
         }
       })
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch(console.log);
   }
 
   subscribeToChatStoreEvent(cb: any) {

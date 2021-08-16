@@ -91,7 +91,6 @@ a.list-menu__item {
 .chat-list-search__input {
   padding-left: 20px;
   border: none;
-  outline: none;
   font-family: 'Oxygen', sans-serif;
   font-style: normal;
   font-weight: 300;
@@ -100,6 +99,13 @@ a.list-menu__item {
 
   &::placeholder {
     color: $border-color;
+  }
+
+  &:focus {
+    outline: none;
+    &::placeholder {
+      color: transparent;
+    }
   }
 }
 
@@ -304,10 +310,14 @@ a.list-menu__item {
   background: #efefef;
   border-radius: 30px;
   border: none;
-  outline: none;
   height: 32px;
   margin: 0 10px 0 5px;
   padding-left: 20px;
+
+  &:focus {
+    outline: none;
+    box-shadow: 2px 2px 4px 2px $box-shadow-color;
+  }
 
   &::placeholder {
     font-weight: 500;
@@ -321,7 +331,12 @@ a.list-menu__item {
   width: 32px;
   cursor: pointer;
   border: none;
-  outline: none;
+
+  &:focus {
+    outline: none;
+    border-radius: 50%;
+    box-shadow: 0 0 3pt 2pt cornflowerblue;
+  }
 }
 
 .send-message__icons_attach {

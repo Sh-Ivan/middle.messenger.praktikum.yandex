@@ -17,9 +17,7 @@ class UserController {
         }
         return newData;
       })
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch(console.log);
   }
 
   changeAvatar(data: { form: FormData }): void {
@@ -31,9 +29,7 @@ class UserController {
           UserStore.setState(JSON.parse(result.response));
         }
       })
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch(console.log);
   }
 
   changePassword(data: { [key: string]: string }): void {
@@ -42,9 +38,7 @@ class UserController {
       .then((result: XMLHttpRequest) => {
         console.log(result);
       })
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch(console.log);
   }
 
   getUser<T>(id: number): Promise<T> {
@@ -54,9 +48,7 @@ class UserController {
         console.log(result);
         return JSON.parse(result.response);
       })
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch(console.log);
   }
 
   searchUser<T>(login: string): Promise<T> {
@@ -67,9 +59,7 @@ class UserController {
         ListUsers.setState(listUsers);
         return listUsers;
       })
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch(console.log);
   }
 
   subscribeToListUsersStoreEvent(cb: any) {

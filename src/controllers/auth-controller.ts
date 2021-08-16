@@ -15,9 +15,7 @@ class AuthController {
           AppRouter.go('/');
         }
       })
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch(console.log);
   }
 
   getUserInfo<T>(cb: any): Promise<T> {
@@ -40,9 +38,7 @@ class AuthController {
           AppRouter.go('/');
         }
       })
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch(console.log);
   }
 
   logout() {
@@ -53,9 +49,7 @@ class AuthController {
           AppRouter.go('/login');
         }
       })
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch(console.log);
   }
 }
 

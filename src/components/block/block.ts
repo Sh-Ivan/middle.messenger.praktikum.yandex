@@ -70,7 +70,6 @@ class Block<T> implements IBlock<T> {
   _createResources() {
     const tagName = this._meta !== null ? this._meta?.tagName : 'div';
     this._element = this._createDocumentElement(tagName);
-    //this._element = document.createElement('template');
   }
 
   init() {

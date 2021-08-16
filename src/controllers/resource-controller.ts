@@ -7,9 +7,7 @@ class ResorceController {
     return resourceAPIInstance
       .sendFile(data)
       .then((result: XMLHttpRequest) => JSON.parse(result.response))
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch(console.log);
   }
 }
 
