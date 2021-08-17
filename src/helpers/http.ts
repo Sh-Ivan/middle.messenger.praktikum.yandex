@@ -69,11 +69,10 @@ class HTTPTransport {
 
       xhr.onload = () => {
         const { response, status } = xhr;
-        console.log(status, response);
         if (status === 200) {
-          resolve(JSON.parse(response));
+          resolve({ response, status });
         } else {
-          reject(JSON.parse(response).reason);
+          reject({ response, status });
         }
       };
 

@@ -9,35 +9,31 @@ class AuthController {
   signup(data: { [key: string]: string }): void {
     authAPIInstance
       .signup(data)
-      .then((result: XMLHttpRequest) => {
-        console.log(result);
-        if (result.status === 200) {
-          AppRouter.go('/');
-        }
+      .then(() => {
+        AppRouter.go('/');
       })
       .catch(console.log);
   }
 
   getUserInfo<T>(cb: any): Promise<T> {
-    return authAPIInstance.getUserInfo().then((result: XMLHttpRequest) => {
-      if (result.status === 200) {
-        const user = JSON.parse(result.response);
+    return authAPIInstance
+      .getUserInfo()
+      .then(({ response }) => {
+        const user = JSON.parse(response);
         UserStore.on(EVENTS.STORE_CHANGED, cb);
         UserStore.setState(user);
         return user;
-      }
-      AppRouter.go('/login');
-    });
+      })
+      .catch(() => {
+        AppRouter.go('/login');
+      });
   }
 
   login(data: { [key: string]: string }) {
     authAPIInstance
       .login(data)
-      .then((result: XMLHttpRequest) => {
-        console.log(result);
-        if (result.status === 200) {
-          AppRouter.go('/');
-        }
+      .then(() => {
+        AppRouter.go('/');
       })
       .catch(console.log);
   }
@@ -45,10 +41,8 @@ class AuthController {
   logout() {
     authAPIInstance
       .logout()
-      .then((result: XMLHttpRequest) => {
-        if (result.status === 200) {
-          AppRouter.go('/login');
-        }
+      .then(() => {
+        AppRouter.go('/login');
       })
       .catch(console.log);
   }
