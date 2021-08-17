@@ -68,7 +68,13 @@ class HTTPTransport {
       });
 
       xhr.onload = () => {
-        resolve(xhr);
+        const { response, status } = xhr;
+        console.log(status, response);
+        if (status === 200) {
+          resolve(JSON.parse(response));
+        } else {
+          reject(JSON.parse(response).reason);
+        }
       };
 
       xhr.onabort = reject;
