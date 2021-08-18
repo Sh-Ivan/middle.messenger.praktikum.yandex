@@ -9,67 +9,46 @@ class UserController {
   changeData<T>(data: { [key: string]: string }): Promise<T> {
     return userAPIInstance
       .changeData(data)
-      .then((result: XMLHttpRequest) => {
-        console.log(result);
-        const newData = JSON.parse(result.response);
-        if (result.status === 200) {
-          UserStore.setState(newData);
-        }
+      .then(({ response }) => {
+        const newData = JSON.parse(response);
+        UserStore.setState(newData);
         return newData;
       })
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch(console.log);
   }
 
   changeAvatar(data: { form: FormData }): void {
     userAPIInstance
       .changeAvatar(data)
-      .then((result: XMLHttpRequest) => {
-        console.log(result);
-        if (result.status === 200) {
-          UserStore.setState(JSON.parse(result.response));
-        }
+      .then(({ response }) => {
+        UserStore.setState(JSON.parse(response));
       })
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch(console.log);
   }
 
   changePassword(data: { [key: string]: string }): void {
     userAPIInstance
       .changePassword(data)
-      .then((result: XMLHttpRequest) => {
-        console.log(result);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+      .then(() => {})
+      .catch(console.log);
   }
 
   getUser<T>(id: number): Promise<T> {
     return userAPIInstance
       .getUser(id)
-      .then((result: XMLHttpRequest) => {
-        console.log(result);
-        return JSON.parse(result.response);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+      .then(({ response }) => JSON.parse(response))
+      .catch(console.log);
   }
 
   searchUser<T>(login: string): Promise<T> {
     return userAPIInstance
       .searchUser(login)
-      .then((result: XMLHttpRequest) => {
-        const listUsers = JSON.parse(result.response);
+      .then(({ response }) => {
+        const listUsers = JSON.parse(response);
         ListUsers.setState(listUsers);
         return listUsers;
       })
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch(console.log);
   }
 
   subscribeToListUsersStoreEvent(cb: any) {

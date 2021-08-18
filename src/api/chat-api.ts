@@ -1,10 +1,11 @@
 import HTTP from '../helpers/http';
+import baseURL from './basURL';
 
-const chatAPIInstance = new HTTP('https://ya-praktikum.tech/api/v2/chats/');
+const chatAPIInstance = new HTTP(`${baseURL}/chats/`);
 
 export default class ChatAPI {
   getChats() {
-    return chatAPIInstance.get('', {});
+    return chatAPIInstance.get('');
   }
 
   createChat(data: any) {
@@ -16,7 +17,7 @@ export default class ChatAPI {
   }
 
   getToken(chatId: number) {
-    return chatAPIInstance.post(`token/${chatId}`, {});
+    return chatAPIInstance.post(`token/${chatId}`);
   }
 
   addUsers(data: any) {
@@ -24,7 +25,7 @@ export default class ChatAPI {
   }
 
   getChatUsers(data: any) {
-    return chatAPIInstance.get(`${data.id}/users`, {});
+    return chatAPIInstance.get(`${data.id}/users`);
   }
 
   deleteUsers(data: any) {

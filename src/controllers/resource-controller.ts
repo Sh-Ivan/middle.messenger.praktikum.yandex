@@ -6,10 +6,8 @@ class ResorceController {
   sendFile<T>(data: { form: FormData }): Promise<T> {
     return resourceAPIInstance
       .sendFile(data)
-      .then((result: XMLHttpRequest) => JSON.parse(result.response))
-      .catch((error) => {
-        console.log(error);
-      });
+      .then(({ response }) => JSON.parse(response))
+      .catch(console.log);
   }
 }
 

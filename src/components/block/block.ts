@@ -30,6 +30,7 @@ class Block<T> implements IBlock<T> {
     FLOW_CDM: 'flow:component-did-mount',
     FLOW_RENDER: 'flow:render',
     FLOW_CDU: 'flow:component-did-update',
+    FLOW_CDR: 'flow:component-did-render',
   };
 
   _element: HTMLElement;
@@ -65,12 +66,12 @@ class Block<T> implements IBlock<T> {
     eventBus.on(Block.EVENTS.FLOW_CDM, this._componentDidMount.bind(this));
     eventBus.on(Block.EVENTS.FLOW_RENDER, this._render.bind(this));
     eventBus.on(Block.EVENTS.FLOW_CDU, this._componentDidUpdate.bind(this));
+    eventBus.on(Block.EVENTS.FLOW_CDR, this._componentDidRender.bind(this));
   }
 
   _createResources() {
     const tagName = this._meta !== null ? this._meta?.tagName : 'div';
     this._element = this._createDocumentElement(tagName);
-    //this._element = document.createElement('template');
   }
 
   init() {
@@ -97,6 +98,12 @@ class Block<T> implements IBlock<T> {
   componentDidUpdate(_oldProps: T, _newProps: T) {
     return true;
   }
+
+  _componentDidRender(): void {
+    this.componentDidRender();
+  }
+
+  componentDidRender(): void {}
 
   setProps = (nextProps: TProps): void => {
     if (!nextProps) {
@@ -134,6 +141,7 @@ class Block<T> implements IBlock<T> {
         }
       }
     }
+    this.eventBus().emit(Block.EVENTS.FLOW_CDR);
   }
 
   render() {

@@ -53,14 +53,10 @@ class Chat extends Block<TChatProps> {
 
       addUsers: () => {
         const userLogin = prompt('Введите логин пользователя');
-        console.log(userLogin);
         if (userLogin) {
           userController.searchUser(userLogin).then((listUsers: TUser[]) => {
-            console.log(listUsers);
             const user = listUsers.find((user) => user.login === userLogin);
-            console.log(user);
             const { activeChat } = this.props as TChatProps;
-            console.log(activeChat);
             if (user && activeChat) {
               chatController.addUsers({
                 users: [user.id],
@@ -75,14 +71,10 @@ class Chat extends Block<TChatProps> {
 
       deleteUsers: () => {
         const userLogin = prompt('Введите логин пользователя');
-        console.log(userLogin);
         if (userLogin) {
           userController.searchUser(userLogin).then((listUsers: TUser[]) => {
-            console.log(listUsers);
             const user = listUsers.find((user) => user.login === userLogin);
-            console.log(user);
             const { activeChat } = this.props as TChatProps;
-            console.log(activeChat);
             if (user && activeChat) {
               chatController.deleteUsers({
                 users: [user.id],
@@ -186,11 +178,14 @@ class Chat extends Block<TChatProps> {
         this.setProps({ activeChat: props.chats[0] });
       }
     }
+    return true;
+  }
+
+  componentDidRender() {
     const messageList = document.querySelector('section.chat-main');
     if (messageList) {
       messageList.scrollTop = messageList.scrollHeight;
     }
-    return true;
   }
 
   render() {
