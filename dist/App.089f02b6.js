@@ -457,6 +457,7 @@ var Block = /*#__PURE__*/function () {
       eventBus.on(Block.EVENTS.FLOW_CDM, this._componentDidMount.bind(this));
       eventBus.on(Block.EVENTS.FLOW_RENDER, this._render.bind(this));
       eventBus.on(Block.EVENTS.FLOW_CDU, this._componentDidUpdate.bind(this));
+      eventBus.on(Block.EVENTS.FLOW_CDR, this._componentDidRender.bind(this));
     }
   }, {
     key: "_createResources",
@@ -464,7 +465,7 @@ var Block = /*#__PURE__*/function () {
       var _a;
 
       var tagName = this._meta !== null ? (_a = this._meta) === null || _a === void 0 ? void 0 : _a.tagName : 'div';
-      this._element = this._createDocumentElement(tagName); //this._element = document.createElement('template');
+      this._element = this._createDocumentElement(tagName);
     }
   }, {
     key: "init",
@@ -499,6 +500,14 @@ var Block = /*#__PURE__*/function () {
       return true;
     }
   }, {
+    key: "_componentDidRender",
+    value: function _componentDidRender() {
+      this.componentDidRender();
+    }
+  }, {
+    key: "componentDidRender",
+    value: function componentDidRender() {}
+  }, {
     key: "element",
     get: function get() {
       return this._element;
@@ -527,6 +536,8 @@ var Block = /*#__PURE__*/function () {
           }
         }
       }
+
+      this.eventBus().emit(Block.EVENTS.FLOW_CDR);
     }
   }, {
     key: "render",
@@ -573,7 +584,8 @@ Block.EVENTS = {
   INIT: 'init',
   FLOW_CDM: 'flow:component-did-mount',
   FLOW_RENDER: 'flow:render',
-  FLOW_CDU: 'flow:component-did-update'
+  FLOW_CDU: 'flow:component-did-update',
+  FLOW_CDR: 'flow:component-did-render'
 };
 exports.default = Block;
 },{"../../helpers/event-bus":"../src/helpers/event-bus.ts"}],"../src/components/Button/Button.tmpl.ts":[function(require,module,exports) {
@@ -831,31 +843,36 @@ var HTTPTransport = function HTTPTransport(baseUrl) {
 
   _classCallCheck(this, HTTPTransport);
 
-  this.get = function (url, options) {
+  this.get = function (url) {
+    var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
     return _this.request(url, Object.assign(Object.assign({}, options), {
       method: METHODS.GET
     }));
   };
 
-  this.post = function (url, options) {
+  this.post = function (url) {
+    var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
     return _this.request(url, Object.assign(Object.assign({}, options), {
       method: METHODS.POST
     }));
   };
 
-  this.put = function (url, options) {
+  this.put = function (url) {
+    var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
     return _this.request(url, Object.assign(Object.assign({}, options), {
       method: METHODS.PUT
     }));
   };
 
-  this.delete = function (url, options) {
+  this.delete = function (url) {
+    var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
     return _this.request(url, Object.assign(Object.assign({}, options), {
       method: METHODS.DELETE
     }));
   };
 
-  this.request = function (url, options) {
+  this.request = function (url) {
+    var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
     var fullUrl = _this.baseUrl + url;
     var method = options.method,
         _options$timeout = options.timeout,
@@ -883,7 +900,20 @@ var HTTPTransport = function HTTPTransport(baseUrl) {
       });
 
       xhr.onload = function () {
-        resolve(xhr);
+        var response = xhr.response,
+            status = xhr.status;
+
+        if (status === 200) {
+          resolve({
+            response: response,
+            status: status
+          });
+        } else {
+          reject({
+            response: response,
+            status: status
+          });
+        }
       };
 
       xhr.onabort = reject;
@@ -904,6 +934,14 @@ var HTTPTransport = function HTTPTransport(baseUrl) {
 };
 
 exports.default = HTTPTransport;
+},{}],"../src/api/basURL.ts":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var baseURL = 'https://ya-praktikum.tech/api/v2';
+exports.default = baseURL;
 },{}],"../src/api/auth-api.ts":[function(require,module,exports) {
 "use strict";
 
@@ -925,7 +963,9 @@ Object.defineProperty(exports, "__esModule", {
 
 var http_1 = __importDefault(require("../helpers/http"));
 
-var authAPIInstance = new http_1.default('https://ya-praktikum.tech/api/v2/auth/');
+var basURL_1 = __importDefault(require("./basURL"));
+
+var authAPIInstance = new http_1.default("".concat(basURL_1.default, "/auth/"));
 
 var AuthAPI = /*#__PURE__*/function () {
   function AuthAPI() {
@@ -942,7 +982,7 @@ var AuthAPI = /*#__PURE__*/function () {
   }, {
     key: "getUserInfo",
     value: function getUserInfo() {
-      return authAPIInstance.get('user', {});
+      return authAPIInstance.get('user');
     }
   }, {
     key: "login",
@@ -954,7 +994,7 @@ var AuthAPI = /*#__PURE__*/function () {
   }, {
     key: "logout",
     value: function logout() {
-      return authAPIInstance.post('logout', {});
+      return authAPIInstance.post('logout');
     }
   }]);
 
@@ -962,7 +1002,7 @@ var AuthAPI = /*#__PURE__*/function () {
 }();
 
 exports.default = AuthAPI;
-},{"../helpers/http":"../src/helpers/http.ts"}],"../src/helpers/store.ts":[function(require,module,exports) {
+},{"../helpers/http":"../src/helpers/http.ts","./basURL":"../src/api/basURL.ts"}],"../src/helpers/store.ts":[function(require,module,exports) {
 "use strict";
 
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
@@ -1097,51 +1137,36 @@ var AuthController = /*#__PURE__*/function () {
   _createClass(AuthController, [{
     key: "signup",
     value: function signup(data) {
-      authAPIInstance.signup(data).then(function (result) {
-        console.log(result);
-
-        if (result.status === 200) {
-          App_1.AppRouter.go('/');
-        }
-      }).catch(function (error) {
-        console.log(error);
-      });
+      authAPIInstance.signup(data).then(function () {
+        App_1.AppRouter.go('/');
+      }).catch(console.log);
     }
   }, {
     key: "getUserInfo",
     value: function getUserInfo(cb) {
-      return authAPIInstance.getUserInfo().then(function (result) {
-        if (result.status === 200) {
-          var user = JSON.parse(result.response);
-          UserStore_1.default.on(store_1.EVENTS.STORE_CHANGED, cb);
-          UserStore_1.default.setState(user);
-          return user;
-        }
-
+      return authAPIInstance.getUserInfo().then(function (_ref) {
+        var response = _ref.response;
+        var user = JSON.parse(response);
+        UserStore_1.default.on(store_1.EVENTS.STORE_CHANGED, cb);
+        UserStore_1.default.setState(user);
+        return user;
+      }).catch(function () {
         App_1.AppRouter.go('/login');
       });
     }
   }, {
     key: "login",
     value: function login(data) {
-      authAPIInstance.login(data).then(function (result) {
-        if (result.status === 200) {
-          App_1.AppRouter.go('/');
-        }
-      }).catch(function (error) {
-        console.log(error);
-      });
+      authAPIInstance.login(data).then(function () {
+        App_1.AppRouter.go('/');
+      }).catch(console.log);
     }
   }, {
     key: "logout",
     value: function logout() {
-      authAPIInstance.logout().then(function (result) {
-        if (result.status === 200) {
-          App_1.AppRouter.go('/login');
-        }
-      }).catch(function (error) {
-        console.log(error);
-      });
+      authAPIInstance.logout().then(function () {
+        App_1.AppRouter.go('/login');
+      }).catch(console.log);
     }
   }]);
 
@@ -1658,7 +1683,9 @@ Object.defineProperty(exports, "__esModule", {
 
 var http_1 = __importDefault(require("../helpers/http"));
 
-var userAPIInstance = new http_1.default('https://ya-praktikum.tech/api/v2/user/');
+var basURL_1 = __importDefault(require("./basURL"));
+
+var userAPIInstance = new http_1.default("".concat(basURL_1.default, "/user/"));
 
 var UserAPI = /*#__PURE__*/function () {
   function UserAPI() {
@@ -1689,7 +1716,7 @@ var UserAPI = /*#__PURE__*/function () {
   }, {
     key: "getUser",
     value: function getUser(id) {
-      return userAPIInstance.get("".concat(id), {});
+      return userAPIInstance.get("".concat(id));
     }
   }, {
     key: "searchUser",
@@ -1706,7 +1733,7 @@ var UserAPI = /*#__PURE__*/function () {
 }();
 
 exports.default = UserAPI;
-},{"../helpers/http":"../src/helpers/http.ts"}],"../src/stores/ListUsers.ts":[function(require,module,exports) {
+},{"../helpers/http":"../src/helpers/http.ts","./basURL":"../src/api/basURL.ts"}],"../src/stores/ListUsers.ts":[function(require,module,exports) {
 "use strict";
 
 var __importDefault = this && this.__importDefault || function (mod) {
@@ -1763,61 +1790,43 @@ var UserController = /*#__PURE__*/function () {
   _createClass(UserController, [{
     key: "changeData",
     value: function changeData(data) {
-      return userAPIInstance.changeData(data).then(function (result) {
-        console.log(result);
-        var newData = JSON.parse(result.response);
-
-        if (result.status === 200) {
-          UserStore_1.default.setState(newData);
-        }
-
+      return userAPIInstance.changeData(data).then(function (_ref) {
+        var response = _ref.response;
+        var newData = JSON.parse(response);
+        UserStore_1.default.setState(newData);
         return newData;
-      }).catch(function (error) {
-        console.log(error);
-      });
+      }).catch(console.log);
     }
   }, {
     key: "changeAvatar",
     value: function changeAvatar(data) {
-      userAPIInstance.changeAvatar(data).then(function (result) {
-        console.log(result);
-
-        if (result.status === 200) {
-          UserStore_1.default.setState(JSON.parse(result.response));
-        }
-      }).catch(function (error) {
-        console.log(error);
-      });
+      userAPIInstance.changeAvatar(data).then(function (_ref2) {
+        var response = _ref2.response;
+        UserStore_1.default.setState(JSON.parse(response));
+      }).catch(console.log);
     }
   }, {
     key: "changePassword",
     value: function changePassword(data) {
-      userAPIInstance.changePassword(data).then(function (result) {
-        console.log(result);
-      }).catch(function (error) {
-        console.log(error);
-      });
+      userAPIInstance.changePassword(data).then(function () {}).catch(console.log);
     }
   }, {
     key: "getUser",
     value: function getUser(id) {
-      return userAPIInstance.getUser(id).then(function (result) {
-        console.log(result);
-        return JSON.parse(result.response);
-      }).catch(function (error) {
-        console.log(error);
-      });
+      return userAPIInstance.getUser(id).then(function (_ref3) {
+        var response = _ref3.response;
+        return JSON.parse(response);
+      }).catch(console.log);
     }
   }, {
     key: "searchUser",
     value: function searchUser(login) {
-      return userAPIInstance.searchUser(login).then(function (result) {
-        var listUsers = JSON.parse(result.response);
+      return userAPIInstance.searchUser(login).then(function (_ref4) {
+        var response = _ref4.response;
+        var listUsers = JSON.parse(response);
         ListUsers_1.default.setState(listUsers);
         return listUsers;
-      }).catch(function (error) {
-        console.log(error);
-      });
+      }).catch(console.log);
     }
   }, {
     key: "subscribeToListUsersStoreEvent",
@@ -2147,7 +2156,9 @@ Object.defineProperty(exports, "__esModule", {
 
 var http_1 = __importDefault(require("../helpers/http"));
 
-var chatAPIInstance = new http_1.default('https://ya-praktikum.tech/api/v2/chats/');
+var basURL_1 = __importDefault(require("./basURL"));
+
+var chatAPIInstance = new http_1.default("".concat(basURL_1.default, "/chats/"));
 
 var ChatAPI = /*#__PURE__*/function () {
   function ChatAPI() {
@@ -2157,7 +2168,7 @@ var ChatAPI = /*#__PURE__*/function () {
   _createClass(ChatAPI, [{
     key: "getChats",
     value: function getChats() {
-      return chatAPIInstance.get('', {});
+      return chatAPIInstance.get('');
     }
   }, {
     key: "createChat",
@@ -2176,7 +2187,7 @@ var ChatAPI = /*#__PURE__*/function () {
   }, {
     key: "getToken",
     value: function getToken(chatId) {
-      return chatAPIInstance.post("token/".concat(chatId), {});
+      return chatAPIInstance.post("token/".concat(chatId));
     }
   }, {
     key: "addUsers",
@@ -2188,7 +2199,7 @@ var ChatAPI = /*#__PURE__*/function () {
   }, {
     key: "getChatUsers",
     value: function getChatUsers(data) {
-      return chatAPIInstance.get("".concat(data.id, "/users"), {});
+      return chatAPIInstance.get("".concat(data.id, "/users"));
     }
   }, {
     key: "deleteUsers",
@@ -2203,7 +2214,7 @@ var ChatAPI = /*#__PURE__*/function () {
 }();
 
 exports.default = ChatAPI;
-},{"../helpers/http":"../src/helpers/http.ts"}],"../src/stores/ChatStore.ts":[function(require,module,exports) {
+},{"../helpers/http":"../src/helpers/http.ts","./basURL":"../src/api/basURL.ts"}],"../src/stores/ChatStore.ts":[function(require,module,exports) {
 "use strict";
 
 var __importDefault = this && this.__importDefault || function (mod) {
@@ -2354,125 +2365,100 @@ var ChatController = /*#__PURE__*/function () {
     value: function getChats(userId) {
       var _this = this;
 
-      return chatAPIInstance.getChats().then(function (result) {
-        var chats = JSON.parse(result.response);
+      return chatAPIInstance.getChats().then(function (_ref) {
+        var response = _ref.response;
+        var chats = JSON.parse(response);
+        ChatStore_1.default.setState(chats);
 
-        if (result.status === 200) {
-          console.log(chats);
-          ChatStore_1.default.setState(chats);
-
-          if (chats.length > 0) {
-            _this.getToken({
-              chatId: chats[0].id,
-              userId: userId
-            });
-          }
+        if (chats.length > 0) {
+          _this.getToken({
+            chatId: chats[0].id,
+            userId: userId
+          });
         }
 
         return chats;
-      }).catch(function (error) {
-        console.log(error);
-      });
+      }).catch(console.log);
     }
   }, {
     key: "createChat",
     value: function createChat(data, userId) {
       var _this2 = this;
 
-      chatAPIInstance.createChat(data).then(function (result) {
-        if (result.status === 200) {
-          _this2.getChats(userId);
-        }
-      }).catch(function (error) {
-        console.log(error);
-      });
+      chatAPIInstance.createChat(data).then(function () {
+        _this2.getChats(userId);
+      }).catch(console.log);
     }
   }, {
     key: "getToken",
     value: function getToken(data) {
-      chatAPIInstance.getToken(data.chatId).then(function (result) {
+      chatAPIInstance.getToken(data.chatId).then(function (_ref2) {
+        var response = _ref2.response;
+
         var _a;
 
-        if (result.status === 200) {
-          var token = (_a = JSON.parse(result.response)) === null || _a === void 0 ? void 0 : _a.token;
-          var chatSocketController = new chat_socket_controller_1.default(data.userId, data.chatId, token);
-          var state = ChatStore_1.default.getState();
-          var chatIndex = state.findIndex(function (chat) {
-            return chat.id === data.chatId;
+        var token = (_a = JSON.parse(response)) === null || _a === void 0 ? void 0 : _a.token;
+        var chatSocketController = new chat_socket_controller_1.default(data.userId, data.chatId, token);
+        var state = ChatStore_1.default.getState();
+        var chatIndex = state.findIndex(function (chat) {
+          return chat.id === data.chatId;
+        });
+
+        if (chatIndex === -1) {
+          state.push({
+            id: data.chatId,
+            token: token,
+            users: [],
+            messages: [],
+            controller: chatSocketController
           });
-
-          if (chatIndex === -1) {
-            state.push({
-              id: data.chatId,
-              token: token,
-              users: [],
-              messages: [],
-              controller: chatSocketController
-            });
-          } else {
-            state[chatIndex].token = token;
-            state[chatIndex].controller = chatSocketController;
-          }
-
-          ChatStore_1.default.setState(state);
+        } else {
+          state[chatIndex].token = token;
+          state[chatIndex].controller = chatSocketController;
         }
-      }).catch(function (error) {
-        console.log(error);
-      });
+
+        ChatStore_1.default.setState(state);
+      }).catch(console.log);
     }
   }, {
     key: "deleteChat",
     value: function deleteChat(data, userId) {
       var _this3 = this;
 
-      chatAPIInstance.deleteChat(data).then(function (result) {
-        if (result.status === 200) {
-          _this3.getChats(userId);
-        }
-      }).catch(function (error) {
-        console.log(error);
-      });
+      chatAPIInstance.deleteChat(data).then(function () {
+        _this3.getChats(userId);
+      }).catch(console.log);
     }
   }, {
     key: "addUsers",
     value: function addUsers(data) {
       var _this4 = this;
 
-      chatAPIInstance.addUsers(data).then(function (result) {
-        if (result.status === 200) {
-          _this4.getChatUsers({
-            id: +data.chatId
-          });
-        }
-      }).catch(function (error) {
-        console.log(error);
-      });
+      chatAPIInstance.addUsers(data).then(function () {
+        _this4.getChatUsers({
+          id: +data.chatId
+        });
+      }).catch(console.log);
     }
   }, {
     key: "getChatUsers",
     value: function getChatUsers(data) {
-      return chatAPIInstance.getChatUsers(data).then(function (result) {
-        var chatUsers = JSON.parse(result.response);
-        console.log(chatUsers);
+      return chatAPIInstance.getChatUsers(data).then(function (_ref3) {
+        var response = _ref3.response;
+        var chatUsers = JSON.parse(response);
         return chatUsers;
-      }).catch(function (error) {
-        console.log(error);
-      });
+      }).catch(console.log);
     }
   }, {
     key: "deleteUsers",
     value: function deleteUsers(data) {
       var _this5 = this;
 
-      chatAPIInstance.deleteUsers(data).then(function (result) {
-        if (result.status === 200) {
-          _this5.getChatUsers({
-            id: +data.chatId
-          });
-        }
-      }).catch(function (error) {
-        console.log(error);
-      });
+      chatAPIInstance.deleteUsers(data).then(function () {
+        _this5.getChatUsers({
+          id: +data.chatId
+        });
+      }).catch(console.log);
     }
   }, {
     key: "subscribeToChatStoreEvent",
@@ -2506,7 +2492,9 @@ Object.defineProperty(exports, "__esModule", {
 
 var http_1 = __importDefault(require("../helpers/http"));
 
-var resourceAPIInstance = new http_1.default('https://ya-praktikum.tech/api/v2/resources/');
+var basURL_1 = __importDefault(require("./basURL"));
+
+var resourceAPIInstance = new http_1.default("".concat(basURL_1.default, "/resources/"));
 
 var resorceAPI = /*#__PURE__*/function () {
   function resorceAPI() {
@@ -2526,7 +2514,7 @@ var resorceAPI = /*#__PURE__*/function () {
 }();
 
 exports.default = resorceAPI;
-},{"../helpers/http":"../src/helpers/http.ts"}],"../src/controllers/resource-controller.ts":[function(require,module,exports) {
+},{"../helpers/http":"../src/helpers/http.ts","./basURL":"../src/api/basURL.ts"}],"../src/controllers/resource-controller.ts":[function(require,module,exports) {
 "use strict";
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -2557,11 +2545,10 @@ var ResorceController = /*#__PURE__*/function () {
   _createClass(ResorceController, [{
     key: "sendFile",
     value: function sendFile(data) {
-      return resourceAPIInstance.sendFile(data).then(function (result) {
-        return JSON.parse(result.response);
-      }).catch(function (error) {
-        console.log(error);
-      });
+      return resourceAPIInstance.sendFile(data).then(function (_ref) {
+        var response = _ref.response;
+        return JSON.parse(response);
+      }).catch(console.log);
     }
   }]);
 
@@ -2589,20 +2576,20 @@ exports.default = byTime;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.isEqualDate = exports.isToday = void 0;
-
-var isToday = function isToday(date) {
-  var today = new Date();
-  return date.getDate() === today.getDate() && date.getMonth() === today.getMonth() && date.getFullYear() === today.getFullYear();
-};
-
-exports.isToday = isToday;
+exports.isToday = exports.isEqualDate = void 0;
 
 var isEqualDate = function isEqualDate(date1, date2) {
   return date1.getDate() === date2.getDate() && date1.getMonth() === date2.getMonth() && date1.getFullYear() === date2.getFullYear();
 };
 
 exports.isEqualDate = isEqualDate;
+
+var isToday = function isToday(date) {
+  var today = new Date();
+  return exports.isEqualDate(today, date);
+};
+
+exports.isToday = isToday;
 },{}],"../src/pages/chat/chat.ts":[function(require,module,exports) {
 "use strict";
 
@@ -2719,17 +2706,13 @@ var Chat = /*#__PURE__*/function (_block_1$default) {
       },
       addUsers: function addUsers() {
         var userLogin = prompt('Введите логин пользователя');
-        console.log(userLogin);
 
         if (userLogin) {
           userController.searchUser(userLogin).then(function (listUsers) {
-            console.log(listUsers);
             var user = listUsers.find(function (user) {
               return user.login === userLogin;
             });
-            console.log(user);
             var activeChat = _this.props.activeChat;
-            console.log(activeChat);
 
             if (user && activeChat) {
               chatController.addUsers({
@@ -2744,17 +2727,13 @@ var Chat = /*#__PURE__*/function (_block_1$default) {
       },
       deleteUsers: function deleteUsers() {
         var userLogin = prompt('Введите логин пользователя');
-        console.log(userLogin);
 
         if (userLogin) {
           userController.searchUser(userLogin).then(function (listUsers) {
-            console.log(listUsers);
             var user = listUsers.find(function (user) {
               return user.login === userLogin;
             });
-            console.log(user);
             var activeChat = _this.props.activeChat;
-            console.log(activeChat);
 
             if (user && activeChat) {
               chatController.deleteUsers({
@@ -2891,13 +2870,16 @@ var Chat = /*#__PURE__*/function (_block_1$default) {
         }
       }
 
+      return true;
+    }
+  }, {
+    key: "componentDidRender",
+    value: function componentDidRender() {
       var messageList = document.querySelector('section.chat-main');
 
       if (messageList) {
         messageList.scrollTop = messageList.scrollHeight;
       }
-
-      return true;
     }
   }, {
     key: "render",
@@ -3301,7 +3283,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59363" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49500" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
