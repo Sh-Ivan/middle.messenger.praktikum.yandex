@@ -6,11 +6,11 @@ enum METHODS {
   DELETE = 'DELETE',
 }
 
-type Options<TRequest> = {
-  method: METHODS;
-  timeout: number;
-  headers: { [key: string]: string };
-  data: TRequest;
+type Options = {
+  method?: METHODS;
+  timeout?: number;
+  headers?: { [key: string]: string };
+  data?: { [key: string]: any };
 };
 
 function queryStringify<TRequest>(data: TRequest): string {
@@ -24,20 +24,27 @@ function queryStringify<TRequest>(data: TRequest): string {
   return queryString.slice(0, -1);
 }
 
-class HTTPTransport<TRequest> {
-  get = (url: string, options: Options<TRequest>): Promise<unknown> =>
+class HTTPTransport {
+  baseUrl: string;
+
+  constructor(baseUrl: string) {
+    this.baseUrl = baseUrl;
+  }
+
+  get = (url: string, options: Options = {}): Promise<unknown> =>
     this.request(url, { ...options, method: METHODS.GET });
 
-  post = (url: string, options: Options<TRequest>): Promise<unknown> =>
+  post = (url: string, options: Options = {}): Promise<unknown> =>
     this.request(url, { ...options, method: METHODS.POST });
 
-  put = (url: string, options: Options<TRequest>): Promise<unknown> =>
+  put = (url: string, options: Options = {}): Promise<unknown> =>
     this.request(url, { ...options, method: METHODS.PUT });
 
-  delete = (url: string, options: Options<TRequest>): Promise<unknown> =>
+  delete = (url: string, options: Options = {}): Promise<unknown> =>
     this.request(url, { ...options, method: METHODS.DELETE });
 
-  request = (url: string, options: Options<TRequest>) => {
+  request = (url: string, options: Options = {}) => {
+    const fullUrl: string = this.baseUrl + url;
     const {
       method,
       timeout = 5000,
@@ -46,14 +53,27 @@ class HTTPTransport<TRequest> {
     } = options;
     return new Promise((resolve, reject) => {
       const xhr = new XMLHttpRequest();
-      xhr.open(method, method === METHODS.GET && !!data ? `${url}${queryStringify(data)}` : url);
+      xhr.withCredentials = true;
+      xhr.open(
+        method || METHODS.GET,
+        method === METHODS.GET && !!data ? `${fullUrl}${queryStringify(data)}` : fullUrl,
+      );
       xhr.timeout = timeout;
+
       Object.entries(headers).forEach(([key, value]) => {
+        if (data?.form && key === 'Content-Type') {
+          return;
+        }
         xhr.setRequestHeader(key, value);
       });
 
       xhr.onload = () => {
-        resolve(xhr);
+        const { response, status } = xhr;
+        if (status === 200) {
+          resolve({ response, status });
+        } else {
+          reject({ response, status });
+        }
       };
 
       xhr.onabort = reject;
@@ -62,6 +82,8 @@ class HTTPTransport<TRequest> {
 
       if (method === METHODS.GET || !data) {
         xhr.send();
+      } else if (data.form) {
+        xhr.send(data.form);
       } else {
         xhr.send(JSON.stringify(data));
       }

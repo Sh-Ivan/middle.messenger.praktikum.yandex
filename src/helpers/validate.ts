@@ -1,8 +1,13 @@
 const EMAIL_REG_EXP = /.+@.+\..+/i;
 const PHONE_REG_EXP = /^\+?\d+[0-9-]{5,15}$/;
 
-export function toggleErrorElement(element: HTMLInputElement, validateResult: string) {
-  const errorElement = element.closest('form')?.querySelector(`[data-error="${element.name}"]`);
+export function toggleErrorElement(
+  element: HTMLInputElement,
+  validateResult: string,
+) {
+  const errorElement = element
+    .closest('form')
+    ?.querySelector(`[data-error="${element.name}"]`);
   if (errorElement) {
     if (validateResult !== 'valid') {
       errorElement.textContent = validateResult;
@@ -14,7 +19,7 @@ export function toggleErrorElement(element: HTMLInputElement, validateResult: st
 }
 
 export function validate(element: HTMLInputElement): string {
-  let validateResult: string = '';
+  let validateResult: string = 'valid';
   switch (element.type) {
     case 'email':
       if (!element.value.match(EMAIL_REG_EXP)) {
@@ -44,7 +49,6 @@ export function validate(element: HTMLInputElement): string {
       }
       break;
     default:
-      validateResult = 'valid';
   }
   toggleErrorElement(element, validateResult);
   return validateResult;

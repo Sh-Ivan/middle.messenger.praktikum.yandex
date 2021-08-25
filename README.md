@@ -38,6 +38,12 @@ npm run build
 npm run lint
 ```
 
+Запуск тестов:
+
+```bash
+npm run test
+```
+
 ## Ссылки
 
 - [Макеты Figma](https://www.figma.com/file/oswzyNtaNEE3b2kOYA6zHu/Chat-messenger?node-id=0%3A1)
@@ -47,3 +53,4 @@ npm run lint
 
 - Для сборки [Parcel](https://ru.parceljs.org/)
 - Анализаторы кода [ESLint](https://eslint.org/) и [Stylelint](https://stylelint.io/)
+- Для тестов [Mocha](https://mochajs.org/) и [Chai](https://www.chaijs.com/)

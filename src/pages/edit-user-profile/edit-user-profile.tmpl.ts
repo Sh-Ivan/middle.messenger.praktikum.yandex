@@ -18,19 +18,19 @@ export default `
         <div class="user-profile__row">
           <label for="first_name" class="user-profile-form__label">Имя</label>
           <input type="text" id="first_name" name="first_name" placeholder="Имя" class="user-profile-form__input" 
-          value={{firstName}} on:focus={{handleFocus}} on:blur={{handleBlur}}>
+          value={{first_name}} on:focus={{handleFocus}} on:blur={{handleBlur}}>
         </div>
         <span class="input-error hide" data-error="first_name"></span>
         <div class="user-profile__row">
           <label for="second_name" class="user-profile-form__label">Фамилия</label>
           <input type="text" id="second_name" name="second_name" placeholder="Фамилия" class="user-profile-form__input" 
-          value={{secondName}} on:focus={{handleFocus}} on:blur={{handleBlur}}>
+          value={{second_name}} on:focus={{handleFocus}} on:blur={{handleBlur}}>
         </div>
         <span class="input-error hide" data-error="second_name"></span>
         <div class="user-profile__row">
           <label for="display_name" class="user-profile-form__label">Имя в чате</label>
           <input type="text" id="display_name" name="display_name" placeholder="Имя в чате" class="user-profile-form__input" 
-          value={{displayName}} on:focus={{handleFocus}} on:blur={{handleBlur}}>
+          value={{display_name}} on:focus={{handleFocus}} on:blur={{handleBlur}}>
         </div>
         <span class="input-error hide" data-error="display_name"></span>
         <div class="user-profile__row">
@@ -42,16 +42,17 @@ export default `
 
         <div class="user-profile__links">
           <button type="submit" class="auth-form__button auth-form__button_center">Сохранить изменения</button>
-          <a href="/user" class="auth-panel__link user-profile__link_reject">Отменить</a>
+          <a href="#" on:click={{back}} class="auth-panel__link user-profile__link_reject">Назад</a>
         </div>
       </form>
 
       <aside class="user-profile__aside">
         <div class="avatar-wrapper">
-          <i class="avatar-icon"></i>
+          {{userAvatar}}
         </div>
-          <a href="/user" class="auth-panel__link">Загрузить новое фото</a>
-          <a href="/user" class="auth-panel__link user-profile__link_reject">Удалить фото</a>
+        <label for="avatar" class="auth-panel__link">Загрузить новое фото</label>
+          <input type="file" id="avatar" accept="image/*" class="hide" on:change={{changeAvatar}}>
+          <a href="#" class="auth-panel__link user-profile__link_reject" on:click={{deleteAvatar}}>Удалить фото</a>
       </aside>
     </div>
   </main>

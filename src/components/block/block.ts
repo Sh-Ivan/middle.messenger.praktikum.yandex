@@ -1,8 +1,12 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import EventBus from '../../helpers/event-bus';
 
-type TProps = { [key: string]: unknown };
+export interface TProps {
+  [key: string]: unknown;
+}
 
-export interface IBlock {
+export interface IBlock<T> {
   element: HTMLElement;
   props: unknown;
   init: () => void;
@@ -10,7 +14,7 @@ export interface IBlock {
   show: () => void;
   render: () => string;
   componentDidMount: () => void;
-  componentDidUpdate: () => boolean;
+  componentDidUpdate: (oldProps: T, newProps: T) => boolean;
   setProps: (nextProps: unknown) => void;
   getContent: () => HTMLElement;
 }
@@ -20,12 +24,13 @@ type Meta = {
   props: TProps;
 };
 
-class Block<T> implements IBlock {
+class Block<T> implements IBlock<T> {
   static EVENTS = {
     INIT: 'init',
     FLOW_CDM: 'flow:component-did-mount',
     FLOW_RENDER: 'flow:render',
     FLOW_CDU: 'flow:component-did-update',
+    FLOW_CDR: 'flow:component-did-render',
   };
 
   _element: HTMLElement;
@@ -61,6 +66,7 @@ class Block<T> implements IBlock {
     eventBus.on(Block.EVENTS.FLOW_CDM, this._componentDidMount.bind(this));
     eventBus.on(Block.EVENTS.FLOW_RENDER, this._render.bind(this));
     eventBus.on(Block.EVENTS.FLOW_CDU, this._componentDidUpdate.bind(this));
+    eventBus.on(Block.EVENTS.FLOW_CDR, this._componentDidRender.bind(this));
   }
 
   _createResources() {
@@ -81,24 +87,30 @@ class Block<T> implements IBlock {
   componentDidMount(): void {}
 
   _componentDidUpdate(oldProps: T, newProps: T) {
+    const response = this.componentDidUpdate(oldProps, newProps);
     if (newProps !== oldProps) {
-      const response = this.componentDidUpdate();
-      if (response) {
-        this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
-      }
+      this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
+    } else if (response) {
+      this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
     }
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(_oldProps: T, _newProps: T) {
     return true;
   }
+
+  _componentDidRender(): void {
+    this.componentDidRender();
+  }
+
+  componentDidRender(): void {}
 
   setProps = (nextProps: TProps): void => {
     if (!nextProps) {
       return;
     }
     const oldProps = this.props;
-    this.props = this._makePropsProxy(Object.assign(oldProps, nextProps));
+    this.props = this._makePropsProxy({ ...oldProps, ...nextProps });
     this.eventBus().emit(Block.EVENTS.FLOW_CDU, oldProps, nextProps);
   };
 
@@ -109,9 +121,11 @@ class Block<T> implements IBlock {
   _render() {
     this.textContent = this.render();
     this._element.innerHTML = this.textContent;
+
     this._element = this._element.firstElementChild
       ? (this._element.firstElementChild as HTMLElement)
       : this._element;
+
     const elements = this._element.querySelectorAll('*');
 
     for (let i = 0; i < elements.length; i += 1) {
@@ -127,6 +141,7 @@ class Block<T> implements IBlock {
         }
       }
     }
+    this.eventBus().emit(Block.EVENTS.FLOW_CDR);
   }
 
   render() {
